@@ -262,14 +262,27 @@ export const MobileVoidExperience: React.FC<MobileVoidExperienceProps> = ({
 
     let rafId = 0;
     let isRunning = false;
+    let previousFrameTime = performance.now();
     const smoothedProgress = [0, 0, 0, 0];
+    const rowDocumentTops = [0, 0, 0, 0];
+
+    const measureRows = () => {
+      const scrollY = window.scrollY || window.pageYOffset || 0;
+      for (let i = 0; i < cascadeRowRefs.current.length; i++) {
+        const rowEl = cascadeRowRefs.current[i];
+        if (!rowEl) continue;
+        rowDocumentTops[i] = rowEl.getBoundingClientRect().top + scrollY;
+      }
+    };
 
     // Curve horizontal X offsets (in px) for the 4 overlapping vinyls along the C-curve:
     // Step 1: Left (-18px), Step 2: Center-Right (+54px), Step 3: Far-Right (+92px), Step 4: Center-Left (+12px)
     const curveTargetX = [-18, 54, 92, 12];
     const curveStartX = [-24, -18, 54, 92]; // Each vinyl starts tucked behind the previous vinyl's X position!
 
-    const tick = () => {
+    const tick = (now: number) => {
+      const dt = Math.min(0.05, Math.max(0.001, (now - previousFrameTime) / 1000));
+      previousFrameTime = now;
       const scrollY = window.scrollY || window.pageYOffset || 0;
       const vh = Math.max(window.innerHeight, 640);
 
@@ -289,15 +302,15 @@ export const MobileVoidExperience: React.FC<MobileVoidExperienceProps> = ({
         const calloutEl = cascadeCalloutRefs.current[i];
         if (!rowEl || !vinylEl) continue;
 
-        const rect = rowEl.getBoundingClientRect();
         // Progress goes from 0 (when row enters bottom of screen at 95% vh)
         // to 1 (when row reaches upper-middle of screen at 32% vh)
-        const rawP = (vh * 0.95 - rect.top) / (vh * 0.63);
+        const rowTop = rowDocumentTops[i] - scrollY;
+        const rawP = (vh * 0.95 - rowTop) / (vh * 0.63);
         const targetP = Math.max(0, Math.min(1.25, rawP));
 
         const diff = targetP - smoothedProgress[i];
         if (Math.abs(diff) > 0.002) {
-          smoothedProgress[i] += diff * 0.16;
+          smoothedProgress[i] += diff * (1 - Math.exp(-20 * dt));
           needsMoreFrames = true;
         } else {
           smoothedProgress[i] = targetP;
@@ -348,16 +361,32 @@ export const MobileVoidExperience: React.FC<MobileVoidExperienceProps> = ({
     const wake = () => {
       if (!isRunning) {
         isRunning = true;
+        previousFrameTime = performance.now();
         rafId = window.requestAnimationFrame(tick);
       }
     };
 
+    measureRows();
     wake();
     window.addEventListener('scroll', wake, { passive: true });
-    window.addEventListener('resize', wake, { passive: true });
+    const handleResize = () => {
+      measureRows();
+      wake();
+    };
+    window.addEventListener('resize', handleResize, { passive: true });
+    const contentEl = document.querySelector<HTMLElement>('.vm-main-content');
+    const contentObserver =
+      typeof ResizeObserver !== 'undefined' && contentEl
+        ? new ResizeObserver(() => {
+            measureRows();
+            wake();
+          })
+        : null;
+    if (contentEl) contentObserver?.observe(contentEl);
     return () => {
       window.removeEventListener('scroll', wake);
-      window.removeEventListener('resize', wake);
+      window.removeEventListener('resize', handleResize);
+      contentObserver?.disconnect();
       if (rafId) window.cancelAnimationFrame(rafId);
     };
   }, []);

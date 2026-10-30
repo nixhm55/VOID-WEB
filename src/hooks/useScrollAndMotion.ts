@@ -357,7 +357,8 @@ export function stepUnifiedSceneMotion(rawDeltaSeconds: number): boolean {
 
 export function useScrollAndMotion(
   isPlaying: boolean,
-  onSectionThreshold?: (section: NavigationSection, showMiniDock: boolean) => void
+  onSectionThreshold?: (section: NavigationSection, showMiniDock: boolean) => void,
+  enabled = true
 ): CoordinatedSceneMotion {
   const [reducedMotion, setReducedMotion] = useState<boolean>(() => {
     if (typeof window === 'undefined' || !window.matchMedia) return false;
@@ -380,8 +381,13 @@ export function useScrollAndMotion(
   }));
 
   useEffect(() => {
-    SHARED_SCENE_STATE.onThresholdCallback = onSectionThreshold;
-  }, [onSectionThreshold]);
+    SHARED_SCENE_STATE.onThresholdCallback = enabled ? onSectionThreshold : undefined;
+    return () => {
+      if (SHARED_SCENE_STATE.onThresholdCallback === onSectionThreshold) {
+        SHARED_SCENE_STATE.onThresholdCallback = undefined;
+      }
+    };
+  }, [enabled, onSectionThreshold]);
 
   useEffect(() => {
     SHARED_SCENE_STATE.isPlaying = isPlaying;
@@ -400,7 +406,11 @@ export function useScrollAndMotion(
   }, []);
 
   useEffect(() => {
-    if (typeof window === 'undefined' || typeof IntersectionObserver === 'undefined') return;
+    if (
+      !enabled ||
+      typeof window === 'undefined' ||
+      typeof IntersectionObserver === 'undefined'
+    ) return;
 
     STAGE_DOM_REFS.downloadSectionEl = document.getElementById('download');
 
@@ -438,10 +448,10 @@ export function useScrollAndMotion(
       observer.disconnect();
       STAGE_DOM_REFS.downloadSectionEl = null;
     };
-  }, []);
+  }, [enabled]);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (!enabled || typeof window === 'undefined') return;
 
     let rafId = 0;
     let isLoopRunning = false;
@@ -556,7 +566,7 @@ export function useScrollAndMotion(
       window.removeEventListener('pointermove', handlePointerMove);
       if (rafId) window.cancelAnimationFrame(rafId);
     };
-  }, []);
+  }, [enabled]);
 
   return {
     ...motionState,

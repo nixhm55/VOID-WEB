@@ -955,8 +955,8 @@
       rgba(12, 3, 6, 0.56) 100%
     );
     border: 1px solid rgba(224, 158, 150, 0.22);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     text-align: center;
     animation: vmFeatureDetailReveal 0.32s cubic-bezier(0.22, 1, 0.36, 1);
   }
@@ -1197,8 +1197,8 @@
     margin-bottom: 18px;
     background: rgba(255, 255, 255, 0.03) !important;
     border: 1px solid rgba(255, 255, 255, 0.14) !important;
-    backdrop-filter: blur(22px) saturate(120%);
-    -webkit-backdrop-filter: blur(22px) saturate(120%);
+    backdrop-filter: blur(8px) saturate(120%);
+    -webkit-backdrop-filter: blur(8px) saturate(120%);
   }
 
   .vm-platform-tab {
@@ -1232,8 +1232,8 @@
     box-shadow:
       0 28px 64px rgba(0, 0, 0, 0.82),
       inset 0 1px 1.5px rgba(255, 255, 255, 0.24) !important;
-    backdrop-filter: blur(26px) saturate(125%);
-    -webkit-backdrop-filter: blur(26px) saturate(125%);
+    backdrop-filter: blur(12px) saturate(125%);
+    -webkit-backdrop-filter: blur(12px) saturate(125%);
   }
 
   /* Pure Colorless Untinted Glass Download Button ("ആ ബട്ടൺ ഫുള്ളി ഗ്ലാസ് ആവണം. ടിന്റഡ് ഗ്ലാസ് കളർ ഉണ്ടായിക്കൂടെ") */

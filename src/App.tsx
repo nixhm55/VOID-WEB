@@ -67,7 +67,11 @@ export const App: React.FC = () => {
     []
   );
 
-  const motion = useScrollAndMotion(isPlaying, handleThresholdChange);
+  const motion = useScrollAndMotion(
+    isPlaying,
+    handleThresholdChange,
+    !isMobileViewport
+  );
 
   // Advance playback timer when playing
   useEffect(() => {

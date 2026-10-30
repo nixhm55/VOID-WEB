@@ -24,6 +24,7 @@
   --void-warm-border: #352126;
   --void-font-serif: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
   --void-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  accent-color: var(--void-ruby-accent);
 }
 
 *,
@@ -63,6 +64,24 @@ button {
   background: none;
   border: none;
   cursor: pointer;
+}
+
+:where(a, button, input, select, textarea, [role='button'], [role='tab'], [role='slider']) {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--void-rose-copper);
+  outline-offset: 3px;
+}
+
+[role='slider']:focus {
+  outline: 1px solid rgba(214, 155, 146, 0.78);
+  outline-offset: 4px;
 }
 
 a {
