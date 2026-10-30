@@ -8,9 +8,9 @@
    ============================================================================ */
 
 :root {
-  --void-base-black: #070606;
-  --void-obsidian-black: #0C0809;
-  --void-soft-black: #10090B;
+  --void-base-black: #080102;
+  --void-obsidian-black: #0D0204;
+  --void-soft-black: #120306;
   --void-dark-burgundy: #24080F;
   --void-oxblood: #350A16;
   --void-deep-wine: #430D1D;
@@ -35,6 +35,7 @@
 }
 
 html {
+  color-scheme: dark;
   scroll-behavior: smooth;
   background-color: var(--void-base-black);
   color: var(--void-warm-ivory);
@@ -87,7 +88,13 @@ a {
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
-  background-color: #060203;
+  background-color: #080102;
+  background-image: radial-gradient(
+    ellipse 86% 74% at 50% 45%,
+    #1c0307 0%,
+    #100204 56%,
+    #060102 100%
+  );
 }
 
 .void-leather-base-hide {
@@ -120,6 +127,7 @@ a {
 .void-leather-cinematic-vignette {
   position: absolute;
   inset: 0;
+  opacity: calc(1 - 0.55 * var(--void-experience-lift, 0));
   background:
     radial-gradient(
       ellipse 82% 74% at 52% 48%,
@@ -161,37 +169,48 @@ a {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  /* 3D perspective tilt matching the angled turntable platter in 2nd.png */
+  /* 3D perspective tilt matching the angled turntable platter */
   transform: rotateX(22deg) rotateY(-14deg) rotateZ(-8deg);
   transform-style: preserve-3d;
-  padding: 15px;
+  padding: 12px;
   background:
-    radial-gradient(circle at 26% 78%, rgba(250, 224, 218, 0.72) 0%, rgba(188, 72, 82, 0.28) 18%, transparent 38%),
-    radial-gradient(circle at 82% 24%, rgba(235, 168, 158, 0.42) 0%, transparent 34%),
+    radial-gradient(
+      circle at 28% 22%,
+      rgba(224, 108, 114, 0.56) 0%,
+      rgba(128, 24, 38, 0.44) 28%,
+      transparent 62%
+    ),
+    radial-gradient(
+      circle at 74% 78%,
+      rgba(196, 76, 86, 0.46) 0%,
+      rgba(96, 16, 28, 0.34) 32%,
+      transparent 60%
+    ),
     conic-gradient(
-      from 195deg at 50% 50%,
-      #080203 0deg,
-      #340811 32deg,
-      #8b1e2e 54deg,
-      #f2cbc4 66deg,
-      #6e1422 82deg,
-      #0c0305 128deg,
-      #050102 182deg,
-      #2a070e 218deg,
-      #781826 244deg,
-      #e5a39b 256deg,
-      #3e0a13 278deg,
-      #080203 360deg
+      from 198deg at 50% 50%,
+      #090203 0deg,
+      #3a0711 36deg,
+      #8e1b2c 58deg,
+      #d87c78 68deg,
+      #64101e 88deg,
+      #0d0205 136deg,
+      #060102 184deg,
+      #34060f 222deg,
+      #841828 248deg,
+      #ca6e6a 260deg,
+      #420914 286deg,
+      #090203 360deg
     );
-  border: 1.5px solid rgba(236, 182, 174, 0.48);
+  border: 1.5px solid rgba(226, 136, 132, 0.54);
   box-shadow:
-    -28px 40px 72px rgba(0, 0, 0, 0.95),
-    -6px 12px 24px rgba(0, 0, 0, 0.85),
-    inset 0 2px 5px rgba(248, 226, 220, 0.52),
-    inset 0 -8px 22px rgba(72, 12, 24, 0.72);
+    -30px 42px 80px rgba(0, 0, 0, 0.96),
+    -8px 14px 30px rgba(0, 0, 0, 0.9),
+    0 0 54px rgba(138, 22, 38, 0.34),
+    inset 0 2px 5px rgba(244, 188, 182, 0.52),
+    inset 0 -8px 22px rgba(48, 6, 14, 0.85);
 }
 
-/* Machined outer rim lower-left & upper-right specular edge arcs matching 2nd.png & 1st.png */
+/* Gleaming oiled circumference rim reflection so the vinyl stands out boldly */
 .void-vinyl-rim-specular-arc {
   position: absolute;
   inset: -1px;
@@ -200,18 +219,18 @@ a {
   z-index: 4;
   background:
     conic-gradient(
-      from 188deg at 50% 50%,
-      transparent 0deg,
-      rgba(246, 214, 206, 0.78) 22deg,
-      rgba(255, 240, 236, 0.96) 36deg,
-      rgba(224, 134, 128, 0.68) 52deg,
-      transparent 78deg,
-      transparent 185deg,
-      rgba(232, 162, 154, 0.52) 212deg,
-      rgba(248, 218, 212, 0.82) 226deg,
-      rgba(182, 68, 76, 0.38) 244deg,
-      transparent 268deg,
-      transparent 360deg
+      from 192deg at 50% 50%,
+      rgba(112, 22, 34, 0.24) 0deg,
+      rgba(228, 134, 128, 0.78) 28deg,
+      rgba(248, 204, 198, 0.92) 44deg,
+      rgba(196, 68, 76, 0.68) 68deg,
+      rgba(52, 8, 16, 0.22) 124deg,
+      rgba(128, 26, 40, 0.42) 196deg,
+      rgba(234, 148, 142, 0.82) 228deg,
+      rgba(246, 196, 190, 0.88) 242deg,
+      rgba(176, 52, 64, 0.58) 268deg,
+      rgba(64, 10, 18, 0.24) 324deg,
+      rgba(112, 22, 34, 0.24) 360deg
     );
   -webkit-mask: radial-gradient(
     farthest-side,
@@ -235,8 +254,8 @@ a {
   height: 100%;
   border-radius: 50%;
   overflow: hidden;
-  background: #050102;
-  border: 1px solid rgba(224, 162, 152, 0.34);
+  background: #060102;
+  border: 1px solid rgba(212, 118, 114, 0.44);
   animation: voidVinylRotate 16s linear infinite;
   will-change: transform;
 }
@@ -245,30 +264,20 @@ a {
   animation-duration: 9.5s;
 }
 
-/* Subtle surface sheen that rotates with the physical disc */
+/* Soft oiled surface sheen that rotates with the physical disc */
 .void-vinyl-anisotropic-sheen {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: conic-gradient(
-    from 0deg at 50% 50%,
-    rgba(6, 2, 3, 0.92) 0deg,
-    rgba(38, 7, 13, 0.55) 35deg,
-    rgba(134, 24, 38, 0.42) 62deg,
-    rgba(232, 154, 148, 0.32) 76deg,
-    rgba(112, 18, 32, 0.44) 94deg,
-    rgba(12, 3, 6, 0.88) 136deg,
-    rgba(4, 1, 2, 0.95) 180deg,
-    rgba(34, 6, 12, 0.58) 215deg,
-    rgba(126, 22, 36, 0.46) 244deg,
-    rgba(240, 178, 172, 0.36) 258deg,
-    rgba(104, 16, 28, 0.42) 278deg,
-    rgba(10, 3, 5, 0.9) 322deg,
-    rgba(6, 2, 3, 0.92) 360deg
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(12, 2, 4, 0.18) 0%,
+    rgba(88, 14, 26, 0.2) 58%,
+    rgba(6, 1, 2, 0.38) 100%
   );
 }
 
-/* High-DPI canvas containing physical concentric micro-grooves & radial track bands */
+/* High-DPI oiled luxury leather-velvet vinyl record with concentric grooves */
 .void-vinyl-grooves-canvas {
   position: absolute;
   inset: 0;
@@ -276,180 +285,234 @@ a {
   height: 100%;
   border-radius: 50%;
   display: block;
-  mix-blend-mode: screen;
-  opacity: 0.96;
+  mix-blend-mode: normal;
+  opacity: 1;
   pointer-events: none;
 }
 
-/* Fixed World-Space Anisotropic Studio Reflections across the Rotating Grooves (Matches 2nd.png & 1st.png) */
+/* Rich Oiled Wet-Look Sheen & Specular Glow Across the Vinyl Surface */
 .void-vinyl-world-anisotropic-light {
   position: absolute;
-  inset: 15px;
+  inset: 12px;
   border-radius: 50%;
   pointer-events: none;
   z-index: 2;
   background:
-    /* Primary ruby-crimson & rose-copper anisotropic reflection fans (top-right at ~18deg & bottom-left at ~198deg) */
-    conic-gradient(
-      from 6deg at 50% 50%,
-      rgba(5, 1, 2, 0.72) 0deg,
-      rgba(36, 6, 11, 0.35) 14deg,
-      rgba(138, 22, 36, 0.68) 26deg,
-      rgba(218, 92, 96, 0.82) 34deg,
-      rgba(248, 206, 200, 0.88) 38deg,
-      rgba(212, 82, 88, 0.78) 43deg,
-      rgba(124, 18, 32, 0.58) 54deg,
-      rgba(18, 3, 6, 0.52) 76deg,
-      rgba(4, 1, 2, 0.82) 118deg,
-      rgba(12, 3, 5, 0.65) 168deg,
-      rgba(116, 18, 30, 0.62) 194deg,
-      rgba(208, 84, 88, 0.84) 206deg,
-      rgba(252, 222, 216, 0.94) 213deg,
-      rgba(216, 94, 98, 0.82) 220deg,
-      rgba(132, 22, 36, 0.64) 232deg,
-      rgba(24, 4, 8, 0.48) 256deg,
-      /* Secondary cool-ivory studio highlight fan at top-left (~312deg in 2nd.png) */
-      rgba(8, 2, 4, 0.64) 284deg,
-      rgba(198, 184, 182, 0.28) 304deg,
-      rgba(246, 238, 236, 0.62) 314deg,
-      rgba(186, 168, 166, 0.24) 325deg,
-      rgba(8, 2, 4, 0.7) 344deg,
-      rgba(5, 1, 2, 0.72) 360deg
+    /* Upper-left oiled glossy specular bloom */
+    radial-gradient(
+      ellipse 62% 54% at 28% 24%,
+      rgba(244, 176, 168, 0.34) 0%,
+      rgba(196, 54, 68, 0.32) 32%,
+      rgba(108, 16, 28, 0.16) 58%,
+      transparent 82%
     ),
-    /* Radial falloff & inner/outer bevel shadow depth */
+    /* Lower-right oiled counter-sheen */
+    radial-gradient(
+      ellipse 60% 52% at 72% 76%,
+      rgba(236, 156, 148, 0.28) 0%,
+      rgba(178, 44, 58, 0.28) 34%,
+      rgba(92, 14, 24, 0.14) 58%,
+      transparent 80%
+    ),
+    /* Soft curved oiled reflection wave across the grooves */
+    conic-gradient(
+      from 20deg at 50% 50%,
+      rgba(12, 2, 4, 0.18) 0deg,
+      rgba(168, 36, 52, 0.28) 42deg,
+      rgba(238, 148, 142, 0.34) 68deg,
+      rgba(154, 28, 44, 0.24) 98deg,
+      rgba(8, 2, 3, 0.28) 148deg,
+      rgba(14, 3, 5, 0.22) 196deg,
+      rgba(176, 40, 56, 0.3) 232deg,
+      rgba(232, 142, 136, 0.32) 254deg,
+      rgba(138, 24, 38, 0.22) 286deg,
+      rgba(10, 2, 4, 0.24) 332deg,
+      rgba(12, 2, 4, 0.18) 360deg
+    ),
+    /* Inner and outer 3D bevel depth + oiled outer lip catchlight */
     radial-gradient(
       circle at 50% 50%,
       transparent 0%,
-      transparent 16%,
-      rgba(0, 0, 0, 0.58) 17.5%,
-      rgba(244, 188, 182, 0.22) 19%,
+      transparent 16.5%,
+      rgba(4, 1, 2, 0.68) 17.5%,
+      rgba(228, 138, 132, 0.22) 18.8%,
       transparent 23%,
-      transparent 45%,
-      rgba(244, 192, 186, 0.14) 46.5%,
-      transparent 48%,
-      transparent 94%,
-      rgba(0, 0, 0, 0.78) 98.5%,
-      rgba(248, 212, 206, 0.44) 100%
+      transparent 91%,
+      rgba(4, 1, 2, 0.54) 96.5%,
+      rgba(242, 178, 172, 0.52) 99%,
+      rgba(12, 2, 4, 0.72) 100%
     );
   mix-blend-mode: hard-light;
   box-shadow:
-    inset 0 0 34px rgba(0, 0, 0, 0.88),
-    inset 0 0 5px rgba(244, 198, 192, 0.42);
+    inset 0 0 36px rgba(0, 0, 0, 0.78),
+    inset 0 0 8px rgba(238, 168, 162, 0.42);
 }
 
-/* Recessed Deep-Burgundy Center Label ("V O I D / MUSIC LIVES HERE") */
+/* Recessed Oiled Burgundy & Obsidian Center Label */
 .void-vinyl-center-label {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 34.5%;
-  height: 34.5%;
+  width: 33.2%;
+  height: 33.2%;
   transform: translate(-50%, -50%);
   border-radius: 50%;
   z-index: 3;
   overflow: hidden;
   background:
     radial-gradient(
-      circle at 60% 24%,
-      rgba(182, 54, 68, 0.84) 0%,
-      rgba(108, 22, 34, 0.92) 34%,
-      rgba(44, 8, 14, 0.97) 68%,
-      rgba(16, 3, 6, 0.99) 100%
+      circle at 34% 26%,
+      rgba(124, 24, 38, 0.94) 0%,
+      rgba(64, 10, 20, 0.96) 38%,
+      rgba(24, 4, 8, 0.99) 72%,
+      rgba(9, 2, 4, 1) 100%
     );
-  border: 1.5px solid rgba(218, 142, 134, 0.54);
+  border: 1.5px solid rgba(208, 114, 110, 0.52);
   box-shadow:
-    0 0 0 5px rgba(8, 2, 4, 0.96),
-    0 0 0 6.5px rgba(198, 118, 112, 0.42),
-    0 0 0 11px rgba(14, 3, 6, 0.88),
-    0 0 0 12px rgba(164, 82, 78, 0.24),
-    inset 0 3px 12px rgba(248, 204, 198, 0.28),
-    inset 0 -6px 16px rgba(0, 0, 0, 0.86);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+    0 0 0 4px rgba(6, 1, 2, 0.96),
+    0 0 0 5.5px rgba(182, 84, 82, 0.36),
+    0 0 0 10px rgba(8, 2, 3, 0.92),
+    0 0 0 11px rgba(148, 56, 58, 0.24),
+    inset 0 3px 12px rgba(238, 168, 162, 0.32),
+    inset 0 -8px 20px rgba(0, 0, 0, 0.92);
 }
 
-/* Subtle organic mottled burgundy patina inside the recessed center label (Matches 2nd.png) */
+/* Oiled sheen inside the recessed center label */
 .void-vinyl-label-patina {
   position: absolute;
   inset: 0;
   border-radius: 50%;
   pointer-events: none;
   background:
-    radial-gradient(circle at 66% 30%, rgba(244, 186, 178, 0.28) 0%, transparent 36%),
-    radial-gradient(circle at 34% 72%, rgba(8, 2, 4, 0.65) 0%, transparent 48%),
-    conic-gradient(
-      from 32deg at 50% 50%,
-      transparent 0deg,
-      rgba(236, 164, 156, 0.18) 28deg,
-      transparent 64deg,
-      rgba(0, 0, 0, 0.35) 142deg,
-      transparent 208deg,
-      rgba(224, 138, 132, 0.14) 248deg,
-      transparent 310deg
+    radial-gradient(
+      circle at 32% 24%,
+      rgba(236, 158, 152, 0.28) 0%,
+      transparent 46%
+    ),
+    radial-gradient(
+      circle at 70% 74%,
+      rgba(4, 1, 2, 0.72) 0%,
+      transparent 56%
     );
 }
 
-.void-vinyl-spindle-pin {
-  position: relative;
-  z-index: 2;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 32% 28%, #ffffff 0%, #f4dcd6 22%, #6e1626 58%, #070203 100%);
-  border: 1px solid rgba(248, 232, 226, 0.68);
-  box-shadow:
-    0 4px 10px rgba(0, 0, 0, 0.92),
-    0 0 0 3px rgba(12, 3, 5, 0.88),
-    0 0 0 4px rgba(212, 138, 132, 0.32);
-  margin-bottom: 14px;
-}
-
-.void-vinyl-label-text-group {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  text-align: center;
-}
-
-.void-vinyl-label-brand {
-  font-family: var(--void-font-serif);
-  font-size: clamp(14px, 1.5vw, 22px);
-  font-weight: 400;
-  letter-spacing: 0.28em;
-  color: rgba(242, 224, 218, 0.9);
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
-}
-
-.void-vinyl-label-sub {
-  font-family: var(--void-font-sans);
-  font-size: clamp(6.5px, 0.65vw, 9px);
-  font-weight: 400;
-  letter-spacing: 0.22em;
-  color: rgba(218, 194, 188, 0.74);
-}
-
-.void-vinyl-tonearm {
+/* Subtle engraved concentric detailing & pressed stamper ring inside the center label */
+.void-vinyl-label-engraving {
   position: absolute;
-  top: 3.5%;
-  right: 3.5%;
-  width: 22%;
-  height: 22%;
+  inset: 6.5%;
   border-radius: 50%;
-  z-index: 5;
-  background:
-    radial-gradient(circle at 34% 32%, rgba(244, 212, 206, 0.38) 0%, rgba(74, 14, 24, 0.65) 28%, #080203 74%),
-    conic-gradient(from 140deg at 50% 50%, #090204 0deg, #480d18 90deg, #e0a69e 135deg, #120406 210deg, #090204 360deg);
-  border: 1.5px solid rgba(228, 172, 164, 0.46);
-  box-shadow:
-    -12px 18px 34px rgba(0, 0, 0, 0.92),
-    inset 0 2px 5px rgba(248, 228, 224, 0.42);
   pointer-events: none;
+  border: 1px solid rgba(196, 92, 96, 0.28);
+  box-shadow:
+    inset 0 1px 1px rgba(236, 158, 152, 0.18),
+    0 1px 2px rgba(0, 0, 0, 0.78);
+}
+
+.void-vinyl-label-engraving::before {
+  content: '';
+  position: absolute;
+  inset: 15%;
+  border-radius: 50%;
+  border: 1px solid rgba(182, 78, 84, 0.28);
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.84),
+    0 1px 1px rgba(228, 138, 134, 0.2);
+}
+
+/* Realistic Central Spindle Hole at the Exact Geometric Center (50%, 50%) */
+.void-vinyl-spindle-pin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12%;
+  height: 12%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle at 58% 62%,
+      #0b0204 0%,
+      #030101 68%,
+      #000000 100%
+    );
+  border: 1px solid rgba(198, 98, 102, 0.48);
+  box-shadow:
+    inset 0 2px 5px rgba(0, 0, 0, 0.98),
+    inset 0 -1px 2px rgba(228, 138, 134, 0.34),
+    0 0 0 3px rgba(10, 2, 4, 0.94),
+    0 0 0 4px rgba(176, 78, 82, 0.32),
+    0 2px 8px rgba(0, 0, 0, 0.92);
+  margin: 0;
+}
+
+/* 4-Cardinal Circular "V - O - I - D" Letters Placed Compactly Around the Central Circle:
+   Left = V, Top = O, Right = I, Bottom = D */
+.void-vinyl-label-ring-letters {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.void-vinyl-cardinal-char {
+  position: absolute;
+  font-family: var(--void-font-serif);
+  font-size: clamp(12.5px, 1.3vw, 17.5px);
+  font-weight: 500;
+  line-height: 1;
+  color: #c86c72;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.96),
+    0 -0.5px 1px rgba(244, 168, 162, 0.36),
+    0 0 12px rgba(142, 26, 40, 0.52);
+  user-select: none;
+}
+
+/* Left: V */
+.void-vinyl-cardinal-char--left {
+  left: 33.5%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+/* Top: O */
+.void-vinyl-cardinal-char--top {
+  left: 50%;
+  top: 33.5%;
+  transform: translate(-50%, -50%);
+}
+
+/* Right: I */
+.void-vinyl-cardinal-char--right {
+  left: 66.5%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+/* Bottom (Opposite Top): D */
+.void-vinyl-cardinal-char--bottom {
+  left: 50%;
+  top: 66.5%;
+  transform: translate(-50%, -50%) rotate(180deg);
+}
+
+/* Photorealistic 3D Pioneer PA-1000 Tonearm & Headshell Overlay */
+.void-vinyl-tonearm-assembly {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 6;
+  pointer-events: none;
+  user-select: none;
+  transform-origin: 76.9% 20.5%;
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.void-vinyl-turntable-assembly.is-spinning-active .void-vinyl-tonearm-assembly {
+  transform: rotate(1.2deg);
 }
 
 .void-main-content {
@@ -614,6 +677,12 @@ a {
     radial-gradient(ellipse 55% 35% at 32% 24%, rgba(243, 233, 228, 0.16) 0%, transparent 70%),
     radial-gradient(ellipse 60% 40% at 72% 76%, rgba(141, 38, 56, 0.28) 0%, transparent 72%);
   animation: voidBurgundyCausticFlow 5.6s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+.void-liquid-btn:hover .void-liquid-btn__caustic-wave,
+.void-liquid-btn.is-active .void-liquid-btn__caustic-wave {
+  animation-play-state: running;
 }
 
 .void-liquid-btn__meniscus-top {
@@ -719,7 +788,24 @@ a {
   left: 0;
   right: 0;
   z-index: 60;
-  padding: 28px 64px;
+  padding: 24px 64px;
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+  transition:
+    transform 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.26s ease;
+  will-change: transform, opacity;
+}
+
+.void-noir-navbar.is-hidden {
+  transform: translate3d(0, -115%, 0);
+  opacity: 0;
+}
+
+.void-noir-navbar.is-hidden .void-noir-brand,
+.void-noir-navbar.is-hidden .void-noir-nav,
+.void-noir-navbar.is-hidden .void-noir-navbar__actions {
   pointer-events: none;
 }
 
@@ -1047,6 +1133,7 @@ a {
   width: 100%;
   /* Strictly NO border-top or border-bottom so zero artificial line ever appears */
   border: none;
+  contain: layout style;
 }
 
 .void-noir-features-section {
@@ -1311,7 +1398,14 @@ a {
    7. SECTION 3 — PREVIEW (Interactive Real VOID Music Player in Luxury Frame)
    ============================================================================ */
 .void-noir-preview-section,
-.void-noir-experience-section,
+.void-noir-experience-section {
+  min-height: 100vh;
+  padding: 28px 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .void-noir-download-section,
 .void-noir-faq-section {
   padding: 110px 64px;
@@ -1326,38 +1420,40 @@ a {
 .void-noir-section-header {
   text-align: center;
   max-width: 640px;
-  margin: 0 auto 48px;
+  margin: 0 auto 22px;
 }
 
 .void-noir-eyebrow {
   font-family: var(--void-font-sans);
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 400;
   letter-spacing: 0.3em;
   color: var(--void-rose-copper);
-  margin-bottom: 14px;
+  margin-bottom: 8px;
   text-transform: uppercase;
 }
 
 .void-noir-section-title {
   font-family: var(--void-font-serif);
-  font-size: clamp(34px, 3.6vw, 52px);
+  font-size: clamp(30px, 3.1vw, 44px);
   font-weight: 400;
   letter-spacing: 0.03em;
   color: var(--void-warm-ivory);
-  margin-bottom: 14px;
+  margin-bottom: 8px;
 }
 
 .void-noir-section-sub {
   font-family: var(--void-font-serif);
-  font-size: 19px;
-  line-height: 1.52;
+  font-size: 17px;
+  line-height: 1.44;
   color: var(--void-soft-neutral);
 }
 
 .void-noir-preview-frame {
-  padding: 36px 28px;
-  border-radius: 32px;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 18px 24px 12px;
+  border-radius: 30px;
   background: linear-gradient(
     170deg,
     rgba(26, 9, 13, 0.86) 0%,
@@ -1367,16 +1463,19 @@ a {
   box-shadow:
     0 32px 76px rgba(0, 0, 0, 0.84),
     inset 0 1px 2px rgba(243, 220, 214, 0.2);
+  overflow: hidden;
 }
 
-/* Reuse Existing FloatingPlayersStage Inside Preview Frame */
+/* Reuse Existing FloatingPlayersStage Inside Preview Frame — Scaled so 100% fits in 100vh */
 .void-players-3d-stage {
   position: relative;
   width: 100%;
   max-width: 820px;
-  height: 540px;
+  height: 472px;
   margin: 0 auto;
   perspective: 1400px;
+  transform: scale(0.88);
+  transform-origin: top center;
 }
 
 .void-studio-pedestal-aura {
@@ -1851,6 +1950,7 @@ a {
    Full-viewport centered stage so only DOWNLOAD is visible when scrolled to bottom
    ============================================================================ */
 .void-noir-download-section {
+  --void-dl-a: var(--void-download-arrival, 1);
   position: relative;
   min-height: 100vh;
   margin-top: 18vh;
@@ -1859,6 +1959,21 @@ a {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.void-noir-download-section::before {
+  content: '';
+  position: absolute;
+  inset: -6% 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 46% 42% at 50% 46%,
+    rgba(118, 24, 42, 0.26) 0%,
+    rgba(72, 12, 24, 0.14) 46%,
+    rgba(0, 0, 0, 0) 74%
+  );
+  opacity: var(--void-dl-a);
 }
 
 .void-noir-download-section .void-noir-section-header {
@@ -1883,6 +1998,17 @@ a {
   align-items: center;
   justify-content: center;
   text-align: center;
+  opacity: clamp(0, calc((var(--void-dl-a) - 0.1) * 1.45), 1);
+  transform: translate3d(0, calc((1 - var(--void-dl-a)) * 34px), 0)
+    scale(calc(0.984 + 0.016 * var(--void-dl-a)));
+  transform-origin: 50% 40%;
+  will-change: opacity, transform;
+}
+
+.void-noir-download-section [data-reveal] {
+  opacity: 1;
+  transform: none;
+  transition: none;
 }
 
 .void-noir-platform-segmented {
@@ -2047,13 +2173,13 @@ a {
 /* FILE 2: src/styles/void.css (Section 7B — Frame Styles) */
 
 /* ============================================================================
-   7B. SECTION 4 — THE VOID EXPERIENCE (3D Normal-Mapped Black/Oxblood Baroque Frame)
-   Reproduces Reference 0F3C4E49-E0F3-420D-8B95-9B3FB7B67BAE.png with locked 1480x820 aspect ratio
+   7B. SECTION 4 — THE VOID EXPERIENCE (3D Normal-Mapped Black/Oxblood Baroque Frame
+       + Architectural Smoked-Glass Overlay & Organic Asymmetric Preview Reveal)
    ============================================================================ */
 .void-exp-stage {
   position: relative;
   width: 100%;
-  max-width: 1200px;
+  max-width: min(1040px, calc((100vh - 188px) * 1.7391));
   margin: 0 auto;
 }
 
@@ -2073,9 +2199,11 @@ a {
   right: 5.375%;
   border-radius: 2.1% / 3.78%;
   overflow: hidden;
+  overscroll-behavior: contain;
   background: #080605;
   z-index: 1;
   box-shadow:
+    0 28px 54px rgba(0, 0, 0, 0.94),
     inset 0 0 24px rgba(0, 0, 0, 0.92),
     0 0 0 2px #050203;
 }
@@ -2098,11 +2226,112 @@ a {
   display: block;
   background: #080605;
   opacity: 0;
+  pointer-events: none;
+  overscroll-behavior: contain;
   transition: opacity 0.45s ease;
 }
 
 .void-exp-frame__iframe.is-loaded {
   opacity: 1;
+}
+
+.void-exp-frame__iframe.is-interactive {
+  pointer-events: auto;
+}
+
+/* Architectural Smoked-Glass Overlay (Before Preview is activated) */
+.void-exp-reveal-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  z-index: 3;
+  pointer-events: auto;
+  cursor: pointer;
+  user-select: none;
+}
+
+.void-exp-reveal-overlay.is-revealing {
+  pointer-events: none;
+  cursor: default;
+}
+
+/* Clean Smoked-Glass Blur Veil (Soft Reduced Blur matching Reference, Zero Corner White Spotlights) */
+.void-exp-reveal-blur-veil {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  backdrop-filter: blur(3.8px) saturate(122%) brightness(0.95) contrast(104%);
+  -webkit-backdrop-filter: blur(3.8px) saturate(122%) brightness(0.95) contrast(104%);
+  background: rgba(10, 2, 4, 0.1);
+  box-shadow: inset 0 0 28px rgba(6, 1, 3, 0.42);
+  will-change: opacity;
+}
+
+.void-exp-reveal-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+.void-exp-preview-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  will-change: transform, opacity;
+}
+
+/* Clean Centered Editorial "PREVIEW" Text Only (No Lines, No Button Box) */
+.void-exp-preview-trigger {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 24px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+  color: rgba(243, 233, 228, 0.92);
+  transition:
+    color 0.25s ease,
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.void-exp-preview-label {
+  font-family: var(--void-font-serif);
+  font-size: clamp(14px, 1.2vw, 17px);
+  font-weight: 400;
+  letter-spacing: 0.32em;
+  padding-left: 0.32em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: inherit;
+  text-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.92),
+    0 0 18px rgba(141, 30, 48, 0.25);
+  transition:
+    color 0.25s ease,
+    text-shadow 0.25s ease;
+}
+
+.void-exp-preview-trigger:hover,
+.void-exp-preview-trigger:focus-visible {
+  color: #ffffff;
+  outline: none;
+}
+
+.void-exp-preview-trigger:hover .void-exp-preview-label,
+.void-exp-preview-trigger:focus-visible .void-exp-preview-label {
+  color: #ffffff;
+  text-shadow:
+    0 2px 14px rgba(0, 0, 0, 0.95),
+    0 0 22px rgba(196, 52, 72, 0.55);
 }
 
 /* Subtle Non-Blocking Inner Glass Rim Vignette */
@@ -2111,7 +2340,7 @@ a {
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  z-index: 2;
+  z-index: 4;
   box-shadow:
     inset 0 1px 2px rgba(255, 224, 212, 0.14),
     inset 0 0 20px rgba(0, 0, 0, 0.68);
@@ -2125,8 +2354,9 @@ a {
   height: 100%;
   display: block;
   pointer-events: none;
-  z-index: 3;
-  filter: drop-shadow(0 28px 54px rgba(0, 0, 0, 0.94));
+  z-index: 5;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 /* ============================================================================
@@ -2380,7 +2610,8 @@ a {
 
 @media (prefers-reduced-motion: reduce) {
   .void-vinyl-spinning-disc,
-  .void-liquid-btn__caustic-wave {
+  .void-liquid-btn__caustic-wave,
+  .void-exp-preview-trigger {
     animation: none !important;
   }
 }

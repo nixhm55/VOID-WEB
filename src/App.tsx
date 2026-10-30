@@ -20,6 +20,7 @@ import { SupportingSections } from './components/SupportingSections';
 import { EclipseArtwork } from './components/EclipseArtwork';
 import { LiquidButton } from './components/LiquidButton';
 import { LuxuryLeatherBackdrop } from './components/LuxuryLeatherBackdrop';
+import { MobileVoidExperience } from './mobile/MobileVoidExperience';
 import {
   PauseBarsIcon,
   PlayTriangleIcon,
@@ -44,7 +45,19 @@ export const App: React.FC = () => {
   const [lightingMode, setLightingMode] = useState<AmbientLightingMode>('champagne-noir');
   const [selectedPlatform, setSelectedPlatform] = useState<PlatformOption>(PLATFORM_OPTIONS[0]);
   const [activeSection, setActiveSection] = useState<NavigationSection>('home');
-  const [showFloatingMiniBar, setShowFloatingMiniBar] = useState<boolean>(false);
+  const [, setShowFloatingMiniBar] = useState<boolean>(false);
+  const [isMobileViewport, setIsMobileViewport] = useState<boolean>(() =>
+    typeof window !== "undefined" ? window.matchMedia("(max-width: 768px)").matches : false
+  );
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mql = window.matchMedia("(max-width: 768px)");
+    const onChange = (e: MediaQueryListEvent) => setIsMobileViewport(e.matches);
+    setIsMobileViewport(mql.matches);
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
 
   const handleThresholdChange = useCallback(
     (nextSection: NavigationSection, nextMiniDock: boolean) => {
@@ -171,6 +184,37 @@ export const App: React.FC = () => {
       prev === 'champagne-noir' ? 'obsidian-silver' : 'champagne-noir'
     );
   }, []);
+
+  if (isMobileViewport) {
+    return (
+      <MobileVoidExperience
+        currentTrack={currentTrack}
+        isPlaying={isPlaying}
+        elapsedSeconds={elapsedSeconds}
+        isShuffle={isShuffle}
+        isRepeat={isRepeat}
+        isMuted={isMuted}
+        volume={volume}
+        likedTrackIds={likedTrackIds}
+        spatialMode={spatialMode}
+        selectedPlatform={selectedPlatform}
+        activeSection={activeSection}
+        onSelectSection={setActiveSection}
+        onTogglePlay={handleTogglePlay}
+        onSelectTrack={handleSelectTrack}
+        onPrevTrack={handlePrevTrack}
+        onNextTrack={handleNextTrack}
+        onSeek={handleSeek}
+        onToggleShuffle={() => setIsShuffle((prev) => !prev)}
+        onToggleRepeat={() => setIsRepeat((prev) => !prev)}
+        onToggleLike={handleToggleLike}
+        onToggleMute={handleToggleMute}
+        onChangeVolume={handleChangeVolume}
+        onCycleSpatialMode={handleCycleSpatialMode}
+        onSelectPlatform={setSelectedPlatform}
+      />
+    );
+  }
 
   return (
     <div className={`void-app-root lighting-${lightingMode}`}>

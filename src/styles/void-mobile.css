@@ -1,0 +1,1274 @@
+/* ============================================================================
+   VOID — MOBILE OBSIDIAN NOIR (<= 768px ONLY)
+   Strictly scoped to @media (max-width: 768px) and .void-mobile-world so
+   Desktop (> 768px) remains 100% untouched.
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .void-mobile-world {
+    position: relative;
+    width: 100%;
+    max-width: 100vw;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    background-color: var(--void-base-black);
+    color: var(--void-warm-ivory);
+    font-family: var(--void-font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ─── 1. ORIGINAL LEATHER & ATMOSPHERIC LAYERS ─── */
+  .vm-leather-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    background-color: #080102;
+    background-image: radial-gradient(
+      ellipse 92% 76% at 50% 38%,
+      #1e0308 0%,
+      #100204 58%,
+      #060102 100%
+    );
+  }
+
+  .vm-leather-base-hide {
+    position: absolute;
+    inset: 0;
+    background-repeat: repeat;
+    background-size: 240px 240px;
+    opacity: 0.86;
+  }
+
+  .vm-leather-scroll-stage {
+    position: absolute;
+    top: 0;
+    left: -6%;
+    width: 112%;
+    height: 210vh;
+    will-change: transform;
+  }
+
+  .vm-leather-drape-img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: 62% top;
+    opacity: 0.94;
+    transform: translateZ(0);
+  }
+
+  .vm-leather-crimson-bloom {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        circle at 50% 16%,
+        rgba(142, 24, 40, 0.28) 0%,
+        rgba(72, 10, 20, 0.14) 42%,
+        transparent 70%
+      ),
+      radial-gradient(
+        circle at 50% 56%,
+        rgba(118, 20, 34, 0.22) 0%,
+        transparent 64%
+      );
+  }
+
+  .vm-leather-vignette {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        ellipse 88% 78% at 50% 44%,
+        rgba(6, 2, 3, 0.04) 0%,
+        rgba(6, 2, 3, 0.42) 72%,
+        rgba(4, 1, 2, 0.84) 100%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(5, 1, 2, 0.48) 0%,
+        rgba(5, 1, 2, 0.1) 28%,
+        rgba(5, 1, 2, 0.28) 76%,
+        rgba(5, 1, 2, 0.82) 100%
+      );
+  }
+
+  /* ─── 2. SCROLL REVEAL TRANSITIONS ─── */
+  [data-m-reveal] {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+    transition:
+      opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.72s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+  }
+
+  [data-m-reveal].is-revealed {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-m-reveal] {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+  }
+
+  /* ─── 3. TOP BRAND HEADER ("V O I D" ONLY — Anchored at Top, Scrolls Up Naturally) ─── */
+  .vm-navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    padding: max(20px, env(safe-area-inset-top, 20px)) 20px 0;
+    pointer-events: none;
+  }
+
+  .vm-navbar__inner {
+    max-width: 440px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .vm-navbar__brand {
+    pointer-events: auto;
+    font-family: var(--void-font-serif);
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 0.26em;
+    color: #f6eeeb;
+    white-space: nowrap;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.85);
+  }
+
+  /* ─── MAIN CONTENT WRAPPER ─── */
+  .vm-main-content {
+    position: relative;
+    z-index: 2;
+    max-width: 440px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* ─── 4. SECTION 1 — HERO (Full 100dvh First Screen — Zero Features Leakage) ─── */
+  .vm-hero-section {
+    min-height: 100dvh;
+    padding-top: calc(74px + env(safe-area-inset-top, 0px));
+    padding-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 14px;
+  }
+
+  .vm-hero-top-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .vm-hero-bottom-block {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* ─── 4A. 5-CARD 3D STACK-TO-FAN DECK ANIMATION (Centered in Hero Space) ─── */
+  .vm-hero-deck-stage {
+    position: relative;
+    width: calc(100% + 40px);
+    margin-left: -20px;
+    height: clamp(204px, 54vw, 228px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1100px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    overflow: visible;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  .vm-hero-deck-ambient {
+    position: absolute;
+    width: 240px;
+    height: 150px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(168, 28, 46, 0.34) 0%,
+      rgba(92, 12, 24, 0.14) 52%,
+      transparent 76%
+    );
+    filter: blur(18px);
+    pointer-events: none;
+    transition: transform 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .vm-hero-deck-stage.is-fanned .vm-hero-deck-ambient {
+    transform: scaleX(1.38) scaleY(1.08);
+  }
+
+  .vm-hero-deck-3d {
+    position: relative;
+    width: clamp(106px, 29vw, 118px);
+    height: clamp(148px, 40.5vw, 164px);
+    transform-style: preserve-3d;
+  }
+
+  .vm-hero-deck-card {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    will-change: transform, opacity;
+    transition:
+      transform 0.96s cubic-bezier(0.2, 0.92, 0.26, 1.04),
+      box-shadow 0.96s cubic-bezier(0.22, 1, 0.36, 1),
+      filter 0.96s ease;
+    transition-delay: calc(var(--deck-index) * 32ms);
+  }
+
+  /* INITIAL STATE (.is-stacked):
+     All 5 portrait cards stacked in the center as a tactile 3D deck with subtle
+     organic card angles peeking out behind the front card (00:03–00:05 of video) */
+  .vm-hero-deck-stage.is-stacked .vm-hero-deck-card--0 {
+    transform: translate3d(-4px, 3px, -36px) rotateZ(-6deg) scale(0.93);
+    z-index: 1;
+  }
+
+  .vm-hero-deck-stage.is-stacked .vm-hero-deck-card--1 {
+    transform: translate3d(4px, -2px, -24px) rotateZ(4.2deg) scale(0.95);
+    z-index: 2;
+  }
+
+  .vm-hero-deck-stage.is-stacked .vm-hero-deck-card--2 {
+    transform: translate3d(-2px, 1px, -12px) rotateZ(-2.2deg) scale(0.97);
+    z-index: 3;
+  }
+
+  .vm-hero-deck-stage.is-stacked .vm-hero-deck-card--3 {
+    transform: translate3d(3px, -1px, -4px) rotateZ(3.2deg) scale(0.985);
+    z-index: 4;
+  }
+
+  .vm-hero-deck-stage.is-stacked .vm-hero-deck-card--4 {
+    transform: translate3d(0px, 0px, 8px) rotateZ(-0.4deg) scale(1);
+    z-index: 5;
+  }
+
+  /* FANNED-OUT STATE (.is-fanned):
+     Immediately scatters horizontally to the left and right into the 3D slanted
+     isometric row shown in 00:01–00:02 and 00:09–00:10 of the reference video! */
+  .vm-hero-deck-stage.is-fanned .vm-hero-deck-card {
+    transform:
+      translate3d(
+        calc(var(--deck-offset) * clamp(50px, 13.8vw, 58px)),
+        calc(var(--deck-offset) * -2px),
+        calc(var(--deck-index) * 8px)
+      )
+      rotateY(-30deg)
+      rotateX(10deg)
+      rotateZ(12deg);
+    z-index: calc(var(--deck-index) + 1);
+  }
+
+  .vm-hero-deck-card__inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+    background: #120306;
+    border: 1px solid rgba(236, 174, 166, 0.34);
+    box-shadow:
+      -10px 16px 28px rgba(0, 0, 0, 0.88),
+      0 2px 10px rgba(0, 0, 0, 0.72),
+      inset 0 1px 1.5px rgba(255, 236, 232, 0.32);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 9px 8px;
+  }
+
+  /* Center card styled with a subtle mobile phone notch & brighter rim like card 3 in the video */
+  .vm-hero-deck-card.is-center-device .vm-hero-deck-card__inner {
+    border: 1.5px solid rgba(252, 208, 200, 0.62);
+    box-shadow:
+      -12px 18px 34px rgba(0, 0, 0, 0.92),
+      0 0 18px rgba(178, 34, 52, 0.32),
+      inset 0 1px 2px rgba(255, 242, 238, 0.46);
+  }
+
+  .vm-hero-deck-card__notch {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(8, 2, 4, 0.88);
+    border: 0.5px solid rgba(242, 188, 180, 0.25);
+    z-index: 4;
+  }
+
+  .vm-hero-deck-card__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .vm-hero-deck-card__img--1 {
+    object-position: 28% 35%;
+    filter: contrast(114%) saturate(122%) brightness(0.95);
+  }
+
+  .vm-hero-deck-card__img--2 {
+    object-position: center;
+    filter: hue-rotate(-6deg) contrast(116%) saturate(128%);
+  }
+
+  .vm-hero-deck-card__img--3 {
+    object-position: center;
+    filter: contrast(118%) saturate(132%) brightness(1.06);
+  }
+
+  .vm-hero-deck-card__img--4 {
+    object-position: center;
+    transform: scale(1.26);
+    filter: contrast(115%) saturate(120%);
+  }
+
+  .vm-hero-deck-card__img--5 {
+    object-position: 74% 62%;
+    filter: contrast(116%) saturate(124%) brightness(0.94);
+  }
+
+  .vm-hero-deck-card__shade {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(10, 2, 4, 0.52) 0%,
+        rgba(10, 2, 4, 0.08) 42%,
+        rgba(6, 1, 3, 0.86) 100%
+      ),
+      radial-gradient(
+        circle at 24% 18%,
+        rgba(255, 224, 218, 0.18) 0%,
+        transparent 52%
+      );
+    pointer-events: none;
+  }
+
+  .vm-hero-deck-card__tag {
+    position: relative;
+    z-index: 2;
+    font-family: var(--void-font-sans);
+    font-size: 6.5px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    color: rgba(246, 214, 208, 0.88);
+    text-transform: uppercase;
+  }
+
+  .vm-hero-deck-card.is-center-device .vm-hero-deck-card__tag {
+    margin-top: 5px;
+  }
+
+  .vm-hero-deck-card__caption {
+    position: relative;
+    z-index: 2;
+    font-family: var(--void-font-serif);
+    font-size: 10.5px;
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: 0.04em;
+    color: #f8f0ec;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.92);
+  }
+
+  .vm-hero-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .vm-hero-headline {
+    font-family: var(--void-font-serif);
+    font-size: clamp(40px, 10.8vw, 52px);
+    font-weight: 400;
+    line-height: 1.04;
+    letter-spacing: 0.035em;
+    color: #f7f0ed;
+    margin-bottom: 14px;
+  }
+
+  .vm-hero-line {
+    display: block;
+  }
+
+  .vm-hero-subcopy {
+    font-family: var(--void-font-serif);
+    font-size: clamp(17px, 4.5vw, 19.5px);
+    font-weight: 400;
+    line-height: 1.46;
+    color: rgba(232, 218, 214, 0.86);
+    margin-bottom: 22px;
+    max-width: 345px;
+  }
+
+  .vm-hero-scroll-cue {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+    color: inherit;
+  }
+
+  .vm-hero-scroll-arrow {
+    color: #f3e4df;
+    display: inline-flex;
+    align-items: center;
+    opacity: 0.88;
+  }
+
+  .vm-hero-scroll-text {
+    font-family: var(--void-font-sans);
+    font-size: 9.5px;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    color: rgba(235, 222, 218, 0.86);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .vm-hero-scroll-rule {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      rgba(214, 164, 154, 0.36) 0%,
+      rgba(214, 164, 154, 0.04) 100%
+    );
+  }
+
+  /* Bottom 4-Item Architectural Feature Strip */
+  .vm-hero-feature-strip {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px 0;
+    padding-top: 14px;
+    border-top: 1px solid rgba(214, 164, 154, 0.14);
+  }
+
+  .vm-hero-feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding-right: 12px;
+  }
+
+  .vm-hero-feature-item:nth-child(even) {
+    padding-left: 16px;
+    border-left: 1px solid rgba(214, 164, 154, 0.18);
+  }
+
+  .vm-hero-feature-icon {
+    color: rgba(236, 220, 214, 0.86);
+    display: inline-flex;
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+
+  .vm-hero-feature-label {
+    font-family: var(--void-font-sans);
+    font-size: 9.5px;
+    font-weight: 400;
+    line-height: 1.44;
+    letter-spacing: 0.16em;
+    color: rgba(212, 196, 192, 0.76);
+    text-transform: uppercase;
+  }
+
+  /* ─── SHARED MOBILE SECTION SPACING & HEADERS ─── */
+  .vm-section {
+    position: relative;
+    padding: 56px 0;
+  }
+
+  /* Push FEATURES cleanly below the first screen so it never peeks on Home open */
+  .vm-features-section {
+    margin-top: 64px;
+    padding-top: 56px;
+    padding-bottom: 48px;
+  }
+
+  .vm-section-header {
+    text-align: center;
+    max-width: 360px;
+    margin: 0 auto 40px;
+  }
+
+  .vm-section-title {
+    font-family: var(--void-font-serif);
+    font-size: clamp(27px, 7.2vw, 34px);
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    line-height: 1.12;
+    color: var(--void-warm-ivory);
+    margin: 6px 0 8px;
+  }
+
+  .vm-section-sub {
+    font-family: var(--void-font-serif);
+    font-size: 16px;
+    line-height: 1.44;
+    color: var(--void-soft-neutral);
+  }
+
+  /* ─── 5. SECTION 2 — LUXURY DEEP TINTED SEE-THROUGH GLASS PLAYER + BENT 3D ARC ─── */
+  .void-noir-glass-player-card.vm-glass-card-mobile {
+    position: relative;
+    width: 100%;
+    max-width: 352px;
+    margin: 0 auto 92px;
+    padding: 20px 22px 24px;
+    border-radius: 30px;
+    background:
+      linear-gradient(
+        160deg,
+        rgba(38, 4, 11, 0.44) 0%,
+        rgba(18, 2, 6, 0.50) 52%,
+        rgba(6, 1, 3, 0.58) 100%
+      ),
+      radial-gradient(
+        115% 85% at 18% 8%,
+        rgba(96, 12, 24, 0.24) 0%,
+        rgba(38, 4, 10, 0.18) 42%,
+        transparent 74%
+      ),
+      radial-gradient(
+        circle at 86% 82%,
+        rgba(84, 10, 22, 0.22) 0%,
+        transparent 58%
+      ) !important;
+    border: 1px solid rgba(196, 118, 112, 0.28) !important;
+    box-shadow:
+      0 26px 56px rgba(0, 0, 0, 0.72),
+      0 4px 22px rgba(72, 8, 18, 0.24),
+      inset 0 1px 1.5px rgba(228, 168, 162, 0.26),
+      inset 0 -2px 8px rgba(48, 4, 12, 0.42),
+      inset 1px 0 1.5px rgba(196, 124, 118, 0.14),
+      inset -1px 0 1.5px rgba(196, 124, 118, 0.14) !important;
+    backdrop-filter: blur(8px) saturate(142%) brightness(0.82) contrast(108%) !important;
+    -webkit-backdrop-filter: blur(8px) saturate(142%) brightness(0.82) contrast(108%) !important;
+    overflow: hidden;
+  }
+
+  .vm-glass-card-mobile .void-noir-card-rim-glow {
+    background: radial-gradient(
+      ellipse at center,
+      rgba(136, 22, 38, 0.22) 0%,
+      transparent 72%
+    );
+  }
+
+  .vm-glass-card-specular-meniscus {
+    position: absolute;
+    top: 1px;
+    left: 12%;
+    right: 12%;
+    height: 1px;
+    border-radius: 999px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(224, 154, 148, 0.42) 50%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  .vm-glass-card-mode-pill {
+    font-family: var(--void-font-sans);
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(236, 198, 192, 0.78);
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(255, 232, 226, 0.06);
+    border: 0.5px solid rgba(236, 182, 174, 0.24);
+  }
+
+  .vm-card-artwork-mobile {
+    width: min(200px, 56vw);
+    height: min(200px, 56vw);
+    margin: 0 auto 18px;
+    border: 1px solid rgba(236, 178, 170, 0.32);
+    box-shadow:
+      0 20px 44px rgba(0, 0, 0, 0.76),
+      0 0 22px rgba(138, 24, 38, 0.24);
+  }
+
+  /* Clean Standard Play/Pause Button (NO Round Circle Container!) */
+  .vm-standard-play-btn {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    color: #f8f0ec;
+    cursor: pointer;
+    transition:
+      transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+      color 0.22s ease,
+      filter 0.22s ease;
+    filter: drop-shadow(0 2px 10px rgba(214, 118, 114, 0.45));
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .vm-standard-play-btn:active {
+    transform: scale(0.9);
+  }
+
+  .vm-standard-play-btn.is-playing {
+    color: #ffffff;
+    filter: drop-shadow(0 0 14px rgba(228, 92, 104, 0.72));
+  }
+
+  /* ─── 5B. 6-CARD 3D CONCAVE U-BEND / V-BEND REVOLVING CAROUSEL ─── */
+  .vm-bent-arc-section {
+    position: relative;
+    width: calc(100% + 40px);
+    margin-left: -20px;
+    margin-top: 24px;
+    padding: 28px 0 20px;
+  }
+
+  .vm-feature-stack-stage {
+    position: relative;
+    width: 100%;
+    height: clamp(244px, 65vw, 270px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: grab;
+  }
+
+  .vm-feature-stack-stage:active {
+    cursor: grabbing;
+  }
+
+  /* Base card button positioned relative to center; each [data-u-step] slot
+     places the card along the concave U/V curve and rotates smoothly on select/swipe */
+  .vm-feature-stack-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: clamp(98px, 26.5vw, 110px);
+    height: clamp(144px, 39vw, 162px);
+    margin-top: calc(clamp(144px, 39vw, 162px) * -0.5 + 4px);
+    margin-left: calc(clamp(98px, 26.5vw, 110px) * -0.5);
+    padding: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: pan-y;
+    transition:
+      transform 0.56s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.46s ease,
+      z-index 0s;
+  }
+
+  /* SLOT 0: Selected card moves to the CENTER and stands out in FRONT */
+  .vm-feature-stack-card[data-u-step="0"],
+  .vm-feature-stack-card.is-focused {
+    z-index: 30;
+    transform: translate3d(0px, 18px, 0);
+  }
+
+  /* SLOTS -1 & +1: Inner U-bend cards (recessed back toward the center of the U) */
+  .vm-feature-stack-card[data-u-step="-1"] {
+    z-index: 16;
+    transform: translate3d(clamp(-84px, -22vw, -74px), -16px, 0);
+  }
+
+  .vm-feature-stack-card[data-u-step="1"] {
+    z-index: 16;
+    transform: translate3d(clamp(74px, 22vw, 84px), -16px, 0);
+  }
+
+  /* SLOTS -2 & +2: Outer U-bend wing cards (curving forward toward the viewer's left & right) */
+  .vm-feature-stack-card[data-u-step="-2"] {
+    z-index: 22;
+    transform: translate3d(clamp(-146px, -37.5vw, -130px), -2px, 0);
+  }
+
+  .vm-feature-stack-card[data-u-step="2"] {
+    z-index: 22;
+    transform: translate3d(clamp(130px, 37.5vw, 146px), -2px, 0);
+  }
+
+  /* SLOT 3: Deepest back-center apex of the U-bend (tucked behind at the center of the U) */
+  .vm-feature-stack-card[data-u-step="3"] {
+    z-index: 10;
+    transform: translate3d(0px, -34px, 0);
+  }
+
+  .vm-feature-stack-card__inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+    background: #120306;
+    border: 1px solid rgba(236, 174, 166, 0.34);
+    box-shadow:
+      0 14px 28px rgba(0, 0, 0, 0.88),
+      0 2px 10px rgba(0, 0, 0, 0.72),
+      inset 0 1px 1.5px rgba(255, 236, 232, 0.3);
+    transform: perspective(680px) translateZ(0px) rotateY(0deg) scale(1);
+    transition:
+      transform 0.56s cubic-bezier(0.2, 0.92, 0.26, 1.04),
+      border-color 0.32s ease,
+      box-shadow 0.42s ease,
+      filter 0.42s ease;
+    pointer-events: none;
+  }
+
+  /* Selected card in Center Front: straight (0deg), pulled forward & scaled up */
+  .vm-feature-stack-card[data-u-step="0"] .vm-feature-stack-card__inner,
+  .vm-feature-stack-card.is-focused .vm-feature-stack-card__inner {
+    transform: perspective(680px) translateZ(48px) rotateY(0deg) rotateX(0deg) rotateZ(0deg) scale(1.1);
+    border: 1.5px solid rgba(255, 208, 200, 0.92);
+    box-shadow:
+      0 24px 48px rgba(0, 0, 0, 0.96),
+      0 0 26px rgba(196, 42, 60, 0.58),
+      inset 0 1.5px 2.5px rgba(255, 242, 238, 0.65);
+    filter: brightness(1.04);
+  }
+
+  /* Inner Left & Right of U-Bend: recessed deeper back, angled inward toward viewer */
+  .vm-feature-stack-card[data-u-step="-1"] .vm-feature-stack-card__inner {
+    transform: perspective(680px) translateZ(-68px) rotateY(34deg) rotateX(0deg) rotateZ(0deg) scale(0.86);
+    filter: brightness(0.82);
+  }
+
+  .vm-feature-stack-card[data-u-step="1"] .vm-feature-stack-card__inner {
+    transform: perspective(680px) translateZ(-68px) rotateY(-34deg) rotateX(0deg) rotateZ(0deg) scale(0.86);
+    filter: brightness(0.82);
+  }
+
+  /* Outer Left & Right Wings of U-Bend: coming forward toward viewer, angled strongly inward */
+  .vm-feature-stack-card[data-u-step="-2"] .vm-feature-stack-card__inner {
+    transform: perspective(680px) translateZ(-8px) rotateY(50deg) rotateX(0deg) rotateZ(0deg) scale(0.95);
+    filter: brightness(0.92);
+  }
+
+  .vm-feature-stack-card[data-u-step="2"] .vm-feature-stack-card__inner {
+    transform: perspective(680px) translateZ(-8px) rotateY(-50deg) rotateX(0deg) rotateZ(0deg) scale(0.95);
+    filter: brightness(0.92);
+  }
+
+  /* Deepest Back-Center of U-Bend: furthest back in the center */
+  .vm-feature-stack-card[data-u-step="3"] .vm-feature-stack-card__inner {
+    transform: perspective(680px) translateZ(-115px) rotateY(0deg) rotateX(0deg) rotateZ(0deg) scale(0.76);
+    filter: brightness(0.68);
+  }
+
+  .vm-feature-stack-card__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  .vm-fcard-img--1 {
+    object-position: 28% 35%;
+    filter: contrast(114%) saturate(122%);
+  }
+
+  .vm-fcard-img--2 {
+    object-position: center;
+    filter: hue-rotate(-6deg) contrast(116%) saturate(128%);
+  }
+
+  .vm-fcard-img--3 {
+    object-position: center;
+    transform: scale(1.24);
+    filter: contrast(116%) saturate(120%);
+  }
+
+  .vm-fcard-img--4 {
+    object-position: center;
+    filter: hue-rotate(6deg) contrast(118%) saturate(132%);
+  }
+
+  .vm-fcard-img--5 {
+    object-position: center;
+    transform: scale(1.3);
+    filter: hue-rotate(-8deg) contrast(115%) saturate(124%);
+  }
+
+  .vm-fcard-img--6 {
+    object-position: 74% 62%;
+    filter: contrast(116%) saturate(124%) brightness(0.95);
+  }
+
+  .vm-feature-stack-card__shade {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(10, 2, 4, 0.56) 0%,
+        rgba(10, 2, 4, 0.1) 42%,
+        rgba(6, 1, 3, 0.9) 100%
+      ),
+      radial-gradient(
+        circle at 24% 18%,
+        rgba(255, 224, 218, 0.2) 0%,
+        transparent 54%
+      );
+  }
+
+  .vm-feature-stack-card__light-slit {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1.5px;
+    z-index: 1;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 224, 218, 0) 0%,
+      rgba(248, 172, 166, 0.65) 48%,
+      rgba(186, 38, 56, 0.8) 72%,
+      rgba(255, 224, 218, 0) 100%
+    );
+    opacity: 0.56;
+  }
+
+  .vm-feature-stack-card__content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    padding: 9px 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+  }
+
+  .vm-feature-stack-card__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+  }
+
+  .vm-feature-stack-card__num {
+    font-family: var(--void-font-sans);
+    font-size: 7px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: rgba(244, 176, 168, 0.92);
+  }
+
+  .vm-feature-stack-card__top-name {
+    font-family: var(--void-font-sans);
+    font-size: 6.5px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    color: rgba(242, 206, 200, 0.84);
+    text-transform: uppercase;
+  }
+
+  .vm-feature-stack-card__bottom {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .vm-feature-stack-card__title {
+    font-family: var(--void-font-serif);
+    font-size: clamp(11.5px, 3vw, 13px);
+    font-weight: 400;
+    line-height: 1.12;
+    color: #f8f0ec;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.92);
+  }
+
+  /* Dedicated Feature Readout Space Below the 3D Curved Cards */
+  @keyframes vmFeatureDetailReveal {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, 6px, 0);
+    }
+    100% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .vm-bent-feature-detail {
+    margin: 64px 14px 0;
+    padding: 20px 18px;
+    border-radius: 18px;
+    background: linear-gradient(
+      165deg,
+      rgba(34, 8, 14, 0.42) 0%,
+      rgba(12, 3, 6, 0.56) 100%
+    );
+    border: 1px solid rgba(224, 158, 150, 0.22);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    text-align: center;
+    animation: vmFeatureDetailReveal 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .vm-bent-feature-detail__kicker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: var(--void-font-sans);
+    font-size: 9px;
+    letter-spacing: 0.24em;
+    color: var(--void-rose-copper);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .vm-bent-feature-detail__dot {
+    opacity: 0.6;
+  }
+
+  .vm-bent-feature-detail__heading {
+    font-family: var(--void-font-serif);
+    font-size: 19px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: #f8f0ec;
+    margin-bottom: 6px;
+  }
+
+  .vm-bent-feature-detail__body {
+    font-family: var(--void-font-sans);
+    font-size: 12.5px;
+    line-height: 1.52;
+    color: rgba(222, 206, 202, 0.84);
+    max-width: 310px;
+    margin: 0 auto;
+  }
+
+  /* ─── 6. SECTION 3 — CURVED OVERLAPPING 4-VINYL CASCADE (Matches E8F4AF8E-6C06-4798-9157-FAC7C58B9C29.png) ─── */
+  .vm-vinyl-curve-section {
+    margin-top: 96px;
+    padding: 64px 0 72px;
+  }
+
+  .vm-vinyl-curve-stage {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 32px 0 36px;
+  }
+
+  /* Overlapping rows so each vinyl physically overlaps on top of the previous vinyl along a curve! */
+  .vm-curve-row {
+    position: relative;
+    width: 100%;
+    height: 210px;
+    display: flex;
+    align-items: center;
+    margin-bottom: -24px;
+  }
+
+  .vm-curve-row:last-child {
+    margin-bottom: 0;
+  }
+
+  .vm-cascade-vinyl-disc {
+    position: relative;
+    width: clamp(178px, 49vw, 202px);
+    aspect-ratio: 1 / 1;
+    flex-shrink: 0;
+    will-change: transform, opacity;
+  }
+
+  .vm-cascade-platter {
+    padding: 5.5px;
+    transform: none;
+    box-shadow:
+      0 22px 44px rgba(0, 0, 0, 0.94),
+      0 4px 14px rgba(0, 0, 0, 0.88),
+      0 0 24px rgba(138, 22, 38, 0.28),
+      inset 0 1.5px 3px rgba(244, 188, 182, 0.46),
+      inset 0 -5px 14px rgba(48, 6, 14, 0.85);
+  }
+
+  .vm-cascade-static-disc {
+    animation: none !important;
+  }
+
+  .vm-cascade-vinyl--oxblood .void-vinyl-grooves-canvas {
+    filter: saturate(112%) brightness(1.02);
+  }
+
+  .vm-cascade-vinyl--crimson .void-vinyl-grooves-canvas {
+    filter: hue-rotate(-6deg) saturate(128%) brightness(1.08);
+  }
+
+  .vm-cascade-vinyl--rosewine .void-vinyl-grooves-canvas {
+    filter: hue-rotate(8deg) saturate(105%) brightness(1.12) contrast(106%);
+  }
+
+  .vm-cascade-vinyl--obsidian .void-vinyl-grooves-canvas {
+    filter: saturate(95%) brightness(0.88) contrast(118%);
+  }
+
+  .vm-cascade-center-label {
+    box-shadow:
+      0 0 0 2px rgba(6, 1, 2, 0.96),
+      0 0 0 3px rgba(182, 84, 82, 0.34),
+      0 0 0 5.5px rgba(8, 2, 3, 0.92),
+      0 0 0 6.5px rgba(148, 56, 58, 0.22),
+      inset 0 2px 7px rgba(238, 168, 162, 0.3),
+      inset 0 -4px 12px rgba(0, 0, 0, 0.92);
+  }
+
+  .vm-cascade-center-label .void-vinyl-cardinal-char {
+    font-family: var(--void-font-serif);
+    font-size: clamp(7px, 2vw, 8.5px);
+    font-weight: 500;
+    color: #c86c72;
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.95),
+      0 0 6px rgba(142, 26, 40, 0.45);
+  }
+
+  /* Minimal Editorial Pointer Line & Feature Callout (Matches E8F4AF8E-6C06-4798-9157-FAC7C58B9C29.png) */
+  .vm-curve-callout {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 6;
+    will-change: transform, opacity;
+    pointer-events: none;
+  }
+
+  /* Position callouts cleanly next to each step along the C-curve */
+  .vm-curve-step--1 .vm-curve-callout--right {
+    left: 44%;
+    right: 0;
+    top: 26%;
+  }
+
+  .vm-curve-step--2 .vm-curve-callout--right {
+    left: 60%;
+    right: -4px;
+    top: 22%;
+  }
+
+  .vm-curve-step--3 .vm-curve-callout--left {
+    left: 0;
+    right: 48%;
+    top: 46%;
+    flex-direction: row-reverse;
+  }
+
+  .vm-curve-step--4 .vm-curve-callout--right {
+    left: 52%;
+    right: 0;
+    top: 44%;
+  }
+
+  .vm-curve-callout__line {
+    flex: 1;
+    min-width: 22px;
+    height: 1px;
+    background: rgba(232, 174, 166, 0.58);
+  }
+
+  .vm-curve-callout__info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .vm-curve-callout--left .vm-curve-callout__info {
+    flex-direction: row-reverse;
+    text-align: right;
+  }
+
+  .vm-curve-callout__thumb {
+    width: 34px;
+    height: 34px;
+    border-radius: 6px;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 1px solid rgba(236, 182, 174, 0.44);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.82);
+  }
+
+  .vm-curve-callout__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .vm-curve-callout__label {
+    font-family: var(--void-font-serif);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: #f6ece8;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.92);
+  }
+
+  .vm-curve-callout__detail {
+    font-family: var(--void-font-sans);
+    font-size: 9px;
+    color: rgba(218, 198, 194, 0.8);
+    white-space: nowrap;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.92);
+  }
+
+  /* ─── 7. SECTION 4 — DOWNLOAD (100% Pure Colorless Crystal Glass Button & Tabs) ─── */
+  .vm-download-section {
+    padding-top: 32px;
+    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .vm-download-centered {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .vm-platform-segmented {
+    width: 100%;
+    max-width: 348px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    margin-bottom: 18px;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    backdrop-filter: blur(22px) saturate(120%);
+    -webkit-backdrop-filter: blur(22px) saturate(120%);
+  }
+
+  .vm-platform-tab {
+    min-width: 0;
+    padding: 9px 8px;
+    font-size: 12.5px;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    box-shadow: none !important;
+  }
+
+  .vm-platform-tab.is-active {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.24) !important;
+    box-shadow:
+      0 6px 18px rgba(0, 0, 0, 0.45),
+      inset 0 1px 1px rgba(255, 255, 255, 0.28) !important;
+    color: #ffffff !important;
+  }
+
+  .vm-download-card {
+    width: 100%;
+    max-width: 348px;
+    padding: 28px 22px;
+    background: linear-gradient(
+      165deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0.015) 100%
+    ) !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    box-shadow:
+      0 28px 64px rgba(0, 0, 0, 0.82),
+      inset 0 1px 1.5px rgba(255, 255, 255, 0.24) !important;
+    backdrop-filter: blur(26px) saturate(125%);
+    -webkit-backdrop-filter: blur(26px) saturate(125%);
+  }
+
+  /* Pure Colorless Untinted Glass Download Button ("ആ ബട്ടൺ ഫുള്ളി ഗ്ലാസ് ആവണം. ടിന്റഡ് ഗ്ലാസ് കളർ ഉണ്ടായിക്കൂടെ") */
+  .vm-pure-glass-download-btn {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.09) 0%,
+      rgba(255, 255, 255, 0.03) 100%
+    ) !important;
+    border: 1px solid rgba(255, 255, 255, 0.26) !important;
+    box-shadow:
+      0 14px 32px rgba(0, 0, 0, 0.65),
+      inset 0 1px 1.5px rgba(255, 255, 255, 0.38),
+      inset 0 -1px 2px rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(24px) saturate(120%);
+    -webkit-backdrop-filter: blur(24px) saturate(120%);
+    color: #f6f2f0 !important;
+  }
+
+  .vm-pure-glass-download-btn:hover,
+  .vm-pure-glass-download-btn:active {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.14) 0%,
+      rgba(255, 255, 255, 0.05) 100%
+    ) !important;
+    border-color: rgba(255, 255, 255, 0.42) !important;
+  }
+
+  .vm-corner-mark {
+    margin-top: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    opacity: 0.48;
+  }
+}

@@ -6,6 +6,8 @@ function lerp(start: number, end: number, factor: number): number {
 }
 
 function damp(current: number, target: number, lambda: number, dt: number): number {
+  const diff = target - current;
+  if (Math.abs(diff) < 0.08) return target;
   return lerp(current, target, 1 - Math.exp(-lambda * dt));
 }
 
@@ -60,7 +62,12 @@ export const SHARED_SCENE_STATE = {
   currentPointerY: 0,
   viewportH: 800,
   docH: 3600,
-  sectionOffsets: { features: 800, preview: 1600, experience: 2500, download: 3400, faq: 4200 },
+  sectionOffsets: {
+    features: 800,
+    preview: 1600,
+    experience: 2500,
+    download: 3400,
+  },
   lastSection: 'home' as NavigationSection,
   lastMiniDock: false,
   // Cached DOM write state to prevent redundant style mutations & GPU layer thrashing
@@ -69,6 +76,8 @@ export const SHARED_SCENE_STATE = {
   lastStageVh: -999,
   lastStageX: -999,
   lastStageOpacity: -1,
+  lastExperienceLift: -1,
+  lastDownloadArrival: -1,
   lastVinylX: -999,
   lastVinylY: -999,
   lastVinylOpacity: -1,
@@ -86,8 +95,10 @@ export const STAGE_DOM_REFS: {
   heroCopyEl: HTMLElement | null;
   heroBottomBarEl: HTMLElement | null;
   vinylPlatterEl: HTMLElement | null;
+  vinylSpinningDiscEl: HTMLElement | null;
   leatherStageEl: HTMLElement | null;
   leatherCanvasEl: HTMLElement | null;
+  downloadSectionEl: HTMLElement | null;
 } = {
   mainPlayerEl: null,
   mainSpecularEl: null,
@@ -96,17 +107,20 @@ export const STAGE_DOM_REFS: {
   heroCopyEl: null,
   heroBottomBarEl: null,
   vinylPlatterEl: null,
+  vinylSpinningDiscEl: null,
   leatherStageEl: null,
   leatherCanvasEl: null,
+  downloadSectionEl: null,
 };
 
-export function stepUnifiedSceneMotion(rawDeltaSeconds: number): void {
-  if (typeof document !== 'undefined' && document.hidden) return;
+export function stepUnifiedSceneMotion(rawDeltaSeconds: number): boolean {
+  if (typeof document !== 'undefined' && document.hidden) return false;
 
   const dt = clamp(rawDeltaSeconds, 0.001, 0.05);
   const reducedMotion = SHARED_SCENE_STATE.reducedMotion;
-  const scrollLambda = reducedMotion ? 26.0 : 11.5;
-  const pointerLambda = 7.0;
+  // Tight, fluid scroll lambda (18.5) so background parallax flows like water with native scrolling
+  const scrollLambda = reducedMotion ? 32.0 : 18.5;
+  const pointerLambda = 9.0;
 
   SHARED_SCENE_STATE.elapsedTime += dt;
 
@@ -133,10 +147,11 @@ export function stepUnifiedSceneMotion(rawDeltaSeconds: number): void {
   );
 
   const vh = Math.max(600, SHARED_SCENE_STATE.viewportH);
-  const scrollScreens = SHARED_SCENE_STATE.currentScrollY / vh;
+  const scrollY = SHARED_SCENE_STATE.currentScrollY;
+  const scrollScreens = scrollY / vh;
   const heroProgress = clamp(scrollScreens, 0, 1);
   const pageProgress = clamp(
-    SHARED_SCENE_STATE.currentScrollY / Math.max(1, SHARED_SCENE_STATE.docH),
+    scrollY / Math.max(1, SHARED_SCENE_STATE.docH),
     0,
     1
   );
@@ -150,20 +165,20 @@ export function stepUnifiedSceneMotion(rawDeltaSeconds: number): void {
   SHARED_SCENE_STATE.pointerX = px;
   SHARED_SCENE_STATE.pointerY = py;
 
-  // Section detection for the 6-section order: HOME -> FEATURES -> PREVIEW -> EXPERIENCE -> DOWNLOAD -> FAQ
-  const probeY = SHARED_SCENE_STATE.currentScrollY + vh * 0.45;
+  // Section detection for HOME -> FEATURES -> PREVIEW -> EXPERIENCE -> DOWNLOAD
+  const probeY = scrollY + vh * 0.45;
   const offsets = SHARED_SCENE_STATE.sectionOffsets;
   let nextSection: NavigationSection = 'home';
   if (probeY >= offsets.download) {
-    nextSection = 'download'; // DOWNLOAD
+    nextSection = 'download';
   } else if (probeY >= offsets.experience) {
-    nextSection = 'experience'; // EXPERIENCE
+    nextSection = 'experience';
   } else if (probeY >= offsets.preview) {
-    nextSection = 'discover'; // PREVIEW
+    nextSection = 'discover';
   } else if (probeY >= offsets.features) {
-    nextSection = 'features'; // FEATURES
+    nextSection = 'features';
   } else {
-    nextSection = 'home'; // HOME
+    nextSection = 'home';
   }
 
   const nextMiniDock = scrollScreens > 1.65;
@@ -177,7 +192,7 @@ export function stepUnifiedSceneMotion(rawDeltaSeconds: number): void {
     SHARED_SCENE_STATE.onThresholdCallback(nextSection, nextMiniDock);
   }
 
-  // 1. Hero Left Copy & Bottom 4-Icon Strip Fade-Out on Scroll (Only write DOM when changing)
+  // 1. Hero Left Copy & Bottom 4-Icon Strip Fade-Out on Scroll
   const heroCopyFade = 1 - smoothstep(0.05, 0.58, heroProgress);
   if (
     STAGE_DOM_REFS.heroCopyEl &&
@@ -202,15 +217,44 @@ export function stepUnifiedSceneMotion(rawDeltaSeconds: number): void {
     STAGE_DOM_REFS.heroBottomBarEl.style.pointerEvents = stripFade < 0.06 ? 'none' : 'auto';
   }
 
-  // 2. Continuous 2-Screen Burgundy Leather Canvas Scroll Continuity
-  // Apply opacity to the canvas element directly (not the parent group containing the 3D vinyl platter)
-  // to avoid forcing the browser to allocate a 200vh group-opacity offscreen buffer during Features->Preview.
+  // Experience & Download scroll progression anchored to real section offsets (#experience and #download)
+  const expEnterStart = Math.max(vh * 1.95, offsets.experience - vh * 0.85);
+  const expEnterEnd = Math.max(expEnterStart + 1, offsets.experience - vh * 0.08);
+  const expHoldEnd = Math.max(expEnterEnd + 1, offsets.download - vh * 0.55);
+  const expSettleEnd = Math.max(expHoldEnd + 1, offsets.download + vh * 0.15);
+  const expEnter = smoothstep(expEnterStart, expEnterEnd, scrollY);
+  const expToDownload = smoothstep(expHoldEnd, expSettleEnd, scrollY);
+  const experienceLift = clamp(expEnter * (1 - expToDownload * 0.5), 0, 1);
+
+  const dlStartY = Math.max(offsets.experience + vh * 0.15, offsets.download - vh * 0.85);
+  const dlEndY = Math.max(dlStartY + 1, offsets.download - vh * 0.08);
+  const downloadArrival = reducedMotion ? 1 : smoothstep(dlStartY, dlEndY, scrollY);
+
+  // 2. Continuous Burgundy Leather Canvas Scroll Continuity (HOME -> FEATURES -> PREVIEW -> EXPERIENCE -> DOWNLOAD)
   if (STAGE_DOM_REFS.leatherStageEl) {
     const clampedTwoScreen = clamp(scrollScreens, 0, 1.45);
-    const stageTranslateVh = -clampedTwoScreen * 46;
+    const twoScreenEndY = vh * 1.45;
+    const downloadTargetY = Math.max(twoScreenEndY + vh, offsets.download);
+    const extendedScrollProgress = smoothstep(
+      twoScreenEndY,
+      downloadTargetY + vh * 0.15,
+      scrollY
+    );
+    const stageTranslateVh = -clampedTwoScreen * 46 - extendedScrollProgress * 33.0;
     const stageX = px * -8;
+
     const stageFadeAfterFeatures = 1 - smoothstep(1.35, 2.05, scrollScreens);
-    const targetStageOpacity = 0.32 + 0.68 * stageFadeAfterFeatures;
+    const postPreviewFoldPresence = clamp(
+      expEnter * (1 - downloadArrival * 0.16),
+      0,
+      1
+    );
+    const combinedFoldPresence = clamp(
+      Math.max(stageFadeAfterFeatures, postPreviewFoldPresence * 0.96),
+      0,
+      1
+    );
+    const targetStageOpacity = 0.32 + 0.68 * combinedFoldPresence;
 
     if (
       Math.abs(stageTranslateVh - SHARED_SCENE_STATE.lastStageVh) > 0.005 ||
@@ -231,8 +275,30 @@ export function stepUnifiedSceneMotion(rawDeltaSeconds: number): void {
     }
   }
 
+  if (Math.abs(experienceLift - SHARED_SCENE_STATE.lastExperienceLift) > 0.002) {
+    SHARED_SCENE_STATE.lastExperienceLift = experienceLift;
+    document.documentElement.style.setProperty(
+      '--void-experience-lift',
+      experienceLift.toFixed(3)
+    );
+  }
+
+  if (Math.abs(downloadArrival - SHARED_SCENE_STATE.lastDownloadArrival) > 0.002) {
+    SHARED_SCENE_STATE.lastDownloadArrival = downloadArrival;
+    const dlEl =
+      STAGE_DOM_REFS.downloadSectionEl ||
+      (STAGE_DOM_REFS.downloadSectionEl = document.getElementById('download'));
+    if (dlEl) {
+      dlEl.style.setProperty('--void-download-arrival', downloadArrival.toFixed(3));
+    }
+    document.documentElement.style.setProperty(
+      '--void-download-arrival',
+      downloadArrival.toFixed(3)
+    );
+  }
+
   // 3. Single Spinning Vinyl Platter Transition:
-  // Preserves exact Hero -> Features -> Preview timing & path, while skipping GPU work once faded out.
+  // Preserves exact Hero -> Features -> Preview timing & path, and pauses offscreen GPU spin once faded out.
   if (STAGE_DOM_REFS.vinylPlatterEl) {
     const toFeatures = smoothstep(0.0, 0.95, scrollScreens);
     const pastFeatures = smoothstep(1.18, 1.85, scrollScreens);
@@ -244,11 +310,17 @@ export function stepUnifiedSceneMotion(rawDeltaSeconds: number): void {
         SHARED_SCENE_STATE.lastVinylOpacity = 0;
         STAGE_DOM_REFS.vinylPlatterEl.style.opacity = '0';
         STAGE_DOM_REFS.vinylPlatterEl.style.visibility = 'hidden';
+        if (STAGE_DOM_REFS.vinylSpinningDiscEl) {
+          STAGE_DOM_REFS.vinylSpinningDiscEl.style.animationPlayState = 'paused';
+        }
       }
     } else {
       if (SHARED_SCENE_STATE.vinylHidden) {
         SHARED_SCENE_STATE.vinylHidden = false;
         STAGE_DOM_REFS.vinylPlatterEl.style.visibility = 'visible';
+        if (STAGE_DOM_REFS.vinylSpinningDiscEl) {
+          STAGE_DOM_REFS.vinylSpinningDiscEl.style.animationPlayState = 'running';
+        }
       }
 
       const vinylX = toFeatures * 34 + pastFeatures * 22 + px * -10;
@@ -271,6 +343,16 @@ export function stepUnifiedSceneMotion(rawDeltaSeconds: number): void {
       }
     }
   }
+
+  // Return true if still animating toward target, false if settled (so RAF loop can sleep at 0% CPU!)
+  const scrollRemaining = Math.abs(
+    SHARED_SCENE_STATE.targetScrollY - SHARED_SCENE_STATE.currentScrollY
+  );
+  const pointerRemaining =
+    Math.abs(SHARED_SCENE_STATE.targetPointerX - SHARED_SCENE_STATE.currentPointerX) +
+    Math.abs(SHARED_SCENE_STATE.targetPointerY - SHARED_SCENE_STATE.currentPointerY);
+
+  return scrollRemaining > 0.08 || pointerRemaining > 0.002;
 }
 
 export function useScrollAndMotion(
@@ -320,6 +402,8 @@ export function useScrollAndMotion(
   useEffect(() => {
     if (typeof window === 'undefined' || typeof IntersectionObserver === 'undefined') return;
 
+    STAGE_DOM_REFS.downloadSectionEl = document.getElementById('download');
+
     const revealElements = Array.from(
       document.querySelectorAll<HTMLElement>('[data-reveal]')
     );
@@ -350,11 +434,37 @@ export function useScrollAndMotion(
 
     revealElements.forEach((el) => observer.observe(el));
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      STAGE_DOM_REFS.downloadSectionEl = null;
+    };
   }, []);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
+
+    let rafId = 0;
+    let isLoopRunning = false;
+    let prevTime = performance.now();
+
+    const loop = (now: number) => {
+      const dt = (now - prevTime) * 0.001;
+      prevTime = now;
+      const shouldContinue = stepUnifiedSceneMotion(dt);
+      if (shouldContinue) {
+        rafId = window.requestAnimationFrame(loop);
+      } else {
+        isLoopRunning = false;
+      }
+    };
+
+    const wakeLoop = () => {
+      if (!isLoopRunning) {
+        isLoopRunning = true;
+        prevTime = performance.now();
+        rafId = window.requestAnimationFrame(loop);
+      }
+    };
 
     const updateDimensions = () => {
       const vh = Math.max(600, window.innerHeight);
@@ -375,13 +485,40 @@ export function useScrollAndMotion(
         preview: getTop('preview', vh * 1.9),
         experience: getTop('experience', vh * 2.9),
         download: getTop('download', vh * 3.9),
-        faq: getTop('faq', vh * 4.7),
       };
+      wakeLoop();
     };
 
-    // High-frequency scroll listener ONLY reads window.scrollY (zero synchronous layout reflow!)
+    let lastRawScrollY = window.scrollY || window.pageYOffset || 0;
+    let navbarHidden = false;
+    let navbarEl = document.querySelector<HTMLElement>('.void-noir-navbar');
+
+    // High-frequency scroll listener reads window.scrollY, updates navbar visibility, and wakes the RAF loop
     const handleScroll = () => {
-      SHARED_SCENE_STATE.targetScrollY = window.scrollY || window.pageYOffset || 0;
+      const currentRawY = window.scrollY || window.pageYOffset || 0;
+      const deltaY = currentRawY - lastRawScrollY;
+
+      if (!navbarEl) {
+        navbarEl = document.querySelector<HTMLElement>('.void-noir-navbar');
+      }
+
+      if (navbarEl) {
+        if (currentRawY <= 36 || deltaY < -1.2) {
+          if (navbarHidden) {
+            navbarHidden = false;
+            navbarEl.classList.remove('is-hidden');
+          }
+        } else if (deltaY > 3.5 && currentRawY > 56) {
+          if (!navbarHidden) {
+            navbarHidden = true;
+            navbarEl.classList.add('is-hidden');
+          }
+        }
+      }
+
+      lastRawScrollY = currentRawY;
+      SHARED_SCENE_STATE.targetScrollY = currentRawY;
+      wakeLoop();
     };
 
     const handlePointerMove = (e: PointerEvent) => {
@@ -389,10 +526,16 @@ export function useScrollAndMotion(
       const ny = (e.clientY / Math.max(1, window.innerHeight)) * 2 - 1;
       SHARED_SCENE_STATE.targetPointerX = clamp(nx, -1, 1);
       SHARED_SCENE_STATE.targetPointerY = clamp(ny, -1, 1);
+      wakeLoop();
     };
 
+    const initialY = window.scrollY || window.pageYOffset || 0;
+    SHARED_SCENE_STATE.targetScrollY = initialY;
+    SHARED_SCENE_STATE.currentScrollY = initialY;
+    SHARED_SCENE_STATE.prevScrollY = initialY;
+
     updateDimensions();
-    handleScroll();
+    stepUnifiedSceneMotion(0.016);
 
     let resizeObserver: ResizeObserver | null = null;
     if (typeof ResizeObserver !== 'undefined') {
@@ -406,24 +549,12 @@ export function useScrollAndMotion(
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('pointermove', handlePointerMove, { passive: true });
 
-    let rafId = 0;
-    let prevTime = performance.now();
-
-    const loop = (now: number) => {
-      const dt = (now - prevTime) * 0.001;
-      prevTime = now;
-      stepUnifiedSceneMotion(dt);
-      rafId = window.requestAnimationFrame(loop);
-    };
-
-    rafId = window.requestAnimationFrame(loop);
-
     return () => {
       resizeObserver?.disconnect();
       window.removeEventListener('resize', updateDimensions);
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('pointermove', handlePointerMove);
-      window.cancelAnimationFrame(rafId);
+      if (rafId) window.cancelAnimationFrame(rafId);
     };
   }, []);
 

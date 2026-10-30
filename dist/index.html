@@ -1,22 +1,65 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" style="color-scheme: dark; background-color: #080102;">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#070304" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0c0204" />
     <meta
       name="description"
       content="VOID — Your Music. Reimagined. A modern luxury music player built for those who feel music deeper."
     />
     <title>VOID — Your Music. Reimagined.</title>
+
+    <!-- Instant Deep Maroon-Noir Base (Zero White Flash, Zero Artificial Delay Veil) -->
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      html,
+      body,
+      #root {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background-color: #080102;
+        background-image: radial-gradient(
+          ellipse 88% 78% at 50% 44%,
+          #1c0307 0%,
+          #100204 54%,
+          #060102 100%
+        );
+        color: #f3e9e4;
+      }
+    </style>
+
+    <!-- Preload critical pre-baked textures for 0ms instant paint on reload -->
+    <link rel="preload" as="image" href="/assets/hero-leather.png" fetchpriority="high" />
+    <link rel="preload" as="image" href="/assets/vinyl-disc.png" fetchpriority="high" />
+    <link rel="preload" as="image" href="/assets/tonearm.png" fetchpriority="high" />
+    <link rel="preload" as="image" href="/assets/leather-tile.png" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Inter:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+    />
+    <link
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Inter:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
-    <script type="module" crossorigin src="/assets/index-BwX1T8vC.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-BmgpxthU.css">
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Inter:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+    <script type="module" crossorigin src="/assets/index-Cbeh8r-V.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BZSOel0Z.css">
   </head>
   <body>
     <div id="root"></div>
