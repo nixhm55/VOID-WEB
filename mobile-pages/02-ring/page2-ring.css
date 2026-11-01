@@ -1,56 +1,67 @@
 /* ==========================================================================
    VOID MOBILE — PAGE 2: 3D CYLINDRICAL RIBBON RING
    (mobile-pages/02-ring/page2-ring.css)
-   - Zero `contain: paint` or `overflow: hidden` on `.cylinder-ring-viewport`
-     so Chrome/Safari never clips the 3D cylinder's back arc!
-   - Locks `#cylinderTiltRig` transform via `--mobile-ring-scale` so the 240-strip
-     3D rig matrix is never mutated twice per frame!
+   - Generous section height (`88vh` in portrait) so Hero -> Ring -> Cards
+     have clean vertical separation and never crowd on top of each other!
+   - Preserves the exact Desktop 3D frustum (`1280px x 800px`, `perspective: 1800px`,
+     `#cylinderTiltRig` at `scale3d(0.5, 0.5, 0.5)`) and scales `.cylinder-ring-viewport`
+     uniformly so the 240-strip 3D cylinder renders with 100% Desktop precision and
+     zero Z-buffer tearing on mobile!
    ========================================================================== */
 
 @media (max-width: 1024px), (max-height: 600px) {
   .cylinder-ring-section,
-  .cylinder-ring-sticky,
+  .cylinder-ring-sticky {
+    width: 100% !important;
+    overflow: hidden !important;
+    contain: none !important;
+  }
+
   .cylinder-ring-viewport {
-    width: 100%;
+    position: relative !important;
+    width: 1280px !important;
+    height: 800px !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transform-origin: 50% 50% !important;
+    transform: scale(var(--mobile-ring-view-scale, 0.36)) !important;
     overflow: visible !important;
     contain: none !important;
   }
 
   .cylinder-scene-3d {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    perspective: 1800px;
-    perspective-origin: 50% 50%;
+    width: 1280px !important;
+    height: 800px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    perspective: 1800px !important;
+    perspective-origin: 50% 50% !important;
     overflow: visible !important;
   }
 
   #cylinderTiltRig {
     transform: translate3d(0px, 0px, -525px) rotateZ(-21.5deg) rotateX(-24.5deg)
-      scale3d(
-        var(--mobile-ring-scale, 0.2),
-        var(--mobile-ring-scale, 0.2),
-        var(--mobile-ring-scale, 0.2)
-      ) !important;
+      scale3d(0.5, 0.5, 0.5) !important;
   }
 }
 
-/* 1. PORTRAIT MODE — Compact spacing so Hero -> Ring -> Cards flow closely together */
+/* 1. PORTRAIT MODE — Generous breathing height so sections never crowd each other */
 @media (orientation: portrait) and (max-width: 1024px) {
   .cylinder-ring-section {
-    height: 52vh;
-    margin-top: -4vh;
-    margin-bottom: -6vh;
+    height: 86vh !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
   }
 
   .cylinder-ring-sticky {
-    position: relative;
-    height: 52vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative !important;
+    height: 86vh !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 }
 
@@ -58,16 +69,16 @@
 @media (orientation: landscape) and (max-width: 1024px),
        (orientation: landscape) and (max-height: 600px) {
   .cylinder-ring-section {
-    height: 80vh;
-    margin-top: -4vh;
-    margin-bottom: -4vh;
+    height: 92vh !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
   }
 
   .cylinder-ring-sticky {
-    position: relative;
-    height: 80vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative !important;
+    height: 92vh !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 }

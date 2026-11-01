@@ -124,51 +124,52 @@ window.VoidPage1Hero = (() => {
       symPlay, symPause, symGraph, symPrev,
     ];
 
-    // Fixed compact resting coordinates for "void" (matches CSS pre-baked #vkSlotV..D)
-    const BASE_CENTERS = [-11.60, -2.70, 4.20, 11.20];
+    const WIDTHS = {
+      v: 9.2,
+      o: 9.6,
+      i: 5.0,
+      d: 10.0,
+      play: 10.0,
+      pause: 9.2,
+      graph: 10.6,
+      prev: 10.6,
+    };
 
-    // Every symbol animation immediately returns to the compact "void" resting state
-    // and uses only a minimal ~0.3px breathing nudge so "void" never stays stretched out!
+    function computeSlotCenters(w0, w1, w2, w3, g01, g12, g23) {
+      const total = w0 + g01 + w1 + g12 + w2 + g23 + w3;
+      const start = -total * 0.5;
+      const c0 = start + w0 * 0.5;
+      const c1 = start + w0 + g01 + w1 * 0.5;
+      const c2 = start + w0 + g01 + w1 + g12 + w2 * 0.5;
+      const c3 = start + w0 + g01 + w1 + g12 + w2 + g23 + w3 * 0.5;
+      return [c0, c1, c2, c3];
+    }
+
     const STATES = [
       {
         active: [charV, charO, charI, charD],
-        centers: BASE_CENTERS,
-        holdMs: 2400,
+        centers: computeSlotCenters(WIDTHS.v, WIDTHS.o, WIDTHS.i, WIDTHS.d, -0.5, -0.4, -0.5),
+        holdMs: 1150,
       },
       {
         active: [charV, symPlay, charI, charD],
-        centers: [-11.85, -2.65, 4.40, 11.35],
-        holdMs: 850,
-      },
-      {
-        active: [charV, charO, charI, charD],
-        centers: BASE_CENTERS,
-        holdMs: 2000,
+        centers: computeSlotCenters(WIDTHS.v, WIDTHS.play, WIDTHS.i, WIDTHS.d, 0.55, 0.50, -0.5),
+        holdMs: 1000,
       },
       {
         active: [charV, charO, charI, symPause],
-        centers: [-11.60, -2.70, 4.15, 11.45],
-        holdMs: 850,
-      },
-      {
-        active: [charV, charO, charI, charD],
-        centers: BASE_CENTERS,
-        holdMs: 2000,
+        centers: computeSlotCenters(WIDTHS.v, WIDTHS.o, WIDTHS.i, WIDTHS.pause, -0.5, -0.4, 0.55),
+        holdMs: 1000,
       },
       {
         active: [charV, charO, symGraph, charD],
-        centers: [-11.80, -2.90, 4.30, 11.55],
-        holdMs: 850,
-      },
-      {
-        active: [charV, charO, charI, charD],
-        centers: BASE_CENTERS,
-        holdMs: 2000,
+        centers: computeSlotCenters(WIDTHS.v, WIDTHS.o, WIDTHS.graph, WIDTHS.d, -0.5, 0.55, 0.45),
+        holdMs: 1000,
       },
       {
         active: [charV, symPrev, charI, charD],
-        centers: [-11.90, -2.65, 4.45, 11.40],
-        holdMs: 850,
+        centers: computeSlotCenters(WIDTHS.v, WIDTHS.prev, WIDTHS.i, WIDTHS.d, 0.55, 0.55, -0.5),
+        holdMs: 1000,
       },
     ];
 

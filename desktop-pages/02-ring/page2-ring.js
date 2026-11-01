@@ -24,18 +24,16 @@ window.VoidPage2Ring = (() => {
   const TOTAL_STRIPS = SLOT_COUNT * SUB_STRIPS_PER_SLOT;
 
   // 2x Supersampled 4K internal dimensions paired with scale3d(0.5, 0.5, 0.5) on tiltRig
-  // R_OUTER (1040) and R_INNER (1026) have a clean 14px radial separation so outer and inner
-  // faces NEVER Z-fight on mobile 16/24-bit depth buffers (e.g., S24 Ultra Adreno GPU).
   const R_OUTER = 1040;
-  const R_INNER = 1026;
+  const R_INNER = 1038.6;
   const STRIP_HEIGHT_PX = 532;
   const CAMERA_Z_OFFSET = -525;
-  const SEAM_BLEED_PX = 0.28;
+  const SEAM_BLEED_PX = 2.2;
 
   const angleStepDeg = 360 / TOTAL_STRIPS; // 3.0 deg per strip (120 strips total)
   const halfAngleRad = (angleStepDeg * Math.PI) / 360;
 
-  // Exact polygon chord step between adjacent vertices (without overhang)
+  // Exact polygon chord step between adjacent vertices
   const outerExactChord = 2 * R_OUTER * Math.sin(halfAngleRad);
   const innerExactChord = 2 * R_INNER * Math.sin(halfAngleRad);
 
@@ -77,16 +75,18 @@ window.VoidPage2Ring = (() => {
     if (!slotStrips || !imageUrl) return;
 
     const exactChord = isInner ? innerExactChord : outerExactChord;
-    const slotTotalWidthPx = SUB_STRIPS_PER_SLOT * exactChord;
-    const bgSizeStr = `${slotTotalWidthPx.toFixed(2)}px ${STRIP_HEIGHT_PX}px`;
+    const stripWidth = exactChord + SEAM_BLEED_PX;
+    // Exact background width percentage so CSS percentage positioning shifts by `-uIndex * exactChord`
+    // while covering 100% of strip 0 (at 0%) and 100% of strip 9 (at 100%) with zero unpainted edge gaps!
+    const bgWidthPct = (((SUB_STRIPS_PER_SLOT - 1) * exactChord + stripWidth) / stripWidth) * 100;
+    const bgSizeStr = `${bgWidthPct.toFixed(4)}% 100%`;
 
     for (let s = 0; s < SUB_STRIPS_PER_SLOT; s++) {
       const faceEl = slotStrips[s];
       if (!faceEl) continue;
       // For inner faces, rotateY(180deg) reverses left-to-right order, so we invert sub-strip index
       const uIndex = isInner ? SUB_STRIPS_PER_SLOT - 1 - s : s;
-      // Vertex-locked pixel background offset so adjacent strips meet at the exact 0.00px image coordinate
-      const bgOffsetX = -uIndex * exactChord + SEAM_BLEED_PX * 0.5;
+      const pct = (uIndex / (SUB_STRIPS_PER_SLOT - 1)) * 100;
 
       if (isInner) {
         faceEl.style.backgroundImage = `linear-gradient(180deg, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.22)), url("${imageUrl}")`;
@@ -94,7 +94,7 @@ window.VoidPage2Ring = (() => {
         faceEl.style.backgroundImage = `url("${imageUrl}")`;
       }
       faceEl.style.backgroundSize = bgSizeStr;
-      faceEl.style.backgroundPosition = `${bgOffsetX.toFixed(2)}px 50%`;
+      faceEl.style.backgroundPosition = `${pct.toFixed(4)}% 50%`;
     }
   }
 

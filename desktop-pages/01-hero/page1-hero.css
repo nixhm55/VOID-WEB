@@ -70,7 +70,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.38s cubic-bezier(0.65, 0, 0.35, 1);
+  will-change: transform;
+  transition: transform 0.64s cubic-bezier(0.45, 0, 0.25, 1);
 }
 
 /* Pre-baked initial wordmark slot positions so "void" never overlaps on reload */
@@ -88,18 +89,19 @@
   justify-content: center;
   padding: 0 3px;
   opacity: 0;
-  transform: translate(-50%, -50%) scale(0.6);
+  will-change: transform, opacity;
+  transform: translate(-50%, -50%) scale(0.62);
   transition:
-    opacity 0.12s ease-out 0s,
-    transform 0.15s cubic-bezier(0.4, 0, 1, 1) 0s;
+    opacity 0.26s cubic-bezier(0.4, 0, 0.2, 1) 0s,
+    transform 0.32s cubic-bezier(0.4, 0, 0.2, 1) 0s;
 }
 
 .vk-item.is-active {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
   transition:
-    opacity 0.18s ease-out 0.09s,
-    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1) 0.08s;
+    opacity 0.34s cubic-bezier(0.22, 1, 0.36, 1) 0.14s,
+    transform 0.54s cubic-bezier(0.22, 1, 0.36, 1) 0.12s;
 }
 
 .vk-char {

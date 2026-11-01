@@ -1,12 +1,10 @@
 /* ==========================================================================
    VOID MOBILE — PAGE 3: 7-CARD 3D PERSPECTIVE CAROUSEL
    (mobile-pages/02-cards/page2-cards.css)
-   - CRITICAL ANDROID / S24 ULTRA FIX:
-     Never apply `scale()` or `backface-visibility: hidden` onto `.prism-stage-3d`
-     (the `perspective: 1150px` camera container), which caused Chrome Android to
-     rasterize and clip `.prism-stage-3d` into a narrow horizontal strip!
-   - Instead, `.prism-stage-3d` stays `transform: none !important; transform-style: preserve-3d !important;`
-     at full `100vw x 100vh`, and each `.prism-unit` card is scaled in 3D space.
+   - Uses `transform-style: flat !important` with `perspective: 950px !important`
+     on `.prism-stage-3d` so each `.prism-unit` renders in 3D perspective while
+     Chrome strictly respects CSS `z-index` and NEVER drops `mask-image` cards
+     when scrolling stops!
    ========================================================================== */
 
 @media (max-width: 1024px), (max-height: 600px) {
@@ -35,10 +33,10 @@
   .prism-stage-3d {
     width: 100% !important;
     height: 100% !important;
-    perspective: 1150px !important;
+    perspective: 950px !important;
     perspective-origin: 50% 50% !important;
-    transform-style: preserve-3d !important;
-    -webkit-transform-style: preserve-3d !important;
+    transform-style: flat !important;
+    -webkit-transform-style: flat !important;
     transform: none !important;
     will-change: auto !important;
     backface-visibility: visible !important;
@@ -49,7 +47,7 @@
   }
 
   .prism-unit {
-    contain: layout style;
+    contain: none !important;
     backface-visibility: hidden !important;
     -webkit-backface-visibility: hidden !important;
     pointer-events: auto !important;
@@ -66,8 +64,8 @@
   .prism-center-glow {
     top: 50% !important;
     left: 50% !important;
-    width: clamp(220px, 68vw, 420px) !important;
-    height: clamp(220px, 68vw, 420px) !important;
+    width: clamp(200px, 60vw, 380px) !important;
+    height: clamp(200px, 60vw, 380px) !important;
     transform: translate3d(-46%, -50%, 0) !important;
   }
 }

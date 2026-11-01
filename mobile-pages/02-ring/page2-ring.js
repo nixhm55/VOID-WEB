@@ -1,17 +1,18 @@
 /**
  * VOID MOBILE — PAGE 2: 3D CYLINDRICAL RIBBON RING MODULE
  * (mobile-pages/02-ring/page2-ring.js)
- * - Updates `--mobile-ring-scale` ONLY on init and resize so `#cylinderTiltRig`
- *   never undergoes double transform mutations during scroll frames!
+ * - Scales `.cylinder-ring-viewport` (`--mobile-ring-view-scale`) while preserving
+ *   the exact Desktop 1280x800 3D perspective frustum (`scale3d(0.5, 0.5, 0.5)`)
+ *   so the 3D cylinder renders with zero Z-fighting or strip gaps on mobile!
  */
 
 (() => {
   const desktopRing = window.VoidPage2Ring;
   if (!desktopRing) return;
 
-  let tiltRig = null;
+  let ringViewport = null;
   let cachedIsMobile = false;
-  const BASE_RING_SPAN_PX = 1680;
+  const DESKTOP_RING_VISUAL_SPAN_PX = 920;
 
   function updateMobileRingScaleOnResize() {
     const vw = window.innerWidth || 1280;
@@ -19,20 +20,20 @@
     cachedIsMobile = vw <= 1024 || vh <= 600;
     if (!cachedIsMobile) return;
 
-    if (!tiltRig) {
-      tiltRig = document.getElementById('cylinderTiltRig');
+    if (!ringViewport) {
+      ringViewport = document.getElementById('cylinderRingViewport');
     }
-    if (!tiltRig) return;
+    if (!ringViewport) return;
 
-    let scale;
+    let viewScale;
     if (vh >= vw) {
-      const targetWidth = vw * 0.84;
-      scale = Math.max(0.11, Math.min(0.46, targetWidth / BASE_RING_SPAN_PX));
+      const targetWidth = vw * 0.86;
+      viewScale = Math.max(0.24, Math.min(0.88, targetWidth / DESKTOP_RING_VISUAL_SPAN_PX));
     } else {
-      const targetWidth = Math.min(vw * 0.58, vh * 1.14);
-      scale = Math.max(0.12, Math.min(0.50, targetWidth / BASE_RING_SPAN_PX));
+      const targetWidth = Math.min(vw * 0.62, vh * 1.18);
+      viewScale = Math.max(0.28, Math.min(0.95, targetWidth / DESKTOP_RING_VISUAL_SPAN_PX));
     }
-    tiltRig.style.setProperty('--mobile-ring-scale', scale.toFixed(4));
+    ringViewport.style.setProperty('--mobile-ring-view-scale', viewScale.toFixed(4));
   }
 
   const origInit = desktopRing.init;
@@ -41,7 +42,7 @@
 
   desktopRing.init = function (...args) {
     const res = origInit.apply(this, args);
-    tiltRig = document.getElementById('cylinderTiltRig');
+    ringViewport = document.getElementById('cylinderRingViewport');
     updateMobileRingScaleOnResize();
     window.addEventListener('resize', updateMobileRingScaleOnResize, { passive: true });
     return res;

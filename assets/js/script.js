@@ -285,7 +285,6 @@
     if (prefersReducedMotion || isCoarsePointer) return;
 
     const configs = [
-      { selector: '.brand-logo', strengthX: 0.22, strengthY: 0.24, hoverScale: 1.03, pressScale: 0.96, baseY: -2.2 },
       { selector: '.nav-link', strengthX: 0.20, strengthY: 0.22, hoverScale: 1.025, pressScale: 0.97, baseY: 0 },
       { selector: '.pg-select-box', strengthX: 0.05, strengthY: 0.08, hoverScale: 1.008, pressScale: 0.99, baseY: 0 },
       { selector: '.pg-logic-card', strengthX: 0.06, strengthY: 0.09, hoverScale: 1.01, pressScale: 0.99, baseY: 0 },

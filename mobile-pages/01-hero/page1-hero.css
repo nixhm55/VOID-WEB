@@ -1,7 +1,8 @@
 /* ==========================================================================
    VOID MOBILE — PAGE 1: HERO SECTION (mobile-pages/01-hero/page1-hero.css)
-   - Top bar alignment: `.editorial-info` on top-left and `.top-nav` (`void Hero Player Download`)
-     aligned cleanly on the top-right so they NEVER overlap on any phone screen!
+   - `.top-nav` (`void Hero Player Download`) centered at the top (`left: 50%`)
+   - `.editorial-info` (`EVERYTHING EVERYWHERE ALL AT ONCE`) moved down (`top: 9.2vh`)
+     with a clean vertical gap below the centered navigation bar!
    - 5-CD 3D Diagonal Stage preserved 100% intact.
    ========================================================================== */
 
@@ -83,63 +84,63 @@
     overflow: hidden !important;
   }
 
-  /* Top Navigation shifted cleanly to the Right so it NEVER overlaps EVERYTHING on the Left */
+  /* Top Center Navigation (`void Hero Player Download` centered at top) */
   .top-nav {
     top: 2.35vh !important;
-    left: auto !important;
-    right: 3.6vw !important;
-    transform: translate3d(0, 0, 0) !important;
-    gap: clamp(0.48rem, 2.3vw, 0.95rem) !important;
-    max-width: 54vw !important;
-    justify-content: flex-end !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translate3d(-50%, 0, 0) !important;
+    gap: clamp(0.85rem, 4.2vw, 1.75rem) !important;
+    max-width: 92vw !important;
+    justify-content: center !important;
     white-space: nowrap !important;
   }
 
   .brand-logo {
-    width: clamp(38px, 10.5vw, 48px) !important;
+    width: clamp(54px, 14.5vw, 64px) !important;
     height: 20px !important;
-    margin-right: clamp(0.1rem, 0.8vw, 0.35rem) !important;
-    transform: translateY(-1.8px) scale(clamp(0.78, 0.18vw + 0.72, 0.92)) !important;
-    transform-origin: right center !important;
+    margin-right: 0 !important;
+    transform: translateY(-2px) scale(clamp(0.88, 0.22vw + 0.8, 1)) !important;
+    transform-origin: center center !important;
   }
 
   .nav-links {
-    gap: clamp(0.52rem, 2.4vw, 0.95rem) !important;
+    gap: clamp(0.85rem, 4.2vw, 1.75rem) !important;
   }
 
   .nav-link {
-    font-size: clamp(0.58rem, 2.55vw, 0.75rem) !important;
+    font-size: clamp(0.68rem, 3.05vw, 0.82rem) !important;
   }
 
-  /* Top-Left Editorial Metadata Block — fits cleanly on the left 40% of the screen */
+  /* Top-Left Editorial Metadata Block — moved down below `.top-nav` with clean breathing gap */
   .editorial-info {
-    top: 2.35vh !important;
-    left: 3.6vw !important;
-    width: clamp(128px, 38.5vw, 185px) !important;
+    top: 9.2vh !important;
+    left: 5.4vw !important;
+    width: clamp(164px, 53vw, 285px) !important;
   }
 
   .editorial-title {
-    font-size: clamp(0.82rem, 3.65vw, 1.18rem) !important;
+    font-size: clamp(1.06rem, 4.9vw, 1.92rem) !important;
     line-height: 0.94 !important;
     letter-spacing: -0.02em !important;
-    margin-bottom: clamp(0.32rem, 1.2vw, 0.5rem) !important;
+    margin-bottom: clamp(0.4rem, 1.5vw, 0.62rem) !important;
   }
 
   .credit-row {
-    padding: clamp(0.18rem, 0.7vw, 0.3rem) 0 !important;
+    padding: clamp(0.22rem, 0.85vw, 0.36rem) 0 !important;
   }
 
   .credit-label {
-    font-size: clamp(0.34rem, 1.35vw, 0.44rem) !important;
-    letter-spacing: 0.07em !important;
+    font-size: clamp(0.38rem, 1.55vw, 0.46rem) !important;
+    letter-spacing: 0.08em !important;
   }
 
   .credit-values {
-    font-size: clamp(0.5rem, 2.05vw, 0.68rem) !important;
-    line-height: 1.24 !important;
+    font-size: clamp(0.56rem, 2.35vw, 0.78rem) !important;
+    line-height: 1.26 !important;
   }
 
-  /* 5-CD 3D Diagonal Stage (Preserved 100% as requested) */
+  /* 5-CD 3D Diagonal Stage (Preserved 100%) */
   .cd-item {
     width: clamp(164px, 52vw, 340px);
     height: clamp(164px, 52vw, 340px);

@@ -46,15 +46,19 @@
   will-change: opacity;
 }
 
-/* 3D Perspective Stage Holding Cards */
+/* 3D Perspective Stage Holding Cards
+   - Uses `transform-style: flat` with `perspective: 1150px` so each `.prism-unit` gets full
+     3D `rotateY` perspective projection while strictly respecting CSS `z-index` stacking
+     and never dropping `mask-image` layers when scrolling stops! */
 .prism-stage-3d {
   position: relative;
   z-index: 5;
   width: 100%;
   height: 100%;
   perspective: 1150px;
-  transform-style: preserve-3d;
-  will-change: transform;
+  perspective-origin: 50% 50%;
+  transform-style: flat;
+  -webkit-transform-style: flat;
   pointer-events: none;
 }
 

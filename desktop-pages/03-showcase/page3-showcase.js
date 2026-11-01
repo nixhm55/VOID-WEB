@@ -337,7 +337,7 @@ window.VoidPage3Showcase = (() => {
     const sunlightIn = smootherstep01((p3 - 0.38) / 0.36);
     const sunlightOverheadFade = 1.0 - smootherstep01(z / 0.32);
     const sunlightOpacity = sunlightIn * sunlightOverheadFade;
-    const whiteSeamFade = (1.0 - smootherstep01((p3 - 0.54) / 0.38)) * sunlightOverheadFade;
+    const whiteSeamFade = (1.0 - smootherstep01((p3 - 0.78) / 0.22)) * sunlightOverheadFade;
 
     if (page3TopWhiteSeam) {
       if (whiteSeamFade <= 0.002) {
