@@ -464,9 +464,13 @@ window.VoidPage3Showcase = (() => {
       if (visionReveal <= 0.002) {
         page3VisionStage.classList.remove('is-visible', 'is-interactive');
         page3VisionStage.style.opacity = '0';
+        if (vpEnvironmentBg) vpEnvironmentBg.style.opacity = '0';
+        if (vpSpatialAssembly) vpSpatialAssembly.style.opacity = '0';
       } else {
         page3VisionStage.classList.add('is-visible');
-        page3VisionStage.style.opacity = visionReveal.toFixed(3);
+        // Keep parent .vp-stage at opacity: 1 so Chrome Android never creates a conflicting
+        // opacity RenderPass over .vp-glass-window's backdrop-filter during reverse scroll!
+        page3VisionStage.style.opacity = '1';
 
         const trainWalkRaw = clamp01((z - 0.42) / 0.50);
         const easedTrainWalk = hermiteImmediateGlide01(trainWalkRaw);
@@ -481,6 +485,7 @@ window.VoidPage3Showcase = (() => {
           const trainEnvScale = 1.0 + 0.36 * easedTrainWalk;
           const trainBobY =
             Math.sin(trainWalkRaw * Math.PI * 2.0) * 0.20 * Math.sin(trainWalkRaw * Math.PI);
+          vpEnvironmentBg.style.opacity = visionReveal.toFixed(3);
           vpEnvironmentBg.style.transform =
             `translate3d(0px, ${trainBobY.toFixed(2)}vh, 0px) ` +
             `scale3d(${trainEnvScale.toFixed(4)}, ${trainEnvScale.toFixed(4)}, 1)`;
@@ -492,7 +497,7 @@ window.VoidPage3Showcase = (() => {
           const trainVelBoost =
             Math.min(1.0, absVel * 0.90) *
             (trainWalkRaw > 0.01 && trainWalkRaw < 0.98 ? 0.65 : 0);
-          const trainBlurOp = clamp01(trainWalkBlur * 0.85 + trainVelBoost);
+          const trainBlurOp = clamp01(trainWalkBlur * 0.85 + trainVelBoost) * visionReveal;
           const trainBlurScale = 1.0 + trainBlurOp * 0.075;
           visionBgBlur.style.opacity = trainBlurOp.toFixed(3);
           visionBgBlur.style.transform = `scale3d(${trainBlurScale.toFixed(4)}, ${trainBlurScale.toFixed(4)}, 1)`;
@@ -502,15 +507,21 @@ window.VoidPage3Showcase = (() => {
         if (vpSpatialAssembly) {
           const boxScale = 0.38 + 0.62 * easedTrainWalk;
           const boxLiftY = (1.0 - easedTrainWalk) * -12.0;
-          const boxOp = clamp01(0.75 + 0.25 * easedTrainWalk);
+          const boxOp = clamp01(0.75 + 0.25 * easedTrainWalk) * visionReveal;
           const tiltY = mouseX * 1.5 * easedTrainWalk;
           const tiltX = -mouseY * 1.2 * easedTrainWalk;
 
           vpSpatialAssembly.style.opacity = boxOp.toFixed(3);
-          vpSpatialAssembly.style.transform =
-            `perspective(1400px) translate3d(0px, ${boxLiftY.toFixed(2)}px, 0px) ` +
-            `rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg) ` +
-            `scale3d(${boxScale.toFixed(4)}, ${boxScale.toFixed(4)}, 1)`;
+          if (Math.abs(tiltX) < 0.01 && Math.abs(tiltY) < 0.01) {
+            vpSpatialAssembly.style.transform =
+              `translate3d(0px, ${boxLiftY.toFixed(2)}px, 0px) ` +
+              `scale3d(${boxScale.toFixed(4)}, ${boxScale.toFixed(4)}, 1)`;
+          } else {
+            vpSpatialAssembly.style.transform =
+              `perspective(1400px) translate3d(0px, ${boxLiftY.toFixed(2)}px, 0px) ` +
+              `rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg) ` +
+              `scale3d(${boxScale.toFixed(4)}, ${boxScale.toFixed(4)}, 1)`;
+          }
         }
       }
     }

@@ -1,3 +1,15 @@
+import Lenis from 'lenis';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+// Guarantee Lenis, GSAP, and ScrollTrigger are available synchronously on window
+// in both Vite Dev (localhost) and Production Builds (Vercel / Render)
+if (typeof window !== 'undefined') {
+  window.Lenis = Lenis;
+  window.gsap = gsap;
+  window.ScrollTrigger = ScrollTrigger;
+}
+
 import './preloader.js';
 import '../desktop-pages/01-hero/page1-hero.js';
 import '../desktop-pages/02-ring/page2-ring.js';

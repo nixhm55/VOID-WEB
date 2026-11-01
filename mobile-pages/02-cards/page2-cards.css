@@ -1,9 +1,12 @@
 /* ==========================================================================
    VOID MOBILE — PAGE 3: 7-CARD 3D PERSPECTIVE CAROUSEL
    (mobile-pages/02-cards/page2-cards.css)
-   - Exact Desktop sticky behavior (`height: 520vh`, `.prism-sticky` pinned at `top: 0`)
-     so the card stage stops dead-center in the middle of the screen and scrolls
-     through all 7 cards before moving to the Macintosh section!
+   - CRITICAL ANDROID / S24 ULTRA FIX:
+     Never apply `scale()` or `backface-visibility: hidden` onto `.prism-stage-3d`
+     (the `perspective: 1150px` camera container), which caused Chrome Android to
+     rasterize and clip `.prism-stage-3d` into a narrow horizontal strip!
+   - Instead, `.prism-stage-3d` stays `transform: none !important; transform-style: preserve-3d !important;`
+     at full `100vw x 100vh`, and each `.prism-unit` card is scaled in 3D space.
    ========================================================================== */
 
 @media (max-width: 1024px), (max-height: 600px) {
@@ -17,50 +20,55 @@
   .prism-sticky {
     position: sticky !important;
     top: 0 !important;
-    width: 100%;
+    width: 100% !important;
     height: 100vh !important;
     overflow: hidden !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     pointer-events: auto !important;
     touch-action: pan-y !important;
     overscroll-behavior-x: none;
+    contain: none !important;
   }
 
   .prism-stage-3d {
-    width: 100%;
-    height: 100%;
-    perspective: 1150px;
-    transform-origin: 50% 50%;
-    will-change: transform;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
+    width: 100% !important;
+    height: 100% !important;
+    perspective: 1150px !important;
+    perspective-origin: 50% 50% !important;
+    transform-style: preserve-3d !important;
+    -webkit-transform-style: preserve-3d !important;
+    transform: none !important;
+    will-change: auto !important;
+    backface-visibility: visible !important;
+    -webkit-backface-visibility: visible !important;
+    overflow: visible !important;
     pointer-events: auto !important;
     touch-action: pan-y !important;
   }
 
   .prism-unit {
     contain: layout style;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
     pointer-events: auto !important;
     touch-action: pan-y !important;
   }
 }
 
-/* 1. PORTRAIT MODE (Small Phones -> Large Phones -> Portrait Tablets) */
+/* 1. PORTRAIT MODE (Small Phones -> S24 Ultra -> Large Phones / Portrait Tablets) */
 @media (orientation: portrait) and (max-width: 1024px) {
   .prism-scroll-wrapper {
-    height: 520vh;
+    height: 520vh !important;
   }
 
   .prism-center-glow {
-    top: 50%;
-    left: 50%;
-    width: clamp(220px, 64vw, 440px);
-    height: clamp(220px, 64vw, 440px);
-    transform: translate3d(-46%, -50%, 0);
+    top: 50% !important;
+    left: 50% !important;
+    width: clamp(220px, 68vw, 420px) !important;
+    height: clamp(220px, 68vw, 420px) !important;
+    transform: translate3d(-46%, -50%, 0) !important;
   }
 }
 
@@ -68,14 +76,14 @@
 @media (orientation: landscape) and (max-width: 1024px),
        (orientation: landscape) and (max-height: 600px) {
   .prism-scroll-wrapper {
-    height: 520vh;
+    height: 520vh !important;
   }
 
   .prism-center-glow {
-    top: 50%;
-    left: 50%;
-    width: min(460px, 75vh);
-    height: min(460px, 75vh);
-    transform: translate3d(-44%, -50%, 0);
+    top: 50% !important;
+    left: 50% !important;
+    width: min(460px, 75vh) !important;
+    height: min(460px, 75vh) !important;
+    transform: translate3d(-44%, -50%, 0) !important;
   }
 }

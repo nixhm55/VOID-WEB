@@ -223,11 +223,7 @@
   visibility: hidden;
   pointer-events: none;
   user-select: none;
-  background-color: #1f1c18;
-  transform: translate3d(0, 0, 0);
-  will-change: transform, opacity;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  background-color: transparent;
   overflow: hidden;
 }
 
@@ -247,10 +243,10 @@
   height: 100%;
   z-index: 0;
   overflow: hidden;
-  background-color: #1f1c18;
+  background-color: transparent;
   transform-origin: 50% 50%;
   transform: translate3d(0, 0, 0);
-  will-change: transform;
+  will-change: transform, opacity;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }

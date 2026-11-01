@@ -71,7 +71,9 @@
   will-change: transform;
 }
 
-/* Direct 3D Facets (2x Supersampled 4K Retina Resolution: 532px tall x 0.5 scale = 266px visual) */
+/* Direct 3D Facets (2x Supersampled 4K Retina Resolution: 532px tall x 0.5 scale = 266px visual)
+   - Leaf nodes must NOT have `transform-style: preserve-3d` so `backface-visibility: hidden`
+     strictly culls back-facing strips on Android/iOS mobile GPUs without Z-fighting! */
 .cyl-face {
   position: absolute;
   top: -266px;
@@ -79,12 +81,4 @@
   background-repeat: no-repeat;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  transform-style: preserve-3d;
-  -webkit-transform-style: preserve-3d;
-}
-
-@media (max-width: 900px) {
-  .cylinder-tilt-rig {
-    transform: translate3d(0, 0, -820px) rotateZ(-21.5deg) rotateX(-24.5deg) scale3d(0.5, 0.5, 0.5);
-  }
 }

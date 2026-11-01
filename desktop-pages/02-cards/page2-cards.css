@@ -553,8 +553,4 @@
   color: #ffffff;
 }
 
-@media (max-width: 960px) {
-  .prism-stage-3d {
-    transform: scale(0.76);
-  }
-}
+

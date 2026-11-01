@@ -24,11 +24,20 @@ window.VoidPage2Ring = (() => {
   const TOTAL_STRIPS = SLOT_COUNT * SUB_STRIPS_PER_SLOT;
 
   // 2x Supersampled 4K internal dimensions paired with scale3d(0.5, 0.5, 0.5) on tiltRig
-  // Visual size on screen is 100% identical (1040 * 0.5 = 520px, 532 * 0.5 = 266px), with 4x pixel density!
+  // R_OUTER (1040) and R_INNER (1026) have a clean 14px radial separation so outer and inner
+  // faces NEVER Z-fight on mobile 16/24-bit depth buffers (e.g., S24 Ultra Adreno GPU).
   const R_OUTER = 1040;
-  const R_INNER = 1039.1;
+  const R_INNER = 1026;
   const STRIP_HEIGHT_PX = 532;
   const CAMERA_Z_OFFSET = -525;
+  const SEAM_BLEED_PX = 0.28;
+
+  const angleStepDeg = 360 / TOTAL_STRIPS; // 3.0 deg per strip (120 strips total)
+  const halfAngleRad = (angleStepDeg * Math.PI) / 360;
+
+  // Exact polygon chord step between adjacent vertices (without overhang)
+  const outerExactChord = 2 * R_OUTER * Math.sin(halfAngleRad);
+  const innerExactChord = 2 * R_INNER * Math.sin(halfAngleRad);
 
   // Put artist JPEGs in public/ring/outer/ and list their public paths here.
   // Example: public/ring/outer/6.jpeg is referenced as '/ring/outer/6.jpeg'.
@@ -67,21 +76,25 @@ window.VoidPage2Ring = (() => {
     const slotStrips = stripArray[slotIdx];
     if (!slotStrips || !imageUrl) return;
 
+    const exactChord = isInner ? innerExactChord : outerExactChord;
+    const slotTotalWidthPx = SUB_STRIPS_PER_SLOT * exactChord;
+    const bgSizeStr = `${slotTotalWidthPx.toFixed(2)}px ${STRIP_HEIGHT_PX}px`;
+
     for (let s = 0; s < SUB_STRIPS_PER_SLOT; s++) {
       const faceEl = slotStrips[s];
       if (!faceEl) continue;
       // For inner faces, rotateY(180deg) reverses left-to-right order, so we invert sub-strip index
       const uIndex = isInner ? SUB_STRIPS_PER_SLOT - 1 - s : s;
-      const pct = (uIndex / (SUB_STRIPS_PER_SLOT - 1)) * 100;
+      // Vertex-locked pixel background offset so adjacent strips meet at the exact 0.00px image coordinate
+      const bgOffsetX = -uIndex * exactChord + SEAM_BLEED_PX * 0.5;
 
       if (isInner) {
-        // Baked linear-gradient inner shading (zero CSS filter so Safari never flattens preserve-3d)
         faceEl.style.backgroundImage = `linear-gradient(180deg, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.22)), url("${imageUrl}")`;
       } else {
         faceEl.style.backgroundImage = `url("${imageUrl}")`;
       }
-      faceEl.style.backgroundSize = `${SUB_STRIPS_PER_SLOT * 100}% 100%`;
-      faceEl.style.backgroundPosition = `${pct.toFixed(4)}% 50%`;
+      faceEl.style.backgroundSize = bgSizeStr;
+      faceEl.style.backgroundPosition = `${bgOffsetX.toFixed(2)}px 50%`;
     }
   }
 
@@ -103,16 +116,13 @@ window.VoidPage2Ring = (() => {
     outerStripEls = Array.from({ length: SLOT_COUNT }, () => []);
     innerStripEls = Array.from({ length: SLOT_COUNT }, () => []);
 
-    const angleStepDeg = 360 / TOTAL_STRIPS; // 3.0 deg per strip (120 strips total)
-    const halfAngleRad = (angleStepDeg * Math.PI) / 360;
-
-    // Exact inscribed polygon apothem & chord width so adjacent strips meet cleanly at vertices
+    // Exact inscribed polygon apothem & chord width with minimal subpixel bleed (zero X-intersection)
     const outerApothem = R_OUTER * Math.cos(halfAngleRad);
-    const outerChordWidth = 2 * R_OUTER * Math.sin(halfAngleRad) + 1.1;
+    const outerChordWidth = outerExactChord + SEAM_BLEED_PX;
     const outerHalfWidth = outerChordWidth * 0.5;
 
     const innerApothem = R_INNER * Math.cos(halfAngleRad);
-    const innerChordWidth = 2 * R_INNER * Math.sin(halfAngleRad) + 1.1;
+    const innerChordWidth = innerExactChord + SEAM_BLEED_PX;
     const innerHalfWidth = innerChordWidth * 0.5;
 
     const halfHeight = (STRIP_HEIGHT_PX * 0.5).toFixed(1);
@@ -132,7 +142,7 @@ window.VoidPage2Ring = (() => {
         outerFace.style.height = `${STRIP_HEIGHT_PX}px`;
         outerFace.style.transform = `rotateY(${thetaDeg.toFixed(2)}deg) translateZ(${outerApothem.toFixed(2)}px)`;
 
-        // 2. Inner Face (Song Cover Slot) — paper-thin radial separation so corners connect seamlessly
+        // 2. Inner Face (Song Cover Slot)
         const innerFace = document.createElement('div');
         innerFace.className = 'cyl-face cyl-face-inner';
         innerFace.style.width = `${innerChordWidth.toFixed(2)}px`;

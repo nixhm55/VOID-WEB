@@ -133,14 +133,12 @@ body:not(.is-preloading) .site-preloader {
   }
 }
 
-/* Promote sticky viewports & heavy scroll containers to dedicated GPU layers */
+/* Promote sticky viewports & 2D scroll containers to dedicated GPU layers
+   (Never apply backface-visibility:hidden or translate3d onto 3D perspective containers
+    like .cylinder-scene-3d or .prism-stage-3d, which would flatten preserve-3d!) */
 .hero-sticky,
-.cylinder-ring-sticky,
-.prism-sticky,
 .page3-sticky,
 .cd-stage,
-.cylinder-scene-3d,
-.prism-stage-3d,
 .page3-media-frame {
   transform: translate3d(0, 0, 0);
   will-change: transform;
