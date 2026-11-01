@@ -12,6 +12,10 @@ interactiveMounts.forEach((mount) => {
   mount.inert = true;
 });
 
+if (window.voidLenis && typeof window.voidLenis.stop === 'function') {
+  window.voidLenis.stop();
+}
+
 const ringImages = ['outer', 'inner'].flatMap((side) =>
   Array.from({ length: 12 }, (_, index) => `/ring/${side}/${index + 1}.jpeg`)
 );
@@ -55,6 +59,17 @@ document.body.setAttribute('aria-busy', 'false');
 document.body.classList.remove('is-preloading');
 if (label) label.textContent = 'Ready';
 
+if (window.voidLenis) {
+  if (typeof window.voidLenis.start === 'function') window.voidLenis.start();
+  if (typeof window.voidLenis.resize === 'function') window.voidLenis.resize();
+}
+if (typeof window.voidRefreshScrollMetrics === 'function') {
+  window.voidRefreshScrollMetrics();
+}
+
 window.setTimeout(() => {
   preloader?.remove();
+  if (typeof window.voidRefreshScrollMetrics === 'function') {
+    window.voidRefreshScrollMetrics();
+  }
 }, 350);

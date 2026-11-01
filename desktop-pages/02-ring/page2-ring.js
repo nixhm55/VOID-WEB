@@ -202,6 +202,8 @@ window.VoidPage2Ring = (() => {
     }
   }
 
+  let lastTiltTransform = '';
+
   /**
    * Called from master animation loop in script.js.
    * Strictly only rotates when `isInViewport` is true!
@@ -224,7 +226,11 @@ window.VoidPage2Ring = (() => {
     // Pushed back in Z (-525px) + tilted 3D cylinder orientation + 0.5x supersampled scale
     const rotZ = -21.5 - mouseX * 1.2;
     const rotX = -24.5 + mouseY * 1.4;
-    tiltRig.style.transform = `translate3d(0px, 0px, ${CAMERA_Z_OFFSET}px) rotateZ(${rotZ.toFixed(2)}deg) rotateX(${rotX.toFixed(2)}deg) scale3d(0.5, 0.5, 0.5)`;
+    const nextTiltTransform = `translate3d(0px, 0px, ${CAMERA_Z_OFFSET}px) rotateZ(${rotZ.toFixed(2)}deg) rotateX(${rotX.toFixed(2)}deg) scale3d(0.5, 0.5, 0.5)`;
+    if (nextTiltTransform !== lastTiltTransform) {
+      tiltRig.style.transform = nextTiltTransform;
+      lastTiltTransform = nextTiltTransform;
+    }
   }
 
   function resize() {}

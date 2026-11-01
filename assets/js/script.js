@@ -1,11 +1,12 @@
 /**
- * VOID Website — Master Animation, Physics & Zero-Lag Scroll Orchestrator (script.js)
+ * VOID Website — Master Animation, Physics, Lenis 120Hz Smooth Scroll & GPU Orchestrator (script.js)
  * Coordinates:
  * - Page 1: Hero 5-CD 3D Diagonal Spline Stage (`VoidPage1Hero`)
  * - Page 2: 3D Curved Cylindrical Ribbon Ring — 12 Outer Artists + 12 Inner Covers (`VoidPage2Ring`)
  * - Page 3: 7-Card 3D Perspective Carousel (`VoidPage2Cards`)
  * - Page 4: Butterfly & Macintosh Walk-In -> 3D Train Walk-In Download Portal (`VoidPage3Showcase`)
- * - Strict Viewport Visibility Culling (Each section pauses 100% when offscreen for zero lag)
+ * - Upgraded Lenis Smooth Scroll Engine (optimal lerp, wheel/touch multipliers, zero overscroll bounce,
+ *   preloader lifecycle lock/unlock, ResizeObserver auto-calibration, and strict section culling)
  */
 
 (() => {
@@ -56,6 +57,7 @@
   window.addEventListener(
     'keydown',
     (e) => {
+      if (document.body.classList.contains('is-preloading')) return;
       if (
         e.key === 'ArrowDown' ||
         e.key === 'ArrowUp' ||
@@ -72,7 +74,7 @@
   );
 
   /**
-   * 1. Initialize Lenis Smooth Scroll + GSAP ScrollTrigger Synchronization
+   * 1. Initialize Upgraded Lenis Smooth Scroll + GSAP ScrollTrigger 120Hz Synchronization
    */
   const hasGSAP = typeof window.gsap !== 'undefined';
   const hasScrollTrigger = typeof window.ScrollTrigger !== 'undefined';
@@ -85,17 +87,21 @@
   lenis = hasLenis
     ? new window.Lenis({
         autoRaf: false,
-        lerp: 0.1,
+        lerp: 0.088,
         smoothWheel: true,
-        wheelMultiplier: 1.0,
-        touchMultiplier: 1.0,
+        wheelMultiplier: 0.92,
+        touchMultiplier: 1.12,
         syncTouch: false,
         autoResize: true,
         anchors: false,
-        overscroll: true,
+        overscroll: false,
+        infinite: false,
+        gestureOrientation: 'vertical',
         respectReducedMotion: true,
       })
     : null;
+
+  window.voidLenis = lenis;
 
   if (lenis && hasScrollTrigger) {
     lenis.on('scroll', window.ScrollTrigger.update);
@@ -104,25 +110,30 @@
   forceZeroScrollImmediate();
 
   /**
-   * 2. Responsive 2nd-Order Spring Constants
+   * 2. Responsive 2nd-Order Critically-Damped Spring Constants
    */
   const MAX_SHIFT_UNITS = 2.6;
-  const OMEGA_HERO = 22.0;         // Snappy, silky spring for Hero 5-CD spline
-  const OMEGA_RING_ENTRY = 16.0;   // Smooth spring for Page 2 3D Cylinder Ring entry
-  const OMEGA_ENTRY = 16.0;        // Responsive spring for Page 3 Prism entry unfold
-  const OMEGA_CAROUSEL = 11.2;     // Smooth, zero-lag spring for 7-Card Carousel
-  const OMEGA_PAGE3 = 18.0;        // Crisp spring for Page 4 Macintosh reveal
-  const OMEGA_PAGE3_FLIGHT = 13.5; // Responsive 3D camera flight spring for Macintosh & Train walk-in
-  const OMEGA_MOUSE = 9.0;         // Responsive 2nd-order mouse-follow spring
+  const OMEGA_HERO = 24.0;         // Snappy, silky spring for Hero 5-CD spline
+  const OMEGA_RING_ENTRY = 18.0;   // Smooth spring for Page 2 3D Cylinder Ring entry
+  const OMEGA_ENTRY = 18.0;        // Responsive spring for Page 3 Prism entry unfold
+  const OMEGA_CAROUSEL = 12.5;     // Smooth, zero-lag spring for 7-Card Carousel
+  const OMEGA_PAGE3 = 20.0;        // Crisp spring for Page 4 Macintosh reveal
+  const OMEGA_PAGE3_FLIGHT = 16.5; // Responsive 3D camera flight spring for Macintosh & Train walk-in
+  const OMEGA_MOUSE = 9.5;         // Responsive 2nd-order mouse-follow spring
 
   let heroTopDoc = 0;
+  let heroHeightDoc = 1;
   let heroStickyDistance = 1;
   let ringTopDoc = 0;
+  let ringHeightDoc = 1;
   let ringStickyDistance = 1;
   let featuresTopDoc = 0;
+  let featuresHeightDoc = 1;
   let featuresStickyDistance = 1;
   let page3TopDoc = 0;
+  let page3HeightDoc = 1;
   let page3StickyDistance = 1;
+  let maxDocScrollY = 1;
   let viewportHeight = window.innerHeight || 800;
   let viewportWidth = window.innerWidth || 1280;
 
@@ -172,6 +183,10 @@
   };
   const activeDotEl = document.querySelector('.active-dot');
 
+  function clamp(v, min, max) {
+    return v < min ? min : v > max ? max : v;
+  }
+
   function clamp01(v) {
     return v < 0 ? 0 : v > 1 ? 1 : v;
   }
@@ -180,8 +195,11 @@
     if (prefersReducedMotion) {
       return { pos: target, vel: 0 };
     }
-    const expTerm = Math.exp(-omega * dt);
     const x0 = pos - target;
+    if (Math.abs(x0) < 0.00001 && Math.abs(vel) < 0.00005) {
+      return { pos: target, vel: 0 };
+    }
+    const expTerm = Math.exp(-omega * dt);
     const x1 = (x0 + (vel + omega * x0) * dt) * expTerm;
     const v1 = (vel - (vel + omega * x0) * omega * dt) * expTerm;
     return { pos: target + x1, vel: v1 };
@@ -196,10 +214,11 @@
       }
       return 0;
     }
-    if (lenis && typeof lenis.scroll === 'number') {
-      return lenis.scroll;
-    }
-    return window.scrollY || window.pageYOffset || 0;
+    const raw =
+      lenis && typeof lenis.scroll === 'number'
+        ? lenis.scroll
+        : window.scrollY || window.pageYOffset || 0;
+    return clamp(raw, 0, maxDocScrollY);
   }
 
   function cacheLayoutMetrics() {
@@ -211,34 +230,51 @@
     if (heroWrapper) {
       const heroRect = heroWrapper.getBoundingClientRect();
       heroTopDoc = heroRect.top + rawScrollY;
-      heroStickyDistance = Math.max(1, heroWrapper.offsetHeight - viewportHeight);
+      heroHeightDoc = heroWrapper.offsetHeight;
+      heroStickyDistance = Math.max(1, heroHeightDoc - viewportHeight);
     }
 
     const ringWrapper = window.VoidPage2Ring ? window.VoidPage2Ring.getWrapper() : null;
     if (ringWrapper) {
       const ringRect = ringWrapper.getBoundingClientRect();
       ringTopDoc = ringRect.top + rawScrollY;
-      ringStickyDistance = Math.max(1, ringWrapper.offsetHeight - viewportHeight);
+      ringHeightDoc = ringWrapper.offsetHeight;
+      ringStickyDistance = Math.max(1, ringHeightDoc - viewportHeight);
     }
 
     const featuresWrapper = window.VoidPage2Cards ? window.VoidPage2Cards.getWrapper() : null;
     if (featuresWrapper) {
       const featRect = featuresWrapper.getBoundingClientRect();
       featuresTopDoc = featRect.top + rawScrollY;
-      featuresStickyDistance = Math.max(1, featuresWrapper.offsetHeight - viewportHeight);
+      featuresHeightDoc = featuresWrapper.offsetHeight;
+      featuresStickyDistance = Math.max(1, featuresHeightDoc - viewportHeight);
     }
 
     const page3Section = window.VoidPage3Showcase ? window.VoidPage3Showcase.getWrapper() : null;
     if (page3Section) {
       const p3Rect = page3Section.getBoundingClientRect();
       page3TopDoc = p3Rect.top + rawScrollY;
-      page3StickyDistance = Math.max(1, page3Section.offsetHeight - viewportHeight);
+      page3HeightDoc = page3Section.offsetHeight;
+      page3StickyDistance = Math.max(1, page3HeightDoc - viewportHeight);
+      maxDocScrollY = Math.max(1, page3TopDoc + page3StickyDistance);
+    } else {
+      maxDocScrollY = Math.max(
+        1,
+        (document.documentElement.scrollHeight || document.body.scrollHeight || viewportHeight) -
+          viewportHeight
+      );
+    }
+
+    if (lenis && typeof lenis.resize === 'function') {
+      lenis.resize();
     }
 
     if (hasScrollTrigger) {
       window.ScrollTrigger.refresh();
     }
   }
+
+  window.voidRefreshScrollMetrics = cacheLayoutMetrics;
 
   /**
    * 3. Desktop Magnetic Button & Interactive Element Spring Controller
@@ -456,7 +492,7 @@
       if (lenis && typeof lenis.scrollTo === 'function') {
         lenis.scrollTo(targetEl, {
           offset: 0,
-          duration: 1.25,
+          duration: 1.2,
           easing: (t) => 1 - Math.pow(1 - t, 4),
         });
       } else {
@@ -579,7 +615,7 @@
     const scrollY = getScrollPosition();
 
     // 1. Page 1 (Hero CDs) — cull when scrolled past Page 2 Ring
-    const isHeroNear = force || scrollY < ringTopDoc + viewportHeight * 0.5;
+    const isHeroNear = force || scrollY <= heroTopDoc + heroHeightDoc + viewportHeight * 0.15;
     if (window.VoidPage1Hero && isHeroNear) {
       window.VoidPage1Hero.render(shift, mouseX, mouseY, fPhase, sVel, force);
     }
@@ -599,13 +635,13 @@
     // 3. Page 3 (7-Card 3D Carousel) — cull when outside viewport
     const isPage2CardsNear =
       force ||
-      (scrollY > featuresTopDoc - viewportHeight * 1.1 && page3FlightProg < 0.06);
+      (scrollY > featuresTopDoc - viewportHeight * 1.05 && page3FlightProg < 0.05);
     if (window.VoidPage2Cards && isPage2CardsNear) {
       window.VoidPage2Cards.render(entryProg, carouselPos, mouseX, mouseY, fPhase, cVel, force);
     }
 
     // 4. Page 4 (Macintosh & Train Walk-In Download Portal)
-    const isPage3Near = force || page3Prog > 0.0001 || scrollY > page3TopDoc - viewportHeight * 1.2;
+    const isPage3Near = force || page3Prog > 0.0001 || scrollY > page3TopDoc - viewportHeight * 1.1;
     if (window.VoidPage3Showcase && isPage3Near) {
       window.VoidPage3Showcase.render(
         page3Prog,
@@ -640,7 +676,10 @@
     }
 
     const scrollY = getScrollPosition();
-    const rawVelPx = (scrollY - lastScrollY) / Math.max(0.001, dt);
+    const rawVelPx =
+      lenis && typeof lenis.velocity === 'number'
+        ? lenis.velocity * 60
+        : (scrollY - lastScrollY) / Math.max(0.001, dt);
     lastScrollY = scrollY;
     smoothedScrollVelPx += (rawVelPx - smoothedScrollVelPx) * (1.0 - Math.exp(-18.0 * dt));
 

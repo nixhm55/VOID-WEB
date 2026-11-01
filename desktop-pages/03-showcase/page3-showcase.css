@@ -3,15 +3,26 @@
    - Zero-Lag 120fps Compositor Architecture
    - Soft Top Mist/Fog (Starts strictly at top of photo, NEVER bleeds above into cards)
    - Smoothly shifts from Soft White Fog -> Translucent Golden-Yellow Sunlight Mist
+   - Eliminates reverse-scroll 256x256 tile blockiness & bottom overscroll white gap
    ========================================================================== */
+
+#page3ShowcaseMount {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #1f1c18;
+}
 
 .page3-section {
   position: relative;
   width: 100%;
   height: 680vh;
   margin-top: -22vh;
+  margin-bottom: 0;
+  padding-bottom: 0;
   z-index: 2;
-  background-color: var(--hero-bg);
+  background-color: #1f1c18;
   pointer-events: none;
   user-select: none;
 }
@@ -21,9 +32,14 @@
   top: 0;
   width: 100%;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   background-color: var(--hero-bg);
   contain: layout style paint;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .page3-media-frame {
@@ -40,7 +56,9 @@
   will-change: transform;
 }
 
-/* 3D Camera Walk-In Rig anchored at 50% 54.4% */
+/* 3D Camera Walk-In Rig anchored at 50% 54.4%
+   - No CSS mask-image here (top seam is already covered by .page3-top-white-seam & .page3-top-sunlight),
+     which prevents Chrome from re-rasterizing 256x256 mask tiles when zooming out from 9.2x to 1x! */
 .page3-camera-rig {
   position: absolute;
   inset: 0;
@@ -50,31 +68,14 @@
   transform-origin: 50% 54.4%;
   will-change: transform;
   pointer-events: none;
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  /* Soft top-edge feather so the photo itself never has a hard horizontal cut line at y = 0 */
-  mask-image: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.18) 2%,
-    rgba(0, 0, 0, 0.52) 5%,
-    rgba(0, 0, 0, 0.84) 8.5%,
-    rgba(0, 0, 0, 1) 12.5%,
-    rgba(0, 0, 0, 1) 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.18) 2%,
-    rgba(0, 0, 0, 0.52) 5%,
-    rgba(0, 0, 0, 0.84) 8.5%,
-    rgba(0, 0, 0, 1) 12.5%,
-    rgba(0, 0, 0, 1) 100%
-  );
 }
 
-/* Locked Full-Bleed Photograph with generous overscan so zero left/right gap ever appears */
+/* Locked Full-Bleed Photograph:
+   Composited directly inside .page3-camera-rig (no separate child will-change surface)
+   so Chrome keeps the full-resolution decoded WebP mipmap sharp during both zoom-in and zoom-out! */
 .page3-photo {
   position: absolute;
   top: -4vh;
@@ -87,10 +88,9 @@
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
+  image-rendering: auto;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  transform: translateZ(0);
-  will-change: transform;
 }
 
 /* Zero-Lag Pre-Baked Peripheral Motion Blur Layer */
@@ -120,7 +120,10 @@
   z-index: 3;
   pointer-events: none;
   opacity: 0;
-  will-change: opacity;
+  transform: translate3d(0, 0, 0);
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   background:
     radial-gradient(
       ellipse 68% 85% at 56% 18%,
@@ -150,7 +153,10 @@
   z-index: 4;
   pointer-events: none;
   opacity: 1;
-  will-change: opacity;
+  transform: translate3d(0, 0, 0);
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   background: linear-gradient(
     180deg,
     #f1f1ef 0%,
@@ -173,6 +179,8 @@
   pointer-events: none;
   opacity: 0;
   will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   background: radial-gradient(
     circle at 50% 50%,
     rgba(255, 255, 255, 0.96) 0%,
@@ -192,7 +200,10 @@
   background-color: #ffffff;
   opacity: 0;
   pointer-events: none;
+  transform: translate3d(0, 0, 0);
   will-change: opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* ==========================================================================
@@ -212,8 +223,11 @@
   visibility: hidden;
   pointer-events: none;
   user-select: none;
-  transform: translateZ(0);
+  background-color: #1f1c18;
+  transform: translate3d(0, 0, 0);
   will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   overflow: hidden;
 }
 
@@ -235,15 +249,18 @@
   overflow: hidden;
   background-color: #1f1c18;
   transform-origin: 50% 50%;
+  transform: translate3d(0, 0, 0);
   will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .vp-bg-photo {
   position: absolute;
-  top: -3vh;
-  left: -3vw;
-  width: 106vw;
-  height: 106vh;
+  top: -5vh;
+  left: -4vw;
+  width: 108vw;
+  height: 110vh;
   object-fit: cover;
   object-position: center center;
   display: block;
@@ -252,8 +269,6 @@
   user-select: none;
   -webkit-user-drag: none;
   transform-origin: 50% 50%;
-  transform: translateZ(0);
-  will-change: transform;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
@@ -288,6 +303,8 @@
   margin: 0 auto;
   transform-origin: 50% 50%;
   will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* ==========================================================================
@@ -306,8 +323,8 @@
     rgba(18, 24, 21, 0.48) 50%,
     rgba(28, 35, 30, 0.54) 100%
   );
-  backdrop-filter: blur(32px) saturate(155%);
-  -webkit-backdrop-filter: blur(32px) saturate(155%);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
   border: 1px solid rgba(255, 255, 255, 0.52);
   box-shadow:
     inset 0 1.5px 1.5px rgba(255, 255, 255, 0.82),
@@ -317,6 +334,9 @@
     0 12px 30px rgba(0, 0, 0, 0.24);
   color: #ffffff;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* Top Bar inside Glass Window: Standard "VOID" Typography */
@@ -497,8 +517,6 @@
     rgba(24, 34, 28, 0.34) 55%,
     rgba(255, 255, 255, 0.22) 100%
   );
-  backdrop-filter: blur(18px) saturate(150%);
-  -webkit-backdrop-filter: blur(18px) saturate(150%);
   box-shadow:
     inset 0 1.5px 2px rgba(255, 255, 255, 0.78),
     inset 0 -1.5px 2.5px rgba(255, 255, 255, 0.28),

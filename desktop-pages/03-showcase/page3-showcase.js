@@ -1,10 +1,11 @@
 /**
  * PAGE 3: LOCKED BUTTERFLY & MACINTOSH SHOWCASE + 3D TRAIN WALK-IN DOWNLOAD MODULE (page3-showcase.js)
- * - Stage 1 (z: 0.0 -> 0.54): Macintosh exterior walk-in into the White Screen (100% untouched).
- * - Stage 2 (z: 0.42 -> 0.97): The exact moment the Train & Download Box start becoming faintly
- *   visible through the white screen (z ≈ 0.44), they are ALREADY gently scrolling/gliding forward
- *   using a C2 Hermite curve (non-zero initial velocity -> smooth ramp to normal speed), eliminating
- *   any pause while fading in from white!
+ * - Stage 1 (z: 0.0 -> 0.54): Macintosh exterior walk-in into the White Screen.
+ *   Keeps `#page3CameraRig` GPU texture resident in VRAM (never `visibility: hidden` evicted)
+ *   so scrolling back UP from the Train stage is 100% crisp with zero blocky tile re-rasterization!
+ * - Stage 2 (z: 0.42 -> 0.92): Train & Download Box glide forward smoothly and settle cleanly
+ *   at z = 0.92 (leaving a solid stationary buffer at the bottom so zero white gap or overscroll
+ *   zoom jitter ever occurs at the end of the page).
  */
 
 window.VoidPage3Showcase = (() => {
@@ -42,7 +43,7 @@ window.VoidPage3Showcase = (() => {
   const PHOTO_KEY = 'page3_custom_user_photo_v2';
   const LEGACY_KEY = 'page3_hero_photo';
   const VISION_BG_KEY = 'page3_vision_pro_env_bg_v1';
-  const INITIAL_PUBLIC_BG_SIZE = 8151010;
+  const INITIAL_PUBLIC_BG_SIZE = 261024;
 
   function clamp01(v) {
     return v < 0 ? 0 : v > 1 ? 1 : v;
@@ -71,26 +72,26 @@ window.VoidPage3Showcase = (() => {
     if (!sourceImg) return;
     const runBake = () => {
       try {
-        const w = 512;
-        const h = 320;
+        const w = 960;
+        const h = 600;
         const canvas = document.createElement('canvas');
         canvas.width = w;
         canvas.height = h;
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
-        ctx.filter = 'blur(10px) saturate(1.12)';
-        ctx.drawImage(sourceImg, -16, -16, w + 32, h + 32);
+        ctx.filter = 'blur(12px) saturate(1.10)';
+        ctx.drawImage(sourceImg, -24, -24, w + 48, h + 48);
         ctx.filter = 'none';
 
         ctx.globalCompositeOperation = 'destination-out';
         const cx = w * centerXRatio;
         const cy = h * centerYRatio;
         const maxR = Math.hypot(w, h) * 0.52;
-        const grad = ctx.createRadialGradient(cx, cy, maxR * 0.22, cx, cy, maxR * 0.88);
+        const grad = ctx.createRadialGradient(cx, cy, maxR * 0.24, cx, cy, maxR * 0.90);
         grad.addColorStop(0.0, 'rgba(0, 0, 0, 1)');
-        grad.addColorStop(0.42, 'rgba(0, 0, 0, 0.92)');
-        grad.addColorStop(0.75, 'rgba(0, 0, 0, 0.28)');
+        grad.addColorStop(0.45, 'rgba(0, 0, 0, 0.94)');
+        grad.addColorStop(0.76, 'rgba(0, 0, 0, 0.28)');
         grad.addColorStop(1.0, 'rgba(0, 0, 0, 0)');
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, w, h);
@@ -103,7 +104,8 @@ window.VoidPage3Showcase = (() => {
               callback(url);
             }
           },
-          'image/png'
+          'image/webp',
+          0.86
         );
       } catch (_) {}
     };
@@ -122,6 +124,9 @@ window.VoidPage3Showcase = (() => {
   function syncLockedPhotoUrl(url) {
     if (!url || !page3Photo) return;
     page3Photo.src = url;
+    if (typeof page3Photo.decode === 'function') {
+      page3Photo.decode().catch(() => {});
+    }
     buildPrebakedRadialBlurTexture(page3Photo, 0.5, 0.544, (blurUrl) => {
       if (activeMeadowBlurUrl) URL.revokeObjectURL(activeMeadowBlurUrl);
       activeMeadowBlurUrl = blurUrl;
@@ -133,6 +138,9 @@ window.VoidPage3Showcase = (() => {
     if (!visionBgImage || !url) return;
     visionBgImage.src = url;
     visionBgImage.classList.add('has-custom-bg');
+    if (typeof visionBgImage.decode === 'function') {
+      visionBgImage.decode().catch(() => {});
+    }
     buildPrebakedRadialBlurTexture(visionBgImage, 0.5, 0.5, (blurUrl) => {
       if (activeTrainBlurUrl) URL.revokeObjectURL(activeTrainBlurUrl);
       activeTrainBlurUrl = blurUrl;
@@ -157,6 +165,9 @@ window.VoidPage3Showcase = (() => {
 
   function initLockedPhotos() {
     if (page3Photo) {
+      if (typeof page3Photo.decode === 'function') {
+        page3Photo.decode().catch(() => {});
+      }
       buildPrebakedRadialBlurTexture(page3Photo, 0.5, 0.544, (blurUrl) => {
         if (!activeMeadowBlurUrl) {
           activeMeadowBlurUrl = blurUrl;
@@ -165,6 +176,9 @@ window.VoidPage3Showcase = (() => {
       });
     }
     if (visionBgImage) {
+      if (typeof visionBgImage.decode === 'function') {
+        visionBgImage.decode().catch(() => {});
+      }
       buildPrebakedRadialBlurTexture(visionBgImage, 0.5, 0.5, (blurUrl) => {
         if (!activeTrainBlurUrl) {
           activeTrainBlurUrl = blurUrl;
@@ -236,7 +250,6 @@ window.VoidPage3Showcase = (() => {
         const targetDownloadUrl =
           customUrl || (osType.toLowerCase().includes('android') ? ANDROID_APK_DOWNLOAD_URL : '');
 
-        // Trigger direct APK download for Android on both Desktop and Mobile
         if (targetDownloadUrl) {
           const link = document.createElement('a');
           link.href = targetDownloadUrl;
@@ -247,19 +260,15 @@ window.VoidPage3Showcase = (() => {
           document.body.removeChild(link);
         }
 
-        // 1. Hide "Download" text and show the inset rounded progress track
         btn.classList.add('is-loading');
         fillEl.style.transition = 'none';
         fillEl.style.width = '0%';
 
-        // Force layout so the 0% starting width commits before animating to 100%
         void fillEl.offsetWidth;
 
-        // 2. Smoothly animate the thin rounded meadow-green bar across the inset track
         fillEl.style.transition = 'width 1.15s cubic-bezier(0.22, 1, 0.36, 1)';
         fillEl.style.width = '100%';
 
-        // 3. Hold briefly at full, then smoothly restore the normal "Download" button
         setTimeout(() => {
           btn.classList.remove('is-loading');
           setTimeout(() => {
@@ -324,17 +333,10 @@ window.VoidPage3Showcase = (() => {
 
     // ========================================================================
     // 1. STRADDLING TOP SEAM SPREAD: WHITE -> GOLDEN-YELLOW SUNLIGHT
-    //    - Both spreads sit directly over the y = 0 seam line (-18vh to +34vh)
-    //      with ZERO vertical lifting so the seam line is NEVER uncovered!
-    //    - From p3 = 0.0 -> 0.52 (up to halfway / upper quarter): Pure White spread
-    //    - From p3 = 0.40 -> 0.88: Smoothly morphs from White into Golden-Yellow
-    //      Sunlight right over the seam line, completely hiding the line!
     // ========================================================================
     const sunlightIn = smootherstep01((p3 - 0.38) / 0.36);
     const sunlightOverheadFade = 1.0 - smootherstep01(z / 0.32);
     const sunlightOpacity = sunlightIn * sunlightOverheadFade;
-
-    // White spread stays 100% until golden-yellow sunlight is already strong, then crossfades
     const whiteSeamFade = (1.0 - smootherstep01((p3 - 0.54) / 0.38)) * sunlightOverheadFade;
 
     if (page3TopWhiteSeam) {
@@ -367,22 +369,31 @@ window.VoidPage3Showcase = (() => {
 
     // ========================================================================
     // 2. STAGE 1 (z: 0.0 -> 0.54): WALK ALL THE WAY INTO THE MACINTOSH WHITE SCREEN
-    //    (100% Untouched Exterior Macintosh Walk-In)
+    //    CRITICAL FIX FOR REVERSE-SCROLL BLOCKINESS:
+    //    Never set `page3CameraRig.style.visibility = 'hidden'` when `visionReveal >= 1`!
+    //    Setting `visibility: hidden` caused Chrome to evict `#page3Photo`'s GPU texture
+    //    tiles at 9.2x scale and re-rasterize blocky 256x256 tiles when scrolling back UP.
+    //    Keeping `visibility: visible` (at scale 1.0 when fully covered by opaque `.vp-stage`)
+    //    keeps `#page3Photo`'s full-res 1x texture pinned in GPU VRAM 100% of the time!
     // ========================================================================
     const walkNormalized = clamp01(z / 0.54);
     const easedWalk = smootherstep01(walkNormalized);
     const visionReveal = smootherstep01((z - 0.44) / 0.15);
 
-    if (visionReveal >= 0.998) {
-      if (page3CameraRig.style.visibility !== 'hidden') {
-        page3CameraRig.style.visibility = 'hidden';
+    if (page3CameraRig.style.visibility !== 'visible') {
+      page3CameraRig.style.visibility = 'visible';
+    }
+
+    if (visionReveal >= 0.999) {
+      // While completely covered by the opaque `.vp-stage` (z-index: 7, opacity: 1),
+      // rest `page3CameraRig` at scale3d(1, 1, 1) so Chrome keeps the crisp 1x base texture warm in VRAM!
+      page3CameraRig.style.transform = 'translate3d(0px, 0px, 0px) scale3d(1, 1, 1)';
+      if (page3BlurEdge) {
+        page3BlurEdge.style.opacity = '0';
       }
     } else {
-      if (page3CameraRig.style.visibility !== 'visible') {
-        page3CameraRig.style.visibility = 'visible';
-      }
-
-      const walkEnvelope = Math.sin(walkNormalized * Math.PI) * (1.0 - smootherstep01((walkNormalized - 0.62) / 0.28));
+      const walkEnvelope =
+        Math.sin(walkNormalized * Math.PI) * (1.0 - smootherstep01((walkNormalized - 0.62) / 0.28));
       const strideBobY = Math.sin(walkNormalized * Math.PI * 3.0) * 0.32 * walkEnvelope;
 
       const dollyScale = Math.pow(9.2, easedWalk);
@@ -392,14 +403,16 @@ window.VoidPage3Showcase = (() => {
         `translate3d(0px, ${dollyTranslateY.toFixed(3)}vh, 0px) ` +
         `scale3d(${dollyScale.toFixed(4)}, ${dollyScale.toFixed(4)}, 1)`;
 
-      // Pre-baked peripheral motion blur during Macintosh walk-in
+      // Subtle peripheral motion blur only while walking forward (never over-blurring on reverse scroll)
       if (page3BlurEdge) {
+        const isScrollingUp = flightVel < -0.02;
         const walkDepthBlur = Math.sin(clamp01(walkNormalized / 0.95) * Math.PI);
-        const velocityBoost = Math.min(1.0, absVel * 0.85);
+        const velocityBoost = isScrollingUp ? 0 : Math.min(0.65, absVel * 0.55);
         const blurOp = clamp01(
-          walkDepthBlur * 0.88 + velocityBoost * (walkNormalized > 0.01 && walkNormalized < 0.98 ? 0.55 : 0)
+          walkDepthBlur * (isScrollingUp ? 0.32 : 0.72) +
+            velocityBoost * (walkNormalized > 0.01 && walkNormalized < 0.98 ? 0.45 : 0)
         );
-        const blurScale = 1.0 + blurOp * 0.085;
+        const blurScale = 1.0 + blurOp * 0.065;
         page3BlurEdge.style.opacity = blurOp.toFixed(3);
         page3BlurEdge.style.transform = `scale3d(${blurScale.toFixed(4)}, ${blurScale.toFixed(4)}, 1)`;
       }
@@ -427,7 +440,8 @@ window.VoidPage3Showcase = (() => {
     }
 
     if (page3WhitePortal) {
-      const whiteFlash = smootherstep01((z - 0.39) / 0.08) * (1.0 - smootherstep01((z - 0.46) / 0.11));
+      const whiteFlash =
+        smootherstep01((z - 0.39) / 0.08) * (1.0 - smootherstep01((z - 0.46) / 0.11));
       if (whiteFlash <= 0.002) {
         if (page3WhitePortal.style.visibility !== 'hidden') {
           page3WhitePortal.style.visibility = 'hidden';
@@ -441,10 +455,10 @@ window.VoidPage3Showcase = (() => {
     }
 
     // ========================================================================
-    // 4. STAGE 2 (z: 0.42 -> 0.97): IMMEDIATE GENTLE GLIDE AS SOON AS BARELY VISIBLE
-    //    - Train & Download Box start moving gently at z = 0.42 (right as visionReveal
-    //      begins fading in from white at z = 0.44), then smoothly ramp to normal speed
-    //      as they become fully visible!
+    // 4. STAGE 2 (z: 0.42 -> 0.92): IMMEDIATE GENTLE GLIDE + CLEAN STOP AT BOTTOM
+    //    - Finishes 100% of the Train & Download Box zoom at z = 0.92 so the final
+    //      8% of scroll (z: 0.92 -> 1.00) is a locked, stationary cushion with
+    //      ZERO bottom white banner or end-of-page zoom jitter!
     // ========================================================================
     if (page3VisionStage) {
       if (visionReveal <= 0.002) {
@@ -454,17 +468,19 @@ window.VoidPage3Showcase = (() => {
         page3VisionStage.classList.add('is-visible');
         page3VisionStage.style.opacity = visionReveal.toFixed(3);
 
-        // Starts at z = 0.42 with non-zero velocity (hermiteImmediateGlide01)
-        // so the scene is ALREADY gently scrolling while fading in from the white screen!
-        const trainWalkRaw = clamp01((z - 0.42) / 0.55);
+        const trainWalkRaw = clamp01((z - 0.42) / 0.50);
         const easedTrainWalk = hermiteImmediateGlide01(trainWalkRaw);
 
-        page3VisionStage.classList.toggle('is-interactive', visionReveal > 0.6 && trainWalkRaw > 0.20);
+        page3VisionStage.classList.toggle(
+          'is-interactive',
+          visionReveal > 0.6 && trainWalkRaw > 0.20
+        );
 
-        // A. Train Background glides forward gently as it becomes visible, then normal speed
+        // A. Train Background glides forward smoothly and stops rock-solid at z = 0.92
         if (vpEnvironmentBg) {
           const trainEnvScale = 1.0 + 0.36 * easedTrainWalk;
-          const trainBobY = Math.sin(trainWalkRaw * Math.PI * 2.0) * 0.24 * Math.sin(trainWalkRaw * Math.PI);
+          const trainBobY =
+            Math.sin(trainWalkRaw * Math.PI * 2.0) * 0.20 * Math.sin(trainWalkRaw * Math.PI);
           vpEnvironmentBg.style.transform =
             `translate3d(0px, ${trainBobY.toFixed(2)}vh, 0px) ` +
             `scale3d(${trainEnvScale.toFixed(4)}, ${trainEnvScale.toFixed(4)}, 1)`;
@@ -473,15 +489,16 @@ window.VoidPage3Showcase = (() => {
         // B. Train Peripheral Motion Blur while scrolling forward toward the download box
         if (visionBgBlur) {
           const trainWalkBlur = Math.sin(trainWalkRaw * Math.PI);
-          const trainVelBoost = Math.min(1.0, absVel * 0.90) * (trainWalkRaw > 0.01 && trainWalkRaw < 0.99 ? 0.65 : 0);
+          const trainVelBoost =
+            Math.min(1.0, absVel * 0.90) *
+            (trainWalkRaw > 0.01 && trainWalkRaw < 0.98 ? 0.65 : 0);
           const trainBlurOp = clamp01(trainWalkBlur * 0.85 + trainVelBoost);
           const trainBlurScale = 1.0 + trainBlurOp * 0.075;
           visionBgBlur.style.opacity = trainBlurOp.toFixed(3);
           visionBgBlur.style.transform = `scale3d(${trainBlurScale.toFixed(4)}, ${trainBlurScale.toFixed(4)}, 1)`;
         }
 
-        // C. Distant VOID Download Glass Box: Starts moving gently right when barely visible
-        //    (scale 0.38 -> 1.00) and smoothly accelerates to normal speed once fully visible!
+        // C. Distant VOID Download Glass Box glides forward to center and locks at z = 0.92
         if (vpSpatialAssembly) {
           const boxScale = 0.38 + 0.62 * easedTrainWalk;
           const boxLiftY = (1.0 - easedTrainWalk) * -12.0;

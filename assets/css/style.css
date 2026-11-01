@@ -2,6 +2,7 @@
    VOID Website — Global Base, Lenis Core & 120Hz GPU Performance Styles (style.css)
    - Zero-FOUC Reload Curtain (`html.void-ready`) so reload is 100% clean
    - Sub-pixel antialiasing, GPU layer promotion, and strict scroll anchoring
+   - Prevents elastic overscroll bounce at top/bottom (`overscroll-behavior-y: none`)
    ========================================================================== */
 
 *,
@@ -32,6 +33,7 @@ html {
   text-rendering: optimizeLegibility;
   scroll-behavior: auto;
   overflow-anchor: none;
+  overscroll-behavior-y: none;
 }
 
 /* Official Lenis Core Styles */
@@ -59,6 +61,7 @@ html.lenis body {
 body {
   overflow-x: hidden;
   overflow-anchor: none;
+  overscroll-behavior-y: none;
   background-color: var(--hero-bg);
 }
 
@@ -130,12 +133,16 @@ body:not(.is-preloading) .site-preloader {
   }
 }
 
-/* Promote sticky viewports without promoting their full-length scroll tracks. */
+/* Promote sticky viewports & heavy scroll containers to dedicated GPU layers */
 .hero-sticky,
 .cylinder-ring-sticky,
 .prism-sticky,
-.page3-sticky {
-  transform: translateZ(0);
+.page3-sticky,
+.cd-stage,
+.cylinder-scene-3d,
+.prism-stage-3d,
+.page3-media-frame {
+  transform: translate3d(0, 0, 0);
   will-change: transform;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
@@ -171,6 +178,7 @@ html.void-ready .hero-sticky {
 .pg-logic-card,
 .pg-grid-tile,
 .pg-pill {
+  will-change: transform;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transform-style: preserve-3d;

@@ -10,6 +10,7 @@
 @media (max-width: 1024px), (max-height: 600px) {
   #page3ShowcaseMount,
   .page3-section {
+    background-color: #1f1c18;
     overflow: visible !important;
     pointer-events: auto !important;
     touch-action: pan-y !important;
@@ -95,10 +96,10 @@
   }
 
   .vp-bg-photo {
-    top: -3vh;
-    left: -3vw;
-    width: 106vw;
-    height: 106vh;
+    top: -5vh;
+    left: -4vw;
+    width: 108vw;
+    height: 110vh;
     object-position: 50% 50%;
   }
 }
