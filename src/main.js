@@ -1,13 +1,15 @@
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import * as THREE from 'three';
 
-// Guarantee Lenis, GSAP, and ScrollTrigger are available synchronously on window
-// in both Vite Dev (localhost) and Production Builds (Vercel / Render)
+// Guarantee Lenis, GSAP, ScrollTrigger, and Three.js are available synchronously on window
+// across both Desktop and Mobile UI in Vite Dev (localhost) and Production Builds (Vercel)
 if (typeof window !== 'undefined') {
   window.Lenis = Lenis;
   window.gsap = gsap;
   window.ScrollTrigger = ScrollTrigger;
+  window.THREE = THREE;
 }
 
 import './preloader.js';

@@ -5,6 +5,8 @@
      on `.prism-stage-3d` so each `.prism-unit` renders in 3D perspective while
      Chrome strictly respects CSS `z-index` and NEVER drops `mask-image` cards
      when scrolling stops!
+   - Crisp Apple iPhone standard system font (`SF Pro Display` / `-apple-system`)
+     with enhanced mobile legibility inside the cards.
    ========================================================================== */
 
 @media (max-width: 1024px), (max-height: 600px) {
@@ -52,6 +54,42 @@
     -webkit-backface-visibility: hidden !important;
     pointer-events: auto !important;
     touch-action: pan-y !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', system-ui, sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Enhanced Mobile Card Inner Padding & Font Legibility */
+  .prism-unit-content {
+    padding: 1.65rem 1.85rem 1.65rem 1.55rem !important;
+  }
+
+  .prism-slide-header {
+    margin-bottom: 1.15rem !important;
+  }
+
+  .prism-header-title {
+    font-size: 1.12rem !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  .prism-glass-panel {
+    width: 94% !important;
+    padding: 1.15rem 1.2rem !important;
+  }
+
+  .pg-tier-name,
+  .pg-app-title,
+  .pg-tile-name {
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+  }
+
+  .pg-select-box,
+  .pg-logic-pill,
+  .pg-table-row,
+  .pg-mono {
+    font-size: 0.72rem !important;
   }
 }
 
@@ -64,8 +102,8 @@
   .prism-center-glow {
     top: 50% !important;
     left: 50% !important;
-    width: clamp(200px, 60vw, 380px) !important;
-    height: clamp(200px, 60vw, 380px) !important;
+    width: clamp(220px, 64vw, 390px) !important;
+    height: clamp(220px, 64vw, 390px) !important;
     transform: translate3d(-46%, -50%, 0) !important;
   }
 }

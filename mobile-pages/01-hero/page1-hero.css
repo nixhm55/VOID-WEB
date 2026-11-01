@@ -59,10 +59,11 @@
     overflow: visible !important;
   }
 
-  /* Disable background WebGL canvas on mobile/tablet for locked 60/120fps scrolling */
+  /* Keep Three.js ambient depth canvas active and GPU-composited on mobile/tablet */
   #heroThreeOpticalCanvas,
   .hero-three-canvas {
-    display: none !important;
+    display: block !important;
+    pointer-events: none !important;
   }
 }
 

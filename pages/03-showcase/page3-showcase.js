@@ -221,7 +221,7 @@ window.VoidPage3Showcase = (() => {
   }
 
   const ANDROID_APK_DOWNLOAD_URL =
-    'https://github.com/nixhm55/VOID/releases/download/v1.0.0/app-release.apk';
+    'https://github.com/nixhm55/VOID/releases/download/v1.0.1/app-release.apk';
 
   function initDownloadButtons() {
     const downloadBtns = document.querySelectorAll('.vp-download-btn[data-download-os]');

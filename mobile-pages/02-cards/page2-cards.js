@@ -1,11 +1,10 @@
 /**
  * VOID MOBILE — PAGE 3: 7-CARD 3D PERSPECTIVE CAROUSEL MODULE
  * (mobile-pages/02-cards/page2-cards.js)
- * - Cleanly separates the center card and side card stacks on mobile with
- *   generous breathing gaps between every card and spreads the side cards
- *   all the way out to the left and right edges of the phone screen!
- * - Always applies the mobile transform in sync with `origRender` (including
- *   when scrolling stops) so cards never vanish or bunch up.
+ * - Larger, highly legible Center Card on Mobile (`cardFitW = vw * 0.475`)
+ * - Side cards placed closer together (`cachedSideStepExpand = 0.80`) and
+ *   snug next to the Center Card with a clean non-overlapping gap!
+ * - Desktop (`> 1024px`) remains 100% untouched.
  */
 
 (() => {
@@ -16,12 +15,10 @@
   let prismUnits = [];
   let cachedIsMobile = false;
   let cachedIsPortrait = false;
-  let cachedPosScale = 1.0;
   let cachedCardScale = 1.0;
-  let cachedSideOutwardOffsetPx = 0;
-  let cachedSideStepExpand = 1.0;
+  let cachedFirstSideX = 122;
+  let cachedSideStepPx = 22;
 
-  const DESKTOP_FAN_SPAN_PX = 1040;
   const CARD_WIDTH_PX = 468;
   const CARD_HEIGHT_PX = 472;
 
@@ -39,34 +36,38 @@
     }
 
     if (!cachedIsMobile) {
-      cachedPosScale = 1.0;
       cachedCardScale = 1.0;
-      cachedSideOutwardOffsetPx = 0;
-      cachedSideStepExpand = 1.0;
       return;
     }
 
     if (cachedIsPortrait) {
       // Portrait phone/tablet:
-      // 1. Proportional center card scale (~0.34 on 412px width -> 159px wide center card)
-      //    so there is a wide, clean gap between the center card and the side card stacks!
-      // 2. Push side cards outward toward the left/right screen edges with wider spacing between slices.
-      const baseScale = (vw * 0.96) / DESKTOP_FAN_SPAN_PX;
-      const cardFitW = (vw * 0.375) / CARD_WIDTH_PX;
-      const cardFitH = (vh * 0.56) / CARD_HEIGHT_PX;
-      cachedCardScale = Math.max(0.28, Math.min(0.66, Math.min(cardFitW, cardFitH)));
-      cachedPosScale = Math.max(0.30, Math.min(0.78, baseScale));
-      cachedSideOutwardOffsetPx = vw * 0.032;
-      cachedSideStepExpand = 1.24;
+      // 1. Larger Center Card (~48% of viewport width -> ~198px on 412px phone)
+      //    so text and UI inside the card are large and clearly readable!
+      const cardFitW = (vw * 0.48) / CARD_WIDTH_PX;
+      const cardFitH = (vh * 0.62) / CARD_HEIGHT_PX;
+      cachedCardScale = Math.max(0.36, Math.min(0.74, Math.min(cardFitW, cardFitH)));
+
+      // 2. Place Side Card 1 close to the Center Card without overlapping:
+      //    Center card visible half-width is ~(CARD_WIDTH_PX * 0.43 * cachedCardScale).
+      //    Side Card 1 projected half-width is ~(CARD_WIDTH_PX * 0.26 * cachedCardScale * 0.38).
+      const centerHalfW = CARD_WIDTH_PX * 0.43 * cachedCardScale;
+      const sideHalfW = CARD_WIDTH_PX * 0.10 * cachedCardScale;
+      const gapToCenterPx = Math.max(10, vw * 0.028);
+      cachedFirstSideX = centerHalfW + sideHalfW + gapToCenterPx;
+
+      // 3. Keep the 3 side cards compactly grouped together (small, clean step between d=1, 2, 3)
+      const remainingToEdge = Math.max(36, vw * 0.465 - cachedFirstSideX);
+      cachedSideStepPx = Math.min(24, remainingToEdge * 0.46);
     } else {
       // Landscape phone/tablet
-      const spanScale = (vw * 0.90) / DESKTOP_FAN_SPAN_PX;
-      const cardFitH = (vh * 0.76) / CARD_HEIGHT_PX;
-      const s = Math.max(0.36, Math.min(0.95, Math.min(spanScale, cardFitH)));
-      cachedCardScale = s;
-      cachedPosScale = s;
-      cachedSideOutwardOffsetPx = vw * 0.015;
-      cachedSideStepExpand = 1.10;
+      const cardFitW = (vw * 0.36) / CARD_WIDTH_PX;
+      const cardFitH = (vh * 0.78) / CARD_HEIGHT_PX;
+      cachedCardScale = Math.max(0.42, Math.min(0.95, Math.min(cardFitW, cardFitH)));
+      const centerHalfW = CARD_WIDTH_PX * 0.43 * cachedCardScale;
+      const sideHalfW = CARD_WIDTH_PX * 0.10 * cachedCardScale;
+      cachedFirstSideX = centerHalfW + sideHalfW + Math.max(14, vw * 0.025);
+      cachedSideStepPx = Math.max(22, vw * 0.042);
     }
   }
 
@@ -104,8 +105,6 @@
       );
     }
 
-    // Pass force=true to origRender so desktop base coordinates are always fresh,
-    // then immediately apply mobile spacing & scaling in the same frame!
     origRender.call(
       this,
       entryProg,
@@ -139,20 +138,23 @@
         const rawSx = parseFloat(m[6]);
         const rawSy = parseFloat(m[7]);
 
-        // Smoothly expand horizontal gap for side cards (|rawX| > 40px) so side cards
-        // spread cleanly out toward the left/right edges with clear gaps between them!
+        // Map Desktop X (0 -> 344 -> 420 -> 494 -> 555) smoothly onto Mobile X:
+        // - Inside [0, 344] (center card unfolding to/from First Side Card): scales linearly to `cachedFirstSideX`
+        // - Beyond 344 (Side Cards d = 1 -> 2 -> 3): steps compactly by `cachedSideStepPx` per side card!
         const absRawX = Math.abs(rawX);
         const signX = rawX < 0 ? -1 : rawX > 0 ? 1 : 0;
-        const sideFactor = Math.min(1, absRawX / 300);
-        const extraBeyondFirst = Math.max(0, absRawX - 344) * (cachedSideStepExpand - 1.0);
-        const adjustedRawX = signX * (absRawX + extraBeyondFirst);
+        let mobileAbsX;
+        if (absRawX <= 344) {
+          mobileAbsX = (absRawX / 344) * cachedFirstSideX;
+        } else {
+          const extraSlots = (absRawX - 344) / 75;
+          mobileAbsX = cachedFirstSideX + extraSlots * cachedSideStepPx;
+        }
 
-        const x = adjustedRawX * cachedPosScale + signX * sideFactor * cachedSideOutwardOffsetPx;
+        const x = signX * mobileAbsX;
         const y = rawY * cachedCardScale;
-        const z = rawZ * cachedPosScale;
-        // Slightly slimmer side slice width on portrait so adjacent side cards never touch
-        const sideWidthFactor = cachedIsPortrait ? 1.0 - 0.14 * sideFactor : 1.0;
-        const sx = rawSx * cachedCardScale * sideWidthFactor;
+        const z = rawZ * cachedCardScale;
+        const sx = rawSx * cachedCardScale;
         const sy = rawSy * cachedCardScale;
 
         unit.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, ${z.toFixed(2)}px) rotateY(${ry}deg) rotateX(${rx}deg) scale3d(${sx.toFixed(4)}, ${sy.toFixed(4)}, 1)`;

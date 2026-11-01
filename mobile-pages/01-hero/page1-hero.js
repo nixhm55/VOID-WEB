@@ -132,11 +132,6 @@
     editorialInfoEl = document.querySelector('.editorial-info');
     lastMobileShift = -999;
     updateViewportFlags();
-
-    // Dispose redundant background Three.js particle layer on mobile/tablet for zero GPU lag
-    if (cachedIsMobile && typeof desktopHero.dispose === 'function') {
-      desktopHero.dispose();
-    }
     return res;
   };
 
