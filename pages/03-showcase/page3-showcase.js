@@ -173,7 +173,7 @@ window.VoidPage3Showcase = (() => {
       });
     }
 
-    fetch('public/download-bg.png', { method: 'HEAD', cache: 'no-cache' })
+    fetch('public/download-bg.webp', { method: 'HEAD', cache: 'no-cache' })
       .then((res) => {
         const len = Number(res.headers.get('content-length') || 0);
         const userReplacedFileInPublic = res.ok && len > 0 && len !== INITIAL_PUBLIC_BG_SIZE;

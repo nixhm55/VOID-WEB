@@ -1,7 +1,7 @@
 /**
  * PAGE 2 (NEW): 3D CURVED CYLINDRICAL RIBBON RING MODULE (page2-ring.js)
  * - 12 outer artist images from public/ring/outer/ and 12 inner song covers from public/ring/inner/
- * - Replace the numbered PNG samples with your own images while keeping the same filenames.
+ * - Replace the numbered JPEG samples with your own images while keeping the same filenames.
  * - 2x Supersampled 4K Retina Rasterization (`R_OUTER = 1040`, `STRIP_HEIGHT_PX = 532`, `scale3d(0.5, 0.5, 0.5)`)
  *   so every artist portrait renders at ultra-crisp 4K sharpness while preserving 100% identical shape, size, and motion!
  */
@@ -30,37 +30,37 @@ window.VoidPage2Ring = (() => {
   const STRIP_HEIGHT_PX = 532;
   const CAMERA_Z_OFFSET = -525;
 
-  // Put artist PNGs in public/ring/outer/ and list their public paths here.
-  // Example: public/ring/outer/6.png is referenced as '/ring/outer/6.png'.
+  // Put artist JPEGs in public/ring/outer/ and list their public paths here.
+  // Example: public/ring/outer/6.jpeg is referenced as '/ring/outer/6.jpeg'.
   const DEFAULT_ARTISTS = [
-    { title: 'ARTIST 01', sub: 'OUTER PNG 01', img: '/ring/outer/1.png' },
-    { title: 'ARTIST 02', sub: 'OUTER PNG 02', img: '/ring/outer/2.png' },
-    { title: 'ARTIST 03', sub: 'OUTER PNG 03', img: '/ring/outer/3.png' },
-    { title: 'ARTIST 04', sub: 'OUTER PNG 04', img: '/ring/outer/4.png' },
-    { title: 'ARTIST 05', sub: 'OUTER PNG 05', img: '/ring/outer/5.png' },
-    { title: 'ARTIST 06', sub: 'OUTER PNG 06', img: '/ring/outer/6.png' },
-    { title: 'ARTIST 07', sub: 'OUTER PNG 07', img: '/ring/outer/7.png' },
-    { title: 'ARTIST 08', sub: 'OUTER PNG 08', img: '/ring/outer/8.png' },
-    { title: 'ARTIST 09', sub: 'OUTER PNG 09', img: '/ring/outer/9.png' },
-    { title: 'ARTIST 10', sub: 'OUTER PNG 10', img: '/ring/outer/10.png' },
-    { title: 'ARTIST 11', sub: 'OUTER PNG 11', img: '/ring/outer/11.png' },
-    { title: 'ARTIST 12', sub: 'OUTER PNG 12', img: '/ring/outer/12.png' },
+    { title: 'ARTIST 01', sub: 'OUTER JPEG 01', img: '/ring/outer/1.jpeg' },
+    { title: 'ARTIST 02', sub: 'OUTER JPEG 02', img: '/ring/outer/2.jpeg' },
+    { title: 'ARTIST 03', sub: 'OUTER JPEG 03', img: '/ring/outer/3.jpeg' },
+    { title: 'ARTIST 04', sub: 'OUTER JPEG 04', img: '/ring/outer/4.jpeg' },
+    { title: 'ARTIST 05', sub: 'OUTER JPEG 05', img: '/ring/outer/5.jpeg' },
+    { title: 'ARTIST 06', sub: 'OUTER JPEG 06', img: '/ring/outer/6.jpeg' },
+    { title: 'ARTIST 07', sub: 'OUTER JPEG 07', img: '/ring/outer/7.jpeg' },
+    { title: 'ARTIST 08', sub: 'OUTER JPEG 08', img: '/ring/outer/8.jpeg' },
+    { title: 'ARTIST 09', sub: 'OUTER JPEG 09', img: '/ring/outer/9.jpeg' },
+    { title: 'ARTIST 10', sub: 'OUTER JPEG 10', img: '/ring/outer/10.jpeg' },
+    { title: 'ARTIST 11', sub: 'OUTER JPEG 11', img: '/ring/outer/11.jpeg' },
+    { title: 'ARTIST 12', sub: 'OUTER JPEG 12', img: '/ring/outer/12.jpeg' },
   ];
 
-  // Put song-cover PNGs in public/ring/inner/ and use their public paths here.
+  // Put song-cover JPEGs in public/ring/inner/ and use their public paths here.
   const DEFAULT_COVERS = [
-    { title: 'SONG 01', sub: 'INNER PNG 01', img: '/ring/inner/1.png' },
-    { title: 'SONG 02', sub: 'INNER PNG 02', img: '/ring/inner/2.png' },
-    { title: 'SONG 03', sub: 'INNER PNG 03', img: '/ring/inner/3.png' },
-    { title: 'SONG 04', sub: 'INNER PNG 04', img: '/ring/inner/4.png' },
-    { title: 'SONG 05', sub: 'INNER PNG 05', img: '/ring/inner/5.png' },
-    { title: 'SONG 06', sub: 'INNER PNG 06', img: '/ring/inner/6.png' },
-    { title: 'SONG 07', sub: 'INNER PNG 07', img: '/ring/inner/7.png' },
-    { title: 'SONG 08', sub: 'INNER PNG 08', img: '/ring/inner/8.png' },
-    { title: 'SONG 09', sub: 'INNER PNG 09', img: '/ring/inner/9.png' },
-    { title: 'SONG 10', sub: 'INNER PNG 10', img: '/ring/inner/10.png' },
-    { title: 'SONG 11', sub: 'INNER PNG 11', img: '/ring/inner/11.png' },
-    { title: 'SONG 12', sub: 'INNER PNG 12', img: '/ring/inner/12.png' },
+    { title: 'SONG 01', sub: 'INNER JPEG 01', img: '/ring/inner/1.jpeg' },
+    { title: 'SONG 02', sub: 'INNER JPEG 02', img: '/ring/inner/2.jpeg' },
+    { title: 'SONG 03', sub: 'INNER JPEG 03', img: '/ring/inner/3.jpeg' },
+    { title: 'SONG 04', sub: 'INNER JPEG 04', img: '/ring/inner/4.jpeg' },
+    { title: 'SONG 05', sub: 'INNER JPEG 05', img: '/ring/inner/5.jpeg' },
+    { title: 'SONG 06', sub: 'INNER JPEG 06', img: '/ring/inner/6.jpeg' },
+    { title: 'SONG 07', sub: 'INNER JPEG 07', img: '/ring/inner/7.jpeg' },
+    { title: 'SONG 08', sub: 'INNER JPEG 08', img: '/ring/inner/8.jpeg' },
+    { title: 'SONG 09', sub: 'INNER JPEG 09', img: '/ring/inner/9.jpeg' },
+    { title: 'SONG 10', sub: 'INNER JPEG 10', img: '/ring/inner/10.jpeg' },
+    { title: 'SONG 11', sub: 'INNER JPEG 11', img: '/ring/inner/11.jpeg' },
+    { title: 'SONG 12', sub: 'INNER JPEG 12', img: '/ring/inner/12.jpeg' },
   ];
 
   function applySlotImageToSubStrips(stripArray, slotIdx, imageUrl, isInner) {
