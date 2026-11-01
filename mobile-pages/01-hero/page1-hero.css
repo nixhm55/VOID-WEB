@@ -146,6 +146,23 @@
     margin-top: calc(clamp(164px, 52vw, 340px) * -0.5);
   }
 
+  /* Pre-baked initial portrait spline positions so CDs never flash at (0,0) on mobile reload */
+  .cd-item[data-index="0"] {
+    transform: translate3d(-3.500vw, 65.500vh, 0px) scale3d(0.7500, 0.7500, 1);
+  }
+  .cd-item[data-index="1"] {
+    transform: translate3d(23.000vw, 58.500vh, 0px) scale3d(0.8500, 0.8500, 1);
+  }
+  .cd-item[data-index="2"] {
+    transform: translate3d(50.000vw, 49.500vh, 0px) scale3d(1.0000, 1.0000, 1);
+  }
+  .cd-item[data-index="3"] {
+    transform: translate3d(83.500vw, 33.000vh, 0px) scale3d(0.9400, 0.9400, 1);
+  }
+  .cd-item[data-index="4"] {
+    transform: translate3d(118.000vw, 14.000vh, 0px) scale3d(0.8800, 0.8800, 1);
+  }
+
   .cd-disc {
     border-width: clamp(2.2px, 0.65vw, 3.2px);
   }

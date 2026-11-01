@@ -1,9 +1,7 @@
 /* ==========================================================================
-   VOID Website — Global Base, Lenis Core & GPU Performance Styles (style.css)
-   Page-specific styles are cleanly separated into:
-   - page1-hero.css     (Page 1: Hero Section & 5-CD 3D Stage)
-   - page2-cards.css    (Page 2: 7-Card 3D Perspective Carousel)
-   - page3-showcase.css (Page 3: Meadow Laptop Showcase)
+   VOID Website — Global Base, Lenis Core & 120Hz GPU Performance Styles (style.css)
+   - Zero-FOUC Reload Curtain (`html.void-ready`) so reload is 100% clean
+   - Sub-pixel antialiasing, GPU layer promotion, and strict scroll anchoring
    ========================================================================== */
 
 *,
@@ -62,6 +60,18 @@ body {
   overflow-x: hidden;
   overflow-anchor: none;
   background-color: var(--hero-bg);
+}
+
+/* Clean Reload Reveal: prevents any unpositioned element flash on reload */
+html:not(.void-ready) .cd-stage,
+html:not(.void-ready) .hero-sticky {
+  opacity: 0;
+}
+
+html.void-ready .cd-stage,
+html.void-ready .hero-sticky {
+  opacity: 1;
+  transition: opacity 0.18s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Three.js Ambient Optical Depth Canvas */

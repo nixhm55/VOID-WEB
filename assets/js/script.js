@@ -84,9 +84,9 @@
   lenis = hasLenis
     ? new window.Lenis({
         autoRaf: false,
-        lerp: 0.115,
+        lerp: 0.105,
         smoothWheel: true,
-        wheelMultiplier: 1.0,
+        wheelMultiplier: 0.96,
         touchMultiplier: 1.0,
         syncTouch: false,
         autoResize: true,
@@ -752,6 +752,7 @@
     lastScrollY = 0;
     smoothedScrollVelPx = 0;
     renderAllPages(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.016, true);
+    document.documentElement.classList.add('void-ready');
     initialLockCompleted = true;
   }
 

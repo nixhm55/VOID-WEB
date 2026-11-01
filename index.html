@@ -4,6 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VOID — Desktop Music Player</title>
+  <style>
+    html, body { background-color: #f1f1ef; }
+    html:not(.void-ready) .cd-stage, html:not(.void-ready) .hero-sticky { opacity: 0; }
+    html.void-ready .cd-stage, html.void-ready .hero-sticky { opacity: 1; transition: opacity 0.18s cubic-bezier(0.22, 1, 0.36, 1); }
+  </style>
   <script>
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
@@ -12,6 +17,9 @@
       history.replaceState(null, '', window.location.pathname + window.location.search);
     }
     window.scrollTo(0, 0);
+    setTimeout(function () {
+      document.documentElement.classList.add('void-ready');
+    }, 140);
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,17 +29,17 @@
   />
   <link rel="stylesheet" href="node_modules/lenis/dist/lenis.css" />
   <!-- Global Base Styles + Locked Desktop Pages (desktop-pages/) + Dedicated Mobile Pages (mobile-pages/) -->
-  <link rel="stylesheet" href="assets/css/style.css?v=56" />
-  <!-- Locked Desktop Stylesheets (100% Untouched) -->
-  <link rel="stylesheet" href="desktop-pages/01-hero/page1-hero.css?v=56" />
-  <link rel="stylesheet" href="desktop-pages/02-ring/page2-ring.css?v=56" />
-  <link rel="stylesheet" href="desktop-pages/02-cards/page2-cards.css?v=56" />
-  <link rel="stylesheet" href="desktop-pages/03-showcase/page3-showcase.css?v=56" />
+  <link rel="stylesheet" href="assets/css/style.css?v=65" />
+  <!-- Locked Desktop Stylesheets -->
+  <link rel="stylesheet" href="desktop-pages/01-hero/page1-hero.css?v=65" />
+  <link rel="stylesheet" href="desktop-pages/02-ring/page2-ring.css?v=65" />
+  <link rel="stylesheet" href="desktop-pages/02-cards/page2-cards.css?v=65" />
+  <link rel="stylesheet" href="desktop-pages/03-showcase/page3-showcase.css?v=65" />
   <!-- Dedicated Mobile Stylesheets (Active ONLY on Mobile <= 768px) -->
-  <link rel="stylesheet" href="mobile-pages/01-hero/page1-hero.css?v=59" media="(max-width: 768px)" />
-  <link rel="stylesheet" href="mobile-pages/02-ring/page2-ring.css?v=59" media="(max-width: 768px)" />
-  <link rel="stylesheet" href="mobile-pages/02-cards/page2-cards.css?v=59" media="(max-width: 768px)" />
-  <link rel="stylesheet" href="mobile-pages/03-showcase/page3-showcase.css?v=59" media="(max-width: 768px)" />
+  <link rel="stylesheet" href="mobile-pages/01-hero/page1-hero.css?v=65" media="(max-width: 768px)" />
+  <link rel="stylesheet" href="mobile-pages/02-ring/page2-ring.css?v=65" media="(max-width: 768px)" />
+  <link rel="stylesheet" href="mobile-pages/02-cards/page2-cards.css?v=65" media="(max-width: 768px)" />
+  <link rel="stylesheet" href="mobile-pages/03-showcase/page3-showcase.css?v=65" media="(max-width: 768px)" />
 </head>
 <body>
   <!-- ========================================================================
@@ -132,60 +140,60 @@
         </aside>
 
         <div class="cd-stage" id="cdStage" aria-label="Interactive Album Disc Carousel">
-          <div class="cd-item" data-index="0">
+          <div class="cd-item" data-index="0" style="transform: translate3d(-7.500vw, 66.800vh, 0px) scale3d(0.7100, 0.7100, 1);">
             <div class="cd-shadow" aria-hidden="true"></div>
             <div class="cd-tilt">
               <div class="cd-rim-depth" aria-hidden="true"></div>
               <div class="cd-disc">
-                <img class="cd-art" data-itunes-id="1544269473" src="https://i.scdn.co/image/ab67616d0000b2736ff25c2481eeaf6e7284d461" alt="Man On The Moon III: The Chosen Album Cover" decoding="async" fetchpriority="high" />
+                <img class="cd-art" data-itunes-id="1544269473" src="https://i.scdn.co/image/ab67616d0000b2736ff25c2481eeaf6e7284d461" alt="Man On The Moon III: The Chosen Album Cover" decoding="async" fetchpriority="high" style="transform: rotateZ(-42deg) translateZ(0);" />
                 <div class="cd-sheen" aria-hidden="true"></div>
                 <div class="cd-hub" aria-hidden="true"><div class="cd-center-hole"></div></div>
               </div>
             </div>
           </div>
 
-          <div class="cd-item" data-index="1">
+          <div class="cd-item" data-index="1" style="transform: translate3d(21.200vw, 60.800vh, 0px) scale3d(0.8100, 0.8100, 1);">
             <div class="cd-shadow" aria-hidden="true"></div>
             <div class="cd-tilt">
               <div class="cd-rim-depth" aria-hidden="true"></div>
               <div class="cd-disc">
-                <img class="cd-art" data-itunes-id="712727641" src="https://i.scdn.co/image/ab67616d0000b273c7aed2bbf5698336b43ee46f" alt="Enigma - MCMXC a.D. Official Cover" decoding="async" fetchpriority="high" />
+                <img class="cd-art" data-itunes-id="712727641" src="https://i.scdn.co/image/ab67616d0000b273c7aed2bbf5698336b43ee46f" alt="Enigma - MCMXC a.D. Official Cover" decoding="async" fetchpriority="high" style="transform: rotateZ(-16deg) translateZ(0);" />
                 <div class="cd-sheen" aria-hidden="true"></div>
                 <div class="cd-hub" aria-hidden="true"><div class="cd-center-hole"></div></div>
               </div>
             </div>
           </div>
 
-          <div class="cd-item" data-index="2">
+          <div class="cd-item" data-index="2" style="transform: translate3d(51.500vw, 50.800vh, 0px) scale3d(1.0000, 1.0000, 1);">
             <div class="cd-shadow" aria-hidden="true"></div>
             <div class="cd-tilt">
               <div class="cd-rim-depth" aria-hidden="true"></div>
               <div class="cd-disc">
-                <img class="cd-art" data-itunes-id="1440838039" src="https://i.scdn.co/image/ab67616d0000b2739e1cfc756886ac782e363d79" alt="Tame Impala - Currents Official Cover" decoding="async" fetchpriority="high" />
+                <img class="cd-art" data-itunes-id="1440838039" src="https://i.scdn.co/image/ab67616d0000b2739e1cfc756886ac782e363d79" alt="Tame Impala - Currents Official Cover" decoding="async" fetchpriority="high" style="transform: rotateZ(0deg) translateZ(0);" />
                 <div class="cd-sheen" aria-hidden="true"></div>
                 <div class="cd-hub" aria-hidden="true"><div class="cd-center-hole"></div></div>
               </div>
             </div>
           </div>
 
-          <div class="cd-item" data-index="3">
+          <div class="cd-item" data-index="3" style="transform: translate3d(88.200vw, 29.800vh, 0px) scale3d(0.9500, 0.9500, 1);">
             <div class="cd-shadow" aria-hidden="true"></div>
             <div class="cd-tilt">
               <div class="cd-rim-depth" aria-hidden="true"></div>
               <div class="cd-disc">
-                <img class="cd-art" data-itunes-id="1254572564" src="https://i.scdn.co/image/ab67616d0000b2738940ac99f49e44f59e6f7fb3" alt="Tyler, The Creator - Flower Boy Official Cover" decoding="async" fetchpriority="high" />
+                <img class="cd-art" data-itunes-id="1254572564" src="https://i.scdn.co/image/ab67616d0000b2738940ac99f49e44f59e6f7fb3" alt="Tyler, The Creator - Flower Boy Official Cover" decoding="async" fetchpriority="high" style="transform: rotateZ(22deg) translateZ(0);" />
                 <div class="cd-sheen" aria-hidden="true"></div>
                 <div class="cd-hub" aria-hidden="true"><div class="cd-center-hole"></div></div>
               </div>
             </div>
           </div>
 
-          <div class="cd-item" data-index="4">
+          <div class="cd-item" data-index="4" style="transform: translate3d(124.500vw, 7.500vh, 0px) scale3d(0.9000, 0.9000, 1);">
             <div class="cd-shadow" aria-hidden="true"></div>
             <div class="cd-tilt">
               <div class="cd-rim-depth" aria-hidden="true"></div>
               <div class="cd-disc">
-                <img class="cd-art" data-itunes-id="617154241" src="https://i.scdn.co/image/ab67616d0000b2739b9b36b0e22870b9f542d937" alt="Daft Punk - Random Access Memories Official Cover" decoding="async" fetchpriority="high" />
+                <img class="cd-art" data-itunes-id="617154241" src="https://i.scdn.co/image/ab67616d0000b2739b9b36b0e22870b9f542d937" alt="Daft Punk - Random Access Memories Official Cover" decoding="async" fetchpriority="high" style="transform: rotateZ(58deg) translateZ(0);" />
                 <div class="cd-sheen" aria-hidden="true"></div>
                 <div class="cd-hub" aria-hidden="true"><div class="cd-center-hole"></div></div>
               </div>
@@ -626,15 +634,15 @@
   <script src="node_modules/gsap/dist/gsap.min.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js'"></script>
   <script src="node_modules/gsap/dist/ScrollTrigger.min.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js'"></script>
   <!-- Locked Desktop JS Modules (100% Untouched) -->
-  <script src="desktop-pages/01-hero/page1-hero.js?v=56"></script>
-  <script src="desktop-pages/02-ring/page2-ring.js?v=56"></script>
-  <script src="desktop-pages/02-cards/page2-cards.js?v=56"></script>
-  <script src="desktop-pages/03-showcase/page3-showcase.js?v=56"></script>
+  <script src="desktop-pages/01-hero/page1-hero.js?v=65"></script>
+  <script src="desktop-pages/02-ring/page2-ring.js?v=65"></script>
+  <script src="desktop-pages/02-cards/page2-cards.js?v=65"></script>
+  <script src="desktop-pages/03-showcase/page3-showcase.js?v=65"></script>
   <!-- Dedicated Mobile JS Adapters (Active ONLY when window.innerWidth <= 768px) -->
-  <script src="mobile-pages/01-hero/page1-hero.js?v=59"></script>
-  <script src="mobile-pages/02-ring/page2-ring.js?v=59"></script>
-  <script src="mobile-pages/02-cards/page2-cards.js?v=59"></script>
-  <script src="mobile-pages/03-showcase/page3-showcase.js?v=59"></script>
-  <script src="assets/js/script.js?v=58"></script>
+  <script src="mobile-pages/01-hero/page1-hero.js?v=65"></script>
+  <script src="mobile-pages/02-ring/page2-ring.js?v=65"></script>
+  <script src="mobile-pages/02-cards/page2-cards.js?v=65"></script>
+  <script src="mobile-pages/03-showcase/page3-showcase.js?v=65"></script>
+  <script src="assets/js/script.js?v=65"></script>
 </body>
 </html>

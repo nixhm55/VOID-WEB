@@ -70,6 +70,12 @@
   transition: transform 0.38s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
+/* Pre-baked initial wordmark slot positions so "void" never overlaps on reload */
+#vkSlotV { transform: translate3d(-11.60px, 0px, 0px); }
+#vkSlotO { transform: translate3d(-2.70px, 0px, 0px); }
+#vkSlotI { transform: translate3d(4.20px, 0px, 0px); }
+#vkSlotD { transform: translate3d(11.20px, 0px, 0px); }
+
 .vk-item {
   position: absolute;
   left: 0;
@@ -288,6 +294,38 @@
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   contain: layout style;
+}
+
+/* Pre-baked initial shift=0 spline positions so CDs NEVER appear at top-left (0,0) on reload! */
+.cd-item[data-index="0"] {
+  transform: translate3d(-7.500vw, 66.800vh, 0px) scale3d(0.7100, 0.7100, 1);
+}
+.cd-item[data-index="0"] .cd-art {
+  transform: rotateZ(-42deg) translateZ(0);
+}
+.cd-item[data-index="1"] {
+  transform: translate3d(21.200vw, 60.800vh, 0px) scale3d(0.8100, 0.8100, 1);
+}
+.cd-item[data-index="1"] .cd-art {
+  transform: rotateZ(-16deg) translateZ(0);
+}
+.cd-item[data-index="2"] {
+  transform: translate3d(51.500vw, 50.800vh, 0px) scale3d(1.0000, 1.0000, 1);
+}
+.cd-item[data-index="2"] .cd-art {
+  transform: rotateZ(0deg) translateZ(0);
+}
+.cd-item[data-index="3"] {
+  transform: translate3d(88.200vw, 29.800vh, 0px) scale3d(0.9500, 0.9500, 1);
+}
+.cd-item[data-index="3"] .cd-art {
+  transform: rotateZ(22deg) translateZ(0);
+}
+.cd-item[data-index="4"] {
+  transform: translate3d(124.500vw, 7.500vh, 0px) scale3d(0.9000, 0.9000, 1);
+}
+.cd-item[data-index="4"] .cd-art {
+  transform: rotateZ(58deg) translateZ(0);
 }
 
 .cd-shadow {

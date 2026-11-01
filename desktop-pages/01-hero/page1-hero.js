@@ -337,7 +337,7 @@ window.VoidPage1Hero = (() => {
 
       const cacheKey = `void_art_1000_${itunesId}`;
       try {
-        const cachedUrl = sessionStorage.getItem(cacheKey);
+        const cachedUrl = localStorage.getItem(cacheKey) || sessionStorage.getItem(cacheKey);
         if (cachedUrl) {
           img.src = cachedUrl;
           return;
@@ -355,6 +355,7 @@ window.VoidPage1Hero = (() => {
               '1000x1000bb.jpg'
             );
             try {
+              localStorage.setItem(cacheKey, retinaUrl);
               sessionStorage.setItem(cacheKey, retinaUrl);
             } catch (_) {}
             const preload = new Image();
