@@ -74,7 +74,7 @@
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transform-origin: center center;
-  contain: layout style paint;
+  contain: layout style;
 }
 
 /* ==========================================================================

@@ -25,6 +25,7 @@
     justify-content: center;
     pointer-events: auto !important;
     touch-action: pan-y !important;
+    overscroll-behavior-x: none;
   }
 
   .prism-stage-3d {
@@ -32,11 +33,17 @@
     height: 100%;
     perspective: 1150px;
     transform-origin: 50% 50%;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
     pointer-events: auto !important;
     touch-action: pan-y !important;
   }
 
   .prism-unit {
+    contain: layout style;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
     pointer-events: auto !important;
     touch-action: pan-y !important;
   }

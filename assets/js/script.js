@@ -45,6 +45,7 @@
   forceZeroScrollImmediate();
 
   function markUserInteracted() {
+    if (document.body.classList.contains('is-preloading')) return;
     userHasInteracted = true;
   }
 

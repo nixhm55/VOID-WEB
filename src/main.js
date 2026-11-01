@@ -1,3 +1,4 @@
+import './preloader.js';
 import '../desktop-pages/01-hero/page1-hero.js';
 import '../desktop-pages/02-ring/page2-ring.js';
 import '../desktop-pages/02-cards/page2-cards.js';

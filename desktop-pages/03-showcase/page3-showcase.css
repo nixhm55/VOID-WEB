@@ -37,6 +37,7 @@
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  will-change: transform;
 }
 
 /* 3D Camera Walk-In Rig anchored at 50% 54.4% */
@@ -49,6 +50,7 @@
   transform-origin: 50% 54.4%;
   will-change: transform;
   pointer-events: none;
+  transform: translateZ(0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   /* Soft top-edge feather so the photo itself never has a hard horizontal cut line at y = 0 */
@@ -87,6 +89,8 @@
   -webkit-user-drag: none;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 /* Zero-Lag Pre-Baked Peripheral Motion Blur Layer */
@@ -94,6 +98,8 @@
   opacity: 0;
   transform-origin: 50% 54.4%;
   will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* ==========================================================================
@@ -206,7 +212,8 @@
   visibility: hidden;
   pointer-events: none;
   user-select: none;
-  will-change: opacity;
+  transform: translateZ(0);
+  will-change: transform, opacity;
   overflow: hidden;
 }
 
@@ -245,7 +252,10 @@
   user-select: none;
   -webkit-user-drag: none;
   transform-origin: 50% 50%;
+  transform: translateZ(0);
   will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* Pre-Baked Train Peripheral Motion Blur Layer */
@@ -253,6 +263,8 @@
   opacity: 0;
   transform-origin: 50% 50%;
   will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .vp-bg-vignette {
