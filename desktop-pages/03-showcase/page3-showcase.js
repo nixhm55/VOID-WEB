@@ -253,7 +253,10 @@ window.VoidPage3Showcase = (() => {
         if (targetDownloadUrl) {
           const link = document.createElement('a');
           link.href = targetDownloadUrl;
-          link.setAttribute('download', 'app-release.apk');
+          const downloadFilename = new URL(targetDownloadUrl, window.location.href).pathname.split('/').pop();
+          if (downloadFilename) {
+            link.setAttribute('download', downloadFilename);
+          }
           link.rel = 'noopener noreferrer';
           document.body.appendChild(link);
           link.click();
