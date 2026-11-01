@@ -1,0 +1,74 @@
+/* ==========================================================================
+   VOID MOBILE — PAGE 3: 7-CARD 3D PERSPECTIVE CAROUSEL
+   (mobile-pages/02-cards/page2-cards.css)
+   - Exact Desktop sticky behavior (`height: 520vh`, `.prism-sticky` pinned at `top: 0`)
+     so the card stage stops dead-center in the middle of the screen and scrolls
+     through all 7 cards before moving to the Macintosh section!
+   ========================================================================== */
+
+@media (max-width: 1024px), (max-height: 600px) {
+  #page2CardsMount,
+  .prism-scroll-wrapper {
+    overflow: visible !important;
+    pointer-events: auto !important;
+    touch-action: pan-y !important;
+  }
+
+  .prism-sticky {
+    position: sticky !important;
+    top: 0 !important;
+    width: 100%;
+    height: 100vh !important;
+    overflow: hidden !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto !important;
+    touch-action: pan-y !important;
+  }
+
+  .prism-stage-3d {
+    width: 100%;
+    height: 100%;
+    perspective: 1150px;
+    transform-origin: 50% 50%;
+    pointer-events: auto !important;
+    touch-action: pan-y !important;
+  }
+
+  .prism-unit {
+    pointer-events: auto !important;
+    touch-action: pan-y !important;
+  }
+}
+
+/* 1. PORTRAIT MODE (Small Phones -> Large Phones -> Portrait Tablets) */
+@media (orientation: portrait) and (max-width: 1024px) {
+  .prism-scroll-wrapper {
+    height: 520vh;
+  }
+
+  .prism-center-glow {
+    top: 50%;
+    left: 50%;
+    width: clamp(220px, 64vw, 440px);
+    height: clamp(220px, 64vw, 440px);
+    transform: translate3d(-46%, -50%, 0);
+  }
+}
+
+/* 2. LANDSCAPE MODE ON PHONES & TABLETS (Exact Laptop Proportions) */
+@media (orientation: landscape) and (max-width: 1024px),
+       (orientation: landscape) and (max-height: 600px) {
+  .prism-scroll-wrapper {
+    height: 520vh;
+  }
+
+  .prism-center-glow {
+    top: 50%;
+    left: 50%;
+    width: min(460px, 75vh);
+    height: min(460px, 75vh);
+    transform: translate3d(-44%, -50%, 0);
+  }
+}

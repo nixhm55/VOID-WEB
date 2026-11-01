@@ -1,0 +1,597 @@
+/* ==========================================================================
+   PAGE 3: LOCKED BUTTERFLY & MACINTOSH SHOWCASE + 3D TRAIN WALK-IN DOWNLOAD
+   - Zero-Lag 120fps Compositor Architecture
+   - Soft Top Mist/Fog (Starts strictly at top of photo, NEVER bleeds above into cards)
+   - Smoothly shifts from Soft White Fog -> Translucent Golden-Yellow Sunlight Mist
+   ========================================================================== */
+
+.page3-section {
+  position: relative;
+  width: 100%;
+  height: 680vh;
+  margin-top: -22vh;
+  z-index: 2;
+  background-color: var(--hero-bg);
+  pointer-events: none;
+  user-select: none;
+}
+
+.page3-sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--hero-bg);
+  contain: layout style paint;
+}
+
+.page3-media-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--hero-bg);
+  pointer-events: none;
+  user-select: none;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* 3D Camera Walk-In Rig anchored at 50% 54.4% */
+.page3-camera-rig {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transform-origin: 50% 54.4%;
+  will-change: transform;
+  pointer-events: none;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  /* Soft top-edge feather so the photo itself never has a hard horizontal cut line at y = 0 */
+  mask-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.18) 2%,
+    rgba(0, 0, 0, 0.52) 5%,
+    rgba(0, 0, 0, 0.84) 8.5%,
+    rgba(0, 0, 0, 1) 12.5%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.18) 2%,
+    rgba(0, 0, 0, 0.52) 5%,
+    rgba(0, 0, 0, 0.84) 8.5%,
+    rgba(0, 0, 0, 1) 12.5%,
+    rgba(0, 0, 0, 1) 100%
+  );
+}
+
+/* Locked Full-Bleed Photograph with generous overscan so zero left/right gap ever appears */
+.page3-photo {
+  position: absolute;
+  top: -4vh;
+  left: -3vw;
+  width: 106vw;
+  height: 108vh;
+  object-fit: cover;
+  object-position: center 46%;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Zero-Lag Pre-Baked Peripheral Motion Blur Layer */
+.page3-motion-blur-layer {
+  opacity: 0;
+  transform-origin: 50% 54.4%;
+  will-change: transform, opacity;
+}
+
+/* ==========================================================================
+   Soft Top Fog / Mist Spread (Fixed at Top of Photo — Never Bleeds Above Photo)
+   - Strictly inside .page3-media-frame (top: 0, height: 24vh) so it NEVER touches
+     the orange cards above.
+   - At 0% (y = 0), matches #f1f1ef so a hard seam line can NEVER exist at y = 0.
+   - Smoothly blooms from Soft White Fog (.page3-top-white-seam) into airy,
+     translucent Golden-Yellow Sunlight Fog (.page3-top-sunlight) over 2vh..24vh.
+   ========================================================================== */
+
+.page3-top-sunlight {
+  position: absolute;
+  top: -1px;
+  left: -3vw;
+  width: 106vw;
+  height: 24vh;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  will-change: opacity;
+  background:
+    radial-gradient(
+      ellipse 68% 85% at 56% 18%,
+      rgba(255, 228, 136, 0.72) 0%,
+      rgba(248, 202, 92, 0.38) 48%,
+      rgba(238, 176, 66, 0.10) 78%,
+      rgba(238, 176, 66, 0) 100%
+    ),
+    linear-gradient(
+      180deg,
+      #f1f1ef 0%,
+      rgba(247, 237, 206, 0.92) 7%,
+      rgba(252, 224, 142, 0.78) 18%,
+      rgba(249, 208, 108, 0.54) 36%,
+      rgba(244, 192, 84, 0.28) 58%,
+      rgba(238, 176, 66, 0.09) 79%,
+      rgba(238, 176, 66, 0) 100%
+    );
+}
+
+.page3-top-white-seam {
+  position: absolute;
+  top: -1px;
+  left: -3vw;
+  width: 106vw;
+  height: 24vh;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 1;
+  will-change: opacity;
+  background: linear-gradient(
+    180deg,
+    #f1f1ef 0%,
+    #f1f1ef 8%,
+    rgba(241, 241, 239, 0.88) 20%,
+    rgba(245, 239, 224, 0.60) 40%,
+    rgba(249, 228, 184, 0.28) 64%,
+    rgba(250, 216, 144, 0.08) 84%,
+    rgba(250, 216, 144, 0) 100%
+  );
+}
+
+/* Soft Optical Bloom Emitted by the CRT Screen as Camera Walks In */
+.page3-screen-bloom {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  will-change: opacity, transform;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 255, 255, 0.96) 0%,
+    rgba(248, 253, 255, 0.75) 24%,
+    rgba(240, 250, 255, 0.32) 50%,
+    rgba(255, 255, 255, 0) 78%
+  );
+}
+
+/* Pure White Screen Interior Flash Portal */
+.page3-white-portal {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 6;
+  background-color: #ffffff;
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+/* ==========================================================================
+   INSIDE MACINTOSH SCREEN: 3D TRAIN WALK-IN + FROSTED GLASS DOWNLOAD STAGE
+   ========================================================================== */
+
+.vp-stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  user-select: none;
+  will-change: opacity;
+  overflow: hidden;
+}
+
+.vp-stage.is-visible {
+  visibility: visible;
+}
+
+.vp-stage.is-interactive {
+  pointer-events: auto;
+}
+
+/* 3D Train Environment Background Rig */
+.vp-environment-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+  background-color: #1f1c18;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.vp-bg-photo {
+  position: absolute;
+  top: -3vh;
+  left: -3vw;
+  width: 106vw;
+  height: 106vh;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+  opacity: 1;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+/* Pre-Baked Train Peripheral Motion Blur Layer */
+.vp-train-blur-layer {
+  opacity: 0;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+}
+
+.vp-bg-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(0, 0, 0, 0.06) 0%,
+    rgba(0, 0, 0, 0.28) 100%
+  );
+}
+
+/* Dead-Center Spatial Assembly */
+.vp-spatial-assembly {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+}
+
+/* ==========================================================================
+   Richer Tinted Frosted Glass Window + Tinted Glass Cards
+   ========================================================================== */
+.vp-glass-window {
+  width: min(860px, 88vw);
+  border-radius: 36px;
+  padding: 28px 30px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background: linear-gradient(
+    145deg,
+    rgba(24, 30, 26, 0.56) 0%,
+    rgba(18, 24, 21, 0.48) 50%,
+    rgba(28, 35, 30, 0.54) 100%
+  );
+  backdrop-filter: blur(32px) saturate(155%);
+  -webkit-backdrop-filter: blur(32px) saturate(155%);
+  border: 1px solid rgba(255, 255, 255, 0.52);
+  box-shadow:
+    inset 0 1.5px 1.5px rgba(255, 255, 255, 0.82),
+    inset 1px 0 1px rgba(255, 255, 255, 0.42),
+    inset 0 -1.5px 2px rgba(255, 255, 255, 0.24),
+    0 34px 84px rgba(0, 0, 0, 0.44),
+    0 12px 30px rgba(0, 0, 0, 0.24);
+  color: #ffffff;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Top Bar inside Glass Window: Standard "VOID" Typography */
+.vp-window-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px;
+}
+
+.vp-brand-title {
+  font-family: 'Inter', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  font-style: normal;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 1;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+}
+
+.vp-top-pill {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: #ffffff;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.44);
+  box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.55);
+}
+
+/* ==========================================================================
+   Centered 3-Column Tinted Liquid Glass Cards: Mac, Windows, Android
+   ========================================================================== */
+.vp-download-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  width: 100%;
+}
+
+.vp-os-card {
+  border-radius: 26px;
+  padding: 22px 20px;
+  background: linear-gradient(
+    165deg,
+    rgba(255, 255, 255, 0.20) 0%,
+    rgba(16, 22, 19, 0.42) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.46);
+  box-shadow:
+    inset 0 1.5px 1.2px rgba(255, 255, 255, 0.70),
+    inset 0 -1px 1.5px rgba(255, 255, 255, 0.20),
+    0 16px 36px rgba(0, 0, 0, 0.26);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+  transition:
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.28s ease,
+    border-color 0.28s ease,
+    box-shadow 0.28s ease;
+}
+
+.vp-os-card:hover {
+  transform: translateY(-4px) scale(1.015);
+  background: linear-gradient(
+    165deg,
+    rgba(255, 255, 255, 0.26) 0%,
+    rgba(16, 22, 19, 0.48) 100%
+  );
+  border-color: rgba(255, 255, 255, 0.72);
+  box-shadow:
+    inset 0 1.5px 1.5px rgba(255, 255, 255, 0.86),
+    0 24px 48px rgba(0, 0, 0, 0.34);
+}
+
+.vp-os-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.vp-os-emblem {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.22));
+  transition:
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.28s ease;
+}
+
+.vp-os-card:hover .vp-os-emblem {
+  transform: translateY(-1.5px) scale(1.04);
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.28));
+}
+
+.vp-os-emblem img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+.vp-os-pill {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  color: #ffffff;
+  box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.48);
+}
+
+.vp-os-card-mid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.vp-os-title {
+  margin: 0;
+  font-family: 'Inter', 'Plus Jakarta Sans', sans-serif;
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.38);
+}
+
+.vp-os-desc {
+  margin: 0;
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.96);
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.42);
+}
+
+.vp-os-specs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.88);
+  margin-top: 2px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.38);
+}
+
+/* ==========================================================================
+   3D Tinted Liquid Glass Pill Download Button + Meadow-Green Progress Line
+   ========================================================================== */
+.vp-download-btn {
+  appearance: none;
+  position: relative;
+  width: 100%;
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.56);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.28) 0%,
+    rgba(24, 34, 28, 0.34) 55%,
+    rgba(255, 255, 255, 0.22) 100%
+  );
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  box-shadow:
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.78),
+    inset 0 -1.5px 2.5px rgba(255, 255, 255, 0.28),
+    0 10px 24px -4px rgba(0, 0, 0, 0.30),
+    0 3px 8px rgba(0, 0, 0, 0.16);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.28s ease,
+    border-color 0.28s ease,
+    box-shadow 0.28s ease;
+}
+
+.vp-btn-label {
+  position: relative;
+  z-index: 2;
+  font-family: 'Inter', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15.5px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1;
+  color: #ffffff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.32);
+  transition:
+    opacity 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.vp-btn-progress-track {
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  top: 50%;
+  height: 4.5px;
+  transform: translateY(-50%) scaleX(0.94);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: inset 0 1px 1.5px rgba(0, 0, 0, 0.24);
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 3;
+  transition:
+    opacity 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.vp-btn-progress-fill {
+  display: block;
+  width: 0%;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    #4c8228 0%,
+    #66a836 52%,
+    #82c94c 100%
+  );
+  box-shadow: 0 0 10px rgba(114, 186, 62, 0.68);
+}
+
+.vp-download-btn.is-loading {
+  pointer-events: none;
+}
+
+.vp-download-btn.is-loading .vp-btn-label {
+  opacity: 0;
+  transform: translateY(-5px) scale(0.96);
+}
+
+.vp-download-btn.is-loading .vp-btn-progress-track {
+  opacity: 1;
+  transform: translateY(-50%) scaleX(1);
+}
+
+.vp-download-btn:hover {
+  transform: translateY(-2px) scale(1.015);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.36) 0%,
+    rgba(28, 40, 32, 0.40) 55%,
+    rgba(255, 255, 255, 0.28) 100%
+  );
+  border-color: rgba(255, 255, 255, 0.78);
+  box-shadow:
+    inset 0 1.5px 2.5px rgba(255, 255, 255, 0.92),
+    inset 0 -1.5px 3px rgba(255, 255, 255, 0.38),
+    0 14px 28px -4px rgba(0, 0, 0, 0.36),
+    0 4px 12px rgba(0, 0, 0, 0.20);
+}
+
+.vp-download-btn:active {
+  transform: translateY(0) scale(0.985);
+}
+
+@media (max-width: 820px) {
+  .vp-glass-window {
+    width: 92vw;
+    padding: 22px 20px;
+  }
+  .vp-download-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,66 +1,640 @@
-<!doctype html>
-<html lang="en" style="color-scheme: dark; background-color: #080102;">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#0c0204" />
-    <meta
-      name="description"
-      content="VOID — Your Music. Reimagined. A modern luxury music player built for those who feel music deeper."
-    />
-    <title>VOID — Your Music. Reimagined.</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VOID — Desktop Music Player</title>
+  <script>
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    if (window.location.hash) {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+    window.scrollTo(0, 0);
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="node_modules/lenis/dist/lenis.css" />
+  <!-- Global Base Styles + Locked Desktop Pages (desktop-pages/) + Dedicated Mobile Pages (mobile-pages/) -->
+  <link rel="stylesheet" href="assets/css/style.css?v=56" />
+  <!-- Locked Desktop Stylesheets (100% Untouched) -->
+  <link rel="stylesheet" href="desktop-pages/01-hero/page1-hero.css?v=56" />
+  <link rel="stylesheet" href="desktop-pages/02-ring/page2-ring.css?v=56" />
+  <link rel="stylesheet" href="desktop-pages/02-cards/page2-cards.css?v=56" />
+  <link rel="stylesheet" href="desktop-pages/03-showcase/page3-showcase.css?v=56" />
+  <!-- Dedicated Mobile Stylesheets (Active ONLY on Mobile <= 768px) -->
+  <link rel="stylesheet" href="mobile-pages/01-hero/page1-hero.css?v=59" media="(max-width: 768px)" />
+  <link rel="stylesheet" href="mobile-pages/02-ring/page2-ring.css?v=59" media="(max-width: 768px)" />
+  <link rel="stylesheet" href="mobile-pages/02-cards/page2-cards.css?v=59" media="(max-width: 768px)" />
+  <link rel="stylesheet" href="mobile-pages/03-showcase/page3-showcase.css?v=59" media="(max-width: 768px)" />
+</head>
+<body>
+  <!-- ========================================================================
+       PAGE 1 MOUNT: Hero Section (Source file: pages/01-hero/page1-hero.html)
+       ======================================================================== -->
+  <div id="page1HeroMount">
+    <section class="hero-scroll-wrapper" id="heroScrollWrapper">
+      <div class="hero-sticky" id="heroSticky">
+        <header class="top-nav" aria-label="Primary Navigation">
+          <a
+            href="#heroScrollWrapper"
+            class="brand-logo"
+            id="voidKineticLogo"
+            aria-label="VOID Home"
+          >
+            <span class="vk-wordmark" id="vkWordmark" aria-hidden="true">
+              <span class="vk-slot" id="vkSlotV">
+                <span class="vk-item vk-char is-active" id="vkCharV">v</span>
+              </span>
+              <span class="vk-slot" id="vkSlotO">
+                <span class="vk-item vk-char is-active" id="vkCharO">o</span>
+                <span class="vk-item vk-symbol" id="vkSymPlay">
+                  <svg class="vk-sym-svg" width="10" height="9.5" viewBox="0 0 10 9.5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1.0 0.7C1.0 0.25 1.48 -0.02 1.87 0.21L9.25 4.26C9.65 4.48 9.65 5.02 9.25 5.24L1.87 9.29C1.48 9.52 1.0 9.25 1.0 8.8V0.7Z" fill="#141413"/>
+                  </svg>
+                </span>
+                <span class="vk-sym-wrap vk-item vk-symbol" id="vkSymPrev">
+                  <svg class="vk-sym-svg" width="10.5" height="9.5" viewBox="0 0 10.5 9.5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="0.6" y="0.35" width="1.85" height="8.8" rx="0.45" fill="#141413"/>
+                    <path d="M9.9 0.7C9.9 0.25 9.42 -0.02 9.03 0.21L2.95 4.26C2.55 4.48 2.55 5.02 2.95 5.24L9.03 9.29C9.42 9.52 9.9 9.25 9.9 8.8V0.7Z" fill="#141413"/>
+                  </svg>
+                </span>
+              </span>
+              <span class="vk-slot" id="vkSlotI">
+                <span class="vk-item vk-char is-active" id="vkCharI">i</span>
+                <span class="vk-item vk-symbol" id="vkSymGraph">
+                  <svg class="vk-sym-svg vk-eq-svg" width="10.5" height="9.5" viewBox="0 0 10.5 9.5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect class="vk-eq-bar vk-eq-bar-1" x="0.6" y="2.5" width="2.1" height="7.0" rx="0.5" fill="#141413"/>
+                    <rect class="vk-eq-bar vk-eq-bar-2" x="4.2" y="0.2" width="2.1" height="9.3" rx="0.5" fill="#141413"/>
+                    <rect class="vk-eq-bar vk-eq-bar-3" x="7.8" y="1.6" width="2.1" height="7.9" rx="0.5" fill="#141413"/>
+                  </svg>
+                </span>
+              </span>
+              <span class="vk-slot" id="vkSlotD">
+                <span class="vk-item vk-char is-active" id="vkCharD">d</span>
+                <span class="vk-item vk-symbol" id="vkSymPause">
+                  <svg class="vk-sym-svg" width="9" height="9.5" viewBox="0 0 9 9.5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="0.7" y="0.35" width="2.75" height="8.8" rx="0.55" fill="#141413"/>
+                    <rect x="5.55" y="0.35" width="2.75" height="8.8" rx="0.55" fill="#141413"/>
+                  </svg>
+                </span>
+              </span>
+            </span>
+          </a>
 
-    <!-- Instant Deep Maroon-Noir Base (Zero White Flash, Zero Artificial Delay Veil) -->
-    <style>
-      :root {
-        color-scheme: dark;
-      }
-      html,
-      body,
-      #root {
-        margin: 0;
-        padding: 0;
-        min-height: 100vh;
-        background-color: #080102;
-        background-image: radial-gradient(
-          ellipse 88% 78% at 50% 44%,
-          #1c0307 0%,
-          #100204 54%,
-          #060102 100%
-        );
-        color: #f3e9e4;
-      }
-    </style>
+          <nav class="nav-links">
+            <a href="#heroScrollWrapper" class="nav-link active" data-nav-target="hero">
+              Hero
+              <span class="active-dot" aria-hidden="true"></span>
+            </a>
+            <a href="#featuresScrollWrapper" class="nav-link" data-nav-target="player">Player</a>
+            <a href="#pageThreeSection" class="nav-link nav-index" data-nav-target="download">
+              Download
+              <svg class="chevron-icon" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M1 1.25L4.5 4.75L8 1.25" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </nav>
+        </header>
 
-    <!-- Preload critical pre-baked textures for 0ms instant paint on reload -->
-    <link rel="preload" as="image" href="/assets/hero-leather.png" fetchpriority="high" />
-    <link rel="preload" as="image" href="/assets/vinyl-disc.png" fetchpriority="high" />
-    <link rel="preload" as="image" href="/assets/tonearm.png" fetchpriority="high" />
-    <link rel="preload" as="image" href="/assets/leather-tile.png" />
+        <aside class="editorial-info" aria-label="Featured Release Details">
+          <h1 class="editorial-title">
+            <span>EVERYTHING</span>
+            <span>EVERYWHERE ALL</span>
+            <span>AT ONCE</span>
+          </h1>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Inter:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Inter:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap"
-      rel="stylesheet"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Inter:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap"
-        rel="stylesheet"
-      />
-    </noscript>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+          <div class="credits-table">
+            <div class="credit-row">
+              <span class="credit-label">DIRECTED BY</span>
+              <div class="credit-values">
+                <span>_nixhm_</span>
+              </div>
+            </div>
+            <div class="credit-row">
+              <span class="credit-label">YEAR</span>
+              <div class="credit-values">
+                <span>2026</span>
+              </div>
+            </div>
+            <div class="credit-row">
+              <span class="credit-label">EDITION</span>
+              <div class="credit-values">
+                <span>VOID AUDIO</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <div class="cd-stage" id="cdStage" aria-label="Interactive Album Disc Carousel">
+          <div class="cd-item" data-index="0">
+            <div class="cd-shadow" aria-hidden="true"></div>
+            <div class="cd-tilt">
+              <div class="cd-rim-depth" aria-hidden="true"></div>
+              <div class="cd-disc">
+                <img class="cd-art" data-itunes-id="1544269473" src="https://i.scdn.co/image/ab67616d0000b2736ff25c2481eeaf6e7284d461" alt="Man On The Moon III: The Chosen Album Cover" decoding="async" fetchpriority="high" />
+                <div class="cd-sheen" aria-hidden="true"></div>
+                <div class="cd-hub" aria-hidden="true"><div class="cd-center-hole"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cd-item" data-index="1">
+            <div class="cd-shadow" aria-hidden="true"></div>
+            <div class="cd-tilt">
+              <div class="cd-rim-depth" aria-hidden="true"></div>
+              <div class="cd-disc">
+                <img class="cd-art" data-itunes-id="712727641" src="https://i.scdn.co/image/ab67616d0000b273c7aed2bbf5698336b43ee46f" alt="Enigma - MCMXC a.D. Official Cover" decoding="async" fetchpriority="high" />
+                <div class="cd-sheen" aria-hidden="true"></div>
+                <div class="cd-hub" aria-hidden="true"><div class="cd-center-hole"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cd-item" data-index="2">
+            <div class="cd-shadow" aria-hidden="true"></div>
+            <div class="cd-tilt">
+              <div class="cd-rim-depth" aria-hidden="true"></div>
+              <div class="cd-disc">
+                <img class="cd-art" data-itunes-id="1440838039" src="https://i.scdn.co/image/ab67616d0000b2739e1cfc756886ac782e363d79" alt="Tame Impala - Currents Official Cover" decoding="async" fetchpriority="high" />
+                <div class="cd-sheen" aria-hidden="true"></div>
+                <div class="cd-hub" aria-hidden="true"><div class="cd-center-hole"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cd-item" data-index="3">
+            <div class="cd-shadow" aria-hidden="true"></div>
+            <div class="cd-tilt">
+              <div class="cd-rim-depth" aria-hidden="true"></div>
+              <div class="cd-disc">
+                <img class="cd-art" data-itunes-id="1254572564" src="https://i.scdn.co/image/ab67616d0000b2738940ac99f49e44f59e6f7fb3" alt="Tyler, The Creator - Flower Boy Official Cover" decoding="async" fetchpriority="high" />
+                <div class="cd-sheen" aria-hidden="true"></div>
+                <div class="cd-hub" aria-hidden="true"><div class="cd-center-hole"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cd-item" data-index="4">
+            <div class="cd-shadow" aria-hidden="true"></div>
+            <div class="cd-tilt">
+              <div class="cd-rim-depth" aria-hidden="true"></div>
+              <div class="cd-disc">
+                <img class="cd-art" data-itunes-id="617154241" src="https://i.scdn.co/image/ab67616d0000b2739b9b36b0e22870b9f542d937" alt="Daft Punk - Random Access Memories Official Cover" decoding="async" fetchpriority="high" />
+                <div class="cd-sheen" aria-hidden="true"></div>
+                <div class="cd-hub" aria-hidden="true"><div class="cd-center-hole"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="press-quotes" aria-label="Audio Experience Highlights">
+          <div class="quote-block">
+            <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+            <div class="quote-source">LOSSLESS AUDIO ENGINE</div>
+            <blockquote class="quote-text">“FEEL EVERY BEAT<br />IN PURE CLARITY”</blockquote>
+          </div>
+          <div class="quote-block">
+            <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+            <div class="quote-source">STUDIO GRADE SOUND</div>
+            <blockquote class="quote-text">“BUILT FOR PURE<br />MUSIC IMMERSION”</blockquote>
+          </div>
+        </footer>
+      </div>
+    </section>
+  </div>
+
+  <!-- ========================================================================
+       PAGE 2 MOUNT: 3D Curved Cylindrical Ribbon Ring (12 Outer Artists + 12 Inner Song Covers)
+       (Source file: pages/02-ring/page2-ring.html)
+       ======================================================================== -->
+  <div id="page2RingMount">
+    <section
+      class="cylinder-ring-section"
+      id="cylinderRingSection"
+      aria-label="Featured Artists &amp; Tracks 3D Ring"
+    >
+      <div class="cylinder-ring-sticky" id="cylinderRingSticky">
+        <div class="cylinder-ring-viewport" id="cylinderRingViewport">
+          <div class="cylinder-scene-3d" id="cylinderScene3D">
+            <div class="cylinder-tilt-rig" id="cylinderTiltRig">
+              <div class="cylinder-spin-drum" id="cylinderSpinDrum"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ========================================================================
+       PAGE 3 MOUNT: 7-Card 3D Perspective Carousel (Source file: pages/02-cards/page2-cards.html)
+       ======================================================================== -->
+  <div id="page2CardsMount">
+    <section class="prism-scroll-wrapper" id="featuresScrollWrapper" aria-label="VOID Architecture Showcase">
+      <div class="prism-sticky" id="prismSticky">
+        <div class="prism-center-glow" id="prismCenterGlow" aria-hidden="true"></div>
+        <div class="prism-stage-3d" id="prismStage3D">
+
+          <article class="prism-unit" data-card-index="0">
+            <div class="prism-unit-surface">
+              <div class="prism-unit-content">
+                <header class="prism-slide-header">
+                  <svg class="prism-header-icon" width="18" height="18" viewBox="0 0 20 20" fill="none">
+                    <path d="M3 8.2V11.8M6.5 5.2V14.8M10 2.5V17.5M13.5 5.2V14.8M17 8.2V11.8" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"/>
+                  </svg>
+                  <span class="prism-header-title">Lossless Acoustic Engine</span>
+                </header>
+                <div class="prism-glass-panel">
+                  <div class="pg-tier-list">
+                    <div class="pg-tier-row">
+                      <div class="pg-tier-meta">
+                        <span class="pg-tier-name">Ultra Hi-Res FLAC</span>
+                        <div class="pg-pips">
+                          <span class="pg-pip is-lit"></span><span class="pg-pip is-lit"></span><span class="pg-pip is-lit"></span><span class="pg-pip is-lit"></span>
+                        </div>
+                      </div>
+                      <div class="pg-select-box pg-select-expanded">
+                        <div class="pg-select-active"><span>24-Bit / 192 kHz Bit-Perfect</span><span class="pg-caret">▴</span></div>
+                        <div class="pg-select-option">Direct Kernel Audio Stream</div>
+                        <div class="pg-select-option is-highlighted">Zero-Resample Hardware Lock</div>
+                        <div class="pg-select-option">Studio Master Headroom</div>
+                      </div>
+                    </div>
+                    <div class="pg-tier-row">
+                      <div class="pg-tier-meta">
+                        <span class="pg-tier-name">Extreme 320 kbps</span>
+                        <div class="pg-pips">
+                          <span class="pg-pip is-lit"></span><span class="pg-pip is-lit"></span><span class="pg-pip is-lit"></span><span class="pg-pip"></span>
+                        </div>
+                      </div>
+                      <div class="pg-select-box"><span>Constant Bitrate CBR Master</span><span class="pg-caret">▾</span></div>
+                    </div>
+                    <div class="pg-tier-row">
+                      <div class="pg-tier-meta">
+                        <span class="pg-tier-name">Spatial 32-Bit Float</span>
+                        <div class="pg-pips">
+                          <span class="pg-pip is-lit"></span><span class="pg-pip is-lit"></span><span class="pg-pip"></span><span class="pg-pip"></span>
+                        </div>
+                      </div>
+                      <div class="pg-select-box"><span>Dynamic Range Expansion</span><span class="pg-caret">▾</span></div>
+                    </div>
+                    <div class="pg-tier-row">
+                      <div class="pg-tier-meta">
+                        <span class="pg-tier-name">Adaptive Stream</span>
+                        <div class="pg-pips">
+                          <span class="pg-pip is-lit"></span><span class="pg-pip"></span><span class="pg-pip"></span><span class="pg-pip"></span>
+                        </div>
+                      </div>
+                      <div class="pg-select-box"><span>Instant Buffer Pre-Fetch</span><span class="pg-caret">▾</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="prism-unit" data-card-index="1">
+            <div class="prism-unit-surface">
+              <div class="prism-unit-content">
+                <header class="prism-slide-header">
+                  <svg class="prism-header-icon" width="18" height="18" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 2L17.5 6.2L10 10.4L2.5 6.2L10 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+                    <path d="M2.5 10L10 14.2L17.5 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2.5 13.8L10 18L17.5 13.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span class="prism-header-title">Liquid Glass Architecture</span>
+                </header>
+                <div class="prism-glass-panel">
+                  <div class="pg-logic-group">
+                    <div class="pg-logic-pill"><span class="pg-kw">if</span> Surface profile is <strong>Deep Glass</strong></div>
+                    <div class="pg-logic-label">render</div>
+                    <div class="pg-logic-card">
+                      <div class="pg-app-icon">◈</div>
+                      <div class="pg-app-info"><span class="pg-app-title">Specular Depth Refraction</span><span class="pg-app-sub">Multi-Layer Optical Blur</span></div>
+                      <div class="pg-platform-badges"><span>GPU</span><span>120Hz</span></div>
+                    </div>
+                    <div class="pg-logic-card">
+                      <div class="pg-app-icon">◉</div>
+                      <div class="pg-app-info"><span class="pg-app-title">Chromatic Edge Luminance</span><span class="pg-app-sub">Real-Time Ambient Bleed</span></div>
+                      <div class="pg-platform-badges"><span>HDR</span><span>Metal</span></div>
+                    </div>
+                    <div class="pg-logic-pill pg-logic-pill-spaced"><span class="pg-kw">else if</span> Surface profile is <strong>Paper Glass</strong></div>
+                    <div class="pg-logic-label">render</div>
+                    <div class="pg-logic-card">
+                      <div class="pg-app-icon">▤</div>
+                      <div class="pg-app-info"><span class="pg-app-title">Frosted Tactile Grain</span><span class="pg-app-sub">Soft Matte Light Diffusion</span></div>
+                      <div class="pg-platform-badges"><span>Crisp</span><span>Zero-Lag</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="prism-unit" data-card-index="2">
+            <div class="prism-unit-surface">
+              <div class="prism-unit-content">
+                <header class="prism-slide-header">
+                  <svg class="prism-header-icon" width="18" height="18" viewBox="0 0 20 20" fill="none">
+                    <rect x="2.2" y="3.8" width="15.6" height="12.4" rx="2.6" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M8.4 7.4L12.8 10L8.4 12.6V7.4Z" fill="currentColor" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+                  </svg>
+                  <span class="prism-header-title">Ambient Video Canvas</span>
+                </header>
+                <div class="prism-glass-panel">
+                  <div class="pg-grid-2x2">
+                    <div class="pg-grid-tile"><div class="pg-tile-icon">▶&#xFE0E;</div><div class="pg-tile-bottom"><span class="pg-tile-name">Motion Canvas</span><span class="pg-tile-badge">4K Sync</span></div></div>
+                    <div class="pg-grid-tile"><div class="pg-tile-icon">✦&#xFE0E;</div><div class="pg-tile-bottom"><span class="pg-tile-name">Beat Backdrop</span><span class="pg-tile-badge">Live Loop</span></div></div>
+                    <div class="pg-grid-tile"><div class="pg-tile-icon">◐&#xFE0E;</div><div class="pg-tile-bottom"><span class="pg-tile-name">Cinema Bleed</span><span class="pg-tile-badge">60 FPS</span></div></div>
+                    <div class="pg-grid-tile"><div class="pg-tile-icon">◈&#xFE0E;</div><div class="pg-tile-bottom"><span class="pg-tile-name">Hardware Decode</span><span class="pg-tile-badge">0% Drop</span></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="prism-unit" data-card-index="3">
+            <div class="prism-unit-surface">
+              <div class="prism-unit-content">
+                <header class="prism-slide-header">
+                  <svg class="prism-header-icon" width="18" height="18" viewBox="0 0 20 20" fill="none">
+                    <circle cx="9" cy="9" r="5.8" stroke="currentColor" stroke-width="1.4"/>
+                    <path d="M13.5 13.5L17.5 17.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                  <span class="prism-header-title">Expanded Stage &amp; Live Lyrics</span>
+                </header>
+                <div class="prism-glass-panel">
+                  <div class="pg-table">
+                    <div class="pg-table-head"><span>Pipeline Module</span><span>Sync Mode</span><span>Classification</span></div>
+                    <div class="pg-table-row"><span class="pg-mono">✦ Syllable Timecode</span><span class="pg-pill">0.4ms Lock</span><span>Word-by-Word Glow</span></div>
+                    <div class="pg-table-row"><span class="pg-mono">✦ Expanded Stage</span><span class="pg-pill">Full-Bleed</span><span>Immersive Theater</span></div>
+                    <div class="pg-table-row"><span class="pg-mono">✦ Vocal Harmonics</span><span class="pg-pill">Real-Time</span><span>Beat-Tracked Scroll</span></div>
+                    <div class="pg-table-row"><span class="pg-mono">✦ Dual Translation</span><span class="pg-pill">Active</span><span>Phonetic Overlay</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="prism-unit" data-card-index="4">
+            <div class="prism-unit-surface">
+              <div class="prism-unit-content">
+                <header class="prism-slide-header">
+                  <svg class="prism-header-icon" width="18" height="18" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 3V13M10 13L6 9M10 13L14 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M3.5 16.5H16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                  <span class="prism-header-title">Direct Track Vault &amp; Download</span>
+                </header>
+                <div class="prism-glass-panel">
+                  <div class="pg-grid-2x2">
+                    <div class="pg-grid-tile"><div class="pg-tile-icon">↓&#xFE0E;</div><div class="pg-tile-bottom"><span class="pg-tile-name">Instant Fetch</span><span class="pg-tile-badge">Any Track</span></div></div>
+                    <div class="pg-grid-tile"><div class="pg-tile-icon">♫&#xFE0E;</div><div class="pg-tile-bottom"><span class="pg-tile-name">FLAC / 320k</span><span class="pg-tile-badge">Selectable</span></div></div>
+                    <div class="pg-grid-tile"><div class="pg-tile-icon">❖&#xFE0E;</div><div class="pg-tile-bottom"><span class="pg-tile-name">ID3v2.4 Tags</span><span class="pg-tile-badge">4K Covers</span></div></div>
+                    <div class="pg-grid-tile"><div class="pg-tile-icon">⛁&#xFE0E;</div><div class="pg-tile-bottom"><span class="pg-tile-name">Offline Vault</span><span class="pg-tile-badge">Zero-Net</span></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="prism-unit" data-card-index="5">
+            <div class="prism-unit-surface">
+              <div class="prism-unit-content">
+                <header class="prism-slide-header">
+                  <svg class="prism-header-icon" width="18" height="18" viewBox="0 0 20 20" fill="none">
+                    <path d="M4 16V10M10 16V4M16 16V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  </svg>
+                  <span class="prism-header-title">Parametric Studio DSP</span>
+                </header>
+                <div class="prism-glass-panel">
+                  <div class="pg-table">
+                    <div class="pg-table-head"><span>DSP Stage</span><span>State</span><span>Acoustic Profile</span></div>
+                    <div class="pg-table-row"><span class="pg-mono">✦ 10-Band EQ</span><span class="pg-pill">Linear</span><span>Zero Phase Shift</span></div>
+                    <div class="pg-table-row"><span class="pg-mono">✦ Sub Harmonic</span><span class="pg-pill">20–60 Hz</span><span>Deep Analog Punch</span></div>
+                    <div class="pg-table-row"><span class="pg-mono">✦ Crossfeed 3D</span><span class="pg-pill">Binaural</span><span>Wide Soundstage</span></div>
+                    <div class="pg-table-row"><span class="pg-mono">✦ ReplayGain v2</span><span class="pg-pill">-14 LUFS</span><span>Loudness Match</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="prism-unit" data-card-index="6">
+            <div class="prism-unit-surface">
+              <div class="prism-unit-content">
+                <header class="prism-slide-header">
+                  <svg class="prism-header-icon" width="18" height="18" viewBox="0 0 20 20" fill="none">
+                    <rect x="2.5" y="3.5" width="15" height="10.5" rx="1.8" stroke="currentColor" stroke-width="1.4"/>
+                    <path d="M6.5 17H13.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  </svg>
+                  <span class="prism-header-title">Native Dual-Platform Core</span>
+                </header>
+                <div class="prism-glass-panel">
+                  <div class="pg-logic-group">
+                    <div class="pg-logic-pill"><span class="pg-kw">if</span> Target environment is <strong>macOS Desktop</strong></div>
+                    <div class="pg-logic-label">deploy</div>
+                    <div class="pg-logic-card">
+                      <div class="pg-app-icon"></div>
+                      <div class="pg-app-info"><span class="pg-app-title">VOID Universal .DMG</span><span class="pg-app-sub">Apple Silicon &amp; Intel Native</span></div>
+                      <div class="pg-platform-badges"><span>DMG</span><span>60/120fps</span></div>
+                    </div>
+                    <div class="pg-logic-pill pg-logic-pill-spaced"><span class="pg-kw">else if</span> Target environment is <strong>Android Mobile</strong></div>
+                    <div class="pg-logic-label">deploy</div>
+                    <div class="pg-logic-card">
+                      <div class="pg-app-icon">◈</div>
+                      <div class="pg-app-info"><span class="pg-app-title">VOID Signed .APK</span><span class="pg-app-sub">Low-RAM Background Audio Engine</span></div>
+                      <div class="pg-platform-badges"><span>APK</span><span>2GB+ RAM</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ========================================================================
+       PAGE 3 MOUNT: Locked Butterfly & Macintosh Showcase + 3D Train Walk-In Download
+       (Source file: pages/03-showcase/page3-showcase.html)
+       ======================================================================== -->
+  <div id="page3ShowcaseMount">
+    <section class="page3-section" id="pageThreeSection" aria-label="VOID Download & Showcase Stage">
+      <div class="page3-sticky" id="page3Sticky">
+        <div class="page3-media-frame" id="page3MediaFrame">
+          <!-- 3D Camera Walk-In Rig (Centered on the Macintosh White Screen 50% 54.4%) -->
+          <div class="page3-camera-rig" id="page3CameraRig">
+            <img
+              class="page3-photo has-photo"
+              id="page3Photo"
+              src="public/macintosh-meadow.png"
+              alt="VOID Desktop Showcase in Sunlit Butterfly Meadow"
+              decoding="async"
+            />
+            <img
+              class="page3-photo page3-motion-blur-layer"
+              id="page3BlurEdge"
+              alt=""
+              aria-hidden="true"
+              decoding="async"
+            />
+          </div>
+
+          <!-- Warm Golden-Yellow Sunlight Canopy -->
+          <div class="page3-top-sunlight" id="page3TopSunlight" aria-hidden="true"></div>
+
+          <!-- Zero-Lag GPU Top Gradient Seam Bridge Between Page 2 and Page 3 -->
+          <div class="page3-top-white-seam" id="page3TopWhiteSeam" aria-hidden="true"></div>
+
+          <!-- Optical Screen Glow & Pure White Screen Portal Flash Inside the Macintosh -->
+          <div class="page3-screen-bloom" id="page3ScreenBloom" aria-hidden="true"></div>
+          <div class="page3-white-portal" id="page3WhitePortal" aria-hidden="true"></div>
+
+          <!-- ====================================================================
+               INSIDE MACINTOSH SCREEN: 3D TRAIN WALK-IN + FROSTED GLASS DOWNLOAD STAGE
+               ==================================================================== -->
+          <div class="vp-stage" id="page3VisionStage" aria-label="VOID Spatial Download Portal">
+            <!-- 3D Camera Rig Inside the Train Environment (Zooms forward with Motion Blur on scroll) -->
+            <div class="vp-environment-bg" id="vpEnvironmentBg">
+              <img
+                class="vp-bg-photo has-custom-bg"
+                id="visionBgImage"
+                src="public/download-bg.png"
+                alt="VOID Download Environment Background"
+                decoding="async"
+              />
+              <!-- Zero-Lag Pre-Baked Peripheral Motion Blur for Scrolling Inside the Train -->
+              <img
+                class="vp-bg-photo vp-train-blur-layer"
+                id="visionBgBlur"
+                alt=""
+                aria-hidden="true"
+                decoding="async"
+              />
+              <div class="vp-bg-vignette" aria-hidden="true"></div>
+            </div>
+
+            <!-- Dead-Center Spatial Glass Window -->
+            <div class="vp-spatial-assembly" id="vpSpatialAssembly">
+              <div class="vp-glass-window" id="vpGlassWindow">
+                <!-- Clean Top Header: Standard "VOID" Only -->
+                <header class="vp-window-topbar">
+                  <span class="vp-brand-title">VOID</span>
+                  <span class="vp-top-pill">v2.6 Release</span>
+                </header>
+
+                <!-- Centered 3-Column Glass Cards: Mac, Windows, Android -->
+                <div class="vp-download-grid" id="vpDownloadGrid">
+                  <!-- 1. MAC CARD -->
+                  <article class="vp-os-card" data-os="mac">
+                    <div class="vp-os-card-top">
+                      <div class="vp-os-emblem">
+                        <img src="public/icon-mac.svg?v=47" alt="Mac" width="44" height="44" />
+                      </div>
+                      <span class="vp-os-pill">Universal .DMG</span>
+                    </div>
+                    <div class="vp-os-card-mid">
+                      <h3 class="vp-os-title">Mac</h3>
+                      <p class="vp-os-desc">Apple Silicon (M1–M4) &amp; Intel Native CoreAudio Engine</p>
+                      <div class="vp-os-specs">
+                        <span>macOS 13+</span>
+                        <span>•</span>
+                        <span>68 MB</span>
+                      </div>
+                    </div>
+                    <button type="button" class="vp-download-btn" data-download-os="Mac (.DMG)">
+                      <span class="vp-btn-label">Download</span>
+                      <span class="vp-btn-progress-track" aria-hidden="true">
+                        <span class="vp-btn-progress-fill"></span>
+                      </span>
+                    </button>
+                  </article>
+
+                  <!-- 2. WINDOWS CARD -->
+                  <article class="vp-os-card" data-os="windows">
+                    <div class="vp-os-card-top">
+                      <div class="vp-os-emblem">
+                        <img src="public/icon-windows.svg?v=47" alt="Windows" width="42" height="42" />
+                      </div>
+                      <span class="vp-os-pill">64-Bit .EXE</span>
+                    </div>
+                    <div class="vp-os-card-mid">
+                      <h3 class="vp-os-title">Windows</h3>
+                      <p class="vp-os-desc">Exclusive WASAPI &amp; ASIO Bit-Perfect Desktop Studio Player</p>
+                      <div class="vp-os-specs">
+                        <span>Win 10 / 11</span>
+                        <span>•</span>
+                        <span>74 MB</span>
+                      </div>
+                    </div>
+                    <button type="button" class="vp-download-btn" data-download-os="Windows (.EXE)">
+                      <span class="vp-btn-label">Download</span>
+                      <span class="vp-btn-progress-track" aria-hidden="true">
+                        <span class="vp-btn-progress-fill"></span>
+                      </span>
+                    </button>
+                  </article>
+
+                  <!-- 3. ANDROID CARD -->
+                  <article class="vp-os-card" data-os="android">
+                    <div class="vp-os-card-top">
+                      <div class="vp-os-emblem">
+                        <img src="public/icon-android.svg?v=47" alt="Android" width="44" height="44" />
+                      </div>
+                      <span class="vp-os-pill">Signed .APK</span>
+                    </div>
+                    <div class="vp-os-card-mid">
+                      <h3 class="vp-os-title">Android</h3>
+                      <p class="vp-os-desc">Direct USB-DAC Bypass &amp; 120Hz Liquid Glass Mobile Engine</p>
+                      <div class="vp-os-specs">
+                        <span>Android 10+</span>
+                        <span>•</span>
+                        <span>42 MB</span>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      class="vp-download-btn"
+                      data-download-os="Android (.APK)"
+                      data-download-url="https://github.com/nixhm55/VOID/releases/download/v1.0.0/app-release.apk"
+                    >
+                      <span class="vp-btn-label">Download</span>
+                      <span class="vp-btn-progress-track" aria-hidden="true">
+                        <span class="vp-btn-progress-fill"></span>
+                      </span>
+                    </button>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Lenis + GSAP + ScrollTrigger + Locked Desktop Modules (desktop-pages/) + Dedicated Mobile Modules (mobile-pages/) + Master Orchestrator -->
+  <script src="node_modules/lenis/dist/lenis.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/lenis@1.1.20/dist/lenis.min.js'"></script>
+  <script src="node_modules/gsap/dist/gsap.min.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js'"></script>
+  <script src="node_modules/gsap/dist/ScrollTrigger.min.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js'"></script>
+  <!-- Locked Desktop JS Modules (100% Untouched) -->
+  <script src="desktop-pages/01-hero/page1-hero.js?v=56"></script>
+  <script src="desktop-pages/02-ring/page2-ring.js?v=56"></script>
+  <script src="desktop-pages/02-cards/page2-cards.js?v=56"></script>
+  <script src="desktop-pages/03-showcase/page3-showcase.js?v=56"></script>
+  <!-- Dedicated Mobile JS Adapters (Active ONLY when window.innerWidth <= 768px) -->
+  <script src="mobile-pages/01-hero/page1-hero.js?v=59"></script>
+  <script src="mobile-pages/02-ring/page2-ring.js?v=59"></script>
+  <script src="mobile-pages/02-cards/page2-cards.js?v=59"></script>
+  <script src="mobile-pages/03-showcase/page3-showcase.js?v=59"></script>
+  <script src="assets/js/script.js?v=58"></script>
+</body>
 </html>

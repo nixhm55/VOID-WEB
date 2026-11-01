@@ -1,0 +1,557 @@
+/* ==========================================================================
+   PAGE 2: 7-CARD 3D PERSPECTIVE FADE CAROUSEL STYLES
+   - Left-to-Right Opacity Fade Surfaces + Frosted Liquid Glass Inner Panels
+   ========================================================================== */
+
+.prism-scroll-wrapper {
+  position: relative;
+  width: 100%;
+  height: 520vh;
+  background-color: transparent;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.prism-sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  user-select: none;
+  pointer-events: none;
+  contain: layout style;
+}
+
+/* Subtle Center-Only Ambient Lighting Behind the Active Card */
+.prism-center-glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 560px;
+  height: 560px;
+  transform: translate3d(-44%, -50%, 0);
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(
+    circle at 50% 50%,
+    var(--center-glow-rgba, rgba(242, 85, 20, 0.24)) 0%,
+    var(--center-glow-Soft, rgba(242, 85, 20, 0.09)) 36%,
+    rgba(241, 241, 239, 0) 68%
+  );
+  will-change: opacity;
+}
+
+/* 3D Perspective Stage Holding Cards */
+.prism-stage-3d {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  perspective: 1150px;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.prism-unit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 468px;
+  height: 472px;
+  margin-left: -234px;
+  margin-top: -236px;
+  cursor: pointer;
+  pointer-events: auto;
+  font-family: var(--font-premium);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-origin: center center;
+  contain: layout style paint;
+}
+
+/* ==========================================================================
+   Clean Left-Cut to Right-Opacity-Fade Card Surface
+   ========================================================================== */
+
+.prism-unit-surface {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 2px;
+  overflow: hidden;
+  background: linear-gradient(
+    90deg,
+    var(--c-left, #e03c00) 0%,
+    var(--c-mid, #f55f18) 52%,
+    var(--c-right, #ff9d5c) 88%,
+    var(--c-right, #ff9d5c) 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 46%,
+    rgba(0, 0, 0, 0.92) 58%,
+    rgba(0, 0, 0, 0.68) 71%,
+    rgba(0, 0, 0, 0.35) 83%,
+    rgba(0, 0, 0, 0.10) 93%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 46%,
+    rgba(0, 0, 0, 0.92) 58%,
+    rgba(0, 0, 0, 0.68) 71%,
+    rgba(0, 0, 0, 0.35) 83%,
+    rgba(0, 0, 0, 0.10) 93%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+/* Color Palettes for the 7 Cards */
+.prism-unit[data-card-index="0"] {
+  --c-left: #de3c00;
+  --c-mid: #f25c16;
+  --c-right: #ff9c59;
+}
+
+.prism-unit[data-card-index="1"] {
+  --c-left: #520b85;
+  --c-mid: #b8246d;
+  --c-right: #ff7585;
+}
+
+.prism-unit[data-card-index="2"] {
+  --c-left: #0850b8;
+  --c-mid: #14a2e6;
+  --c-right: #76f7f0;
+}
+
+.prism-unit[data-card-index="3"] {
+  --c-left: #d12000;
+  --c-mid: #ee4b26;
+  --c-right: #ff8b7e;
+}
+
+.prism-unit[data-card-index="4"] {
+  --c-left: #1422d1;
+  --c-mid: #6b26de;
+  --c-right: #d472ff;
+}
+
+.prism-unit[data-card-index="5"] {
+  --c-left: #681092;
+  --c-mid: #d13450;
+  --c-right: #ff8e58;
+}
+
+.prism-unit[data-card-index="6"] {
+  --c-left: #d64600;
+  --c-mid: #f27418;
+  --c-right: #ffb860;
+}
+
+/* Inner Content Wrapper */
+.prism-unit-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 2.2rem 2.4rem 2.2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-premium);
+  will-change: opacity;
+  contain: layout style;
+}
+
+.prism-slide-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.58rem;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  padding-right: 8%;
+}
+
+.prism-header-icon {
+  flex-shrink: 0;
+  opacity: 0.96;
+}
+
+.prism-header-title {
+  font-family: var(--font-premium);
+  font-size: 1.02rem;
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  color: #ffffff;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+}
+
+/* Translucent Frosted Liquid Glass Inner Panel */
+.prism-glass-panel {
+  position: relative;
+  flex: 1;
+  width: 92%;
+  border-radius: 11px;
+  padding: 1.35rem;
+  background: linear-gradient(
+    110deg,
+    rgba(255, 255, 255, 0.16) 0%,
+    rgba(255, 255, 255, 0.11) 55%,
+    rgba(255, 255, 255, 0.22) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.34);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #ffffff;
+  font-family: var(--font-premium);
+  overflow: hidden;
+}
+
+/* --- Template A: Tier Bars + Dropdown Selector --- */
+.pg-tier-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.68rem;
+}
+
+.pg-tier-row {
+  display: grid;
+  grid-template-columns: 116px 1fr;
+  align-items: start;
+  gap: 0.75rem;
+}
+
+.pg-tier-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.32rem;
+  padding-top: 0.2rem;
+}
+
+.pg-tier-name {
+  font-family: var(--font-premium);
+  font-size: 0.71rem;
+  font-weight: 600;
+  letter-spacing: -0.016em;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.pg-pips {
+  display: flex;
+  gap: 4px;
+}
+
+.pg-pip {
+  width: 13px;
+  height: 4px;
+  border-radius: 1.5px;
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.pg-pip.is-lit {
+  background: #ffffff;
+}
+
+.pg-select-box {
+  font-family: var(--font-premium);
+  background: rgba(255, 255, 255, 0.13);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: 6px;
+  padding: 0.42rem 0.64rem;
+  font-size: 0.67rem;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  color: rgba(255, 255, 255, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  white-space: nowrap;
+}
+
+.pg-select-expanded {
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.pg-select-active {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.42rem 0.64rem;
+  font-weight: 600;
+  letter-spacing: -0.014em;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.pg-select-option {
+  font-family: var(--font-premium);
+  padding: 0.32rem 0.64rem;
+  font-size: 0.64rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 0.84);
+}
+
+.pg-select-option.is-highlighted {
+  background: rgba(255, 255, 255, 0.24);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.pg-caret {
+  font-size: 0.58rem;
+  opacity: 0.8;
+}
+
+/* --- Template B: Conditional If / Else Logic Cards --- */
+.pg-logic-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.42rem;
+}
+
+.pg-logic-pill {
+  font-family: var(--font-premium);
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 6px;
+  padding: 0.38rem 0.66rem;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  color: rgba(255, 255, 255, 0.94);
+  white-space: nowrap;
+}
+
+.pg-logic-pill strong {
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.016em;
+}
+
+.pg-logic-pill-spaced {
+  margin-top: 0.32rem;
+}
+
+.pg-kw {
+  font-family: var(--font-premium);
+  font-weight: 600;
+  font-size: 0.64rem;
+  letter-spacing: 0.01em;
+  opacity: 0.78;
+  margin-right: 0.36rem;
+}
+
+.pg-logic-label {
+  font-family: var(--font-premium);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.74);
+  padding-left: 0.22rem;
+}
+
+.pg-logic-card {
+  display: flex;
+  align-items: center;
+  gap: 0.62rem;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 7px;
+  padding: 0.44rem 0.68rem;
+}
+
+.pg-app-icon {
+  width: 25px;
+  height: 25px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.19);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.76rem;
+  flex-shrink: 0;
+}
+
+.pg-app-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.06rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.pg-app-title {
+  font-family: var(--font-premium);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: -0.016em;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.pg-app-sub {
+  font-family: var(--font-premium);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 0.8);
+  white-space: nowrap;
+}
+
+.pg-platform-badges {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.pg-platform-badges span {
+  font-family: var(--font-premium);
+  font-size: 0.56rem;
+  font-weight: 600;
+  letter-spacing: -0.008em;
+  padding: 0.16rem 0.4rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.96);
+}
+
+/* --- Template C: 2x2 Frosted Glass Tiles Grid --- */
+.pg-grid-2x2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0.72rem;
+  height: 100%;
+}
+
+.pg-grid-tile {
+  background: rgba(255, 255, 255, 0.13);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.pg-tile-icon {
+  font-family: var(--font-premium);
+  font-size: 1.12rem;
+  font-weight: 600;
+  color: #ffffff;
+  opacity: 0.95;
+}
+
+.pg-tile-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+}
+
+.pg-tile-name {
+  font-family: var(--font-premium);
+  font-size: 0.73rem;
+  font-weight: 600;
+  letter-spacing: -0.016em;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.pg-tile-badge {
+  font-family: var(--font-premium);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  padding: 0.16rem 0.42rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.19);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  color: rgba(255, 255, 255, 0.96);
+  white-space: nowrap;
+}
+
+/* --- Template D: Status Matrix Table --- */
+.pg-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.52rem;
+}
+
+.pg-table-head {
+  font-family: var(--font-premium);
+  display: grid;
+  grid-template-columns: 1.32fr 0.85fr 1.1fr;
+  font-size: 0.59rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.76);
+  padding: 0 0.3rem 0.35rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.pg-table-row {
+  font-family: var(--font-premium);
+  display: grid;
+  grid-template-columns: 1.32fr 0.85fr 1.1fr;
+  align-items: center;
+  font-size: 0.67rem;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  color: rgba(255, 255, 255, 0.94);
+  padding: 0.42rem 0.3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  white-space: nowrap;
+}
+
+.pg-table-row:last-child {
+  border-bottom: none;
+}
+
+.pg-mono {
+  font-family: var(--font-premium);
+  font-size: 0.67rem;
+  font-weight: 600;
+  letter-spacing: -0.016em;
+  color: #ffffff;
+}
+
+.pg-pill {
+  font-family: var(--font-premium);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 0.16rem 0.48rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.17);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  font-size: 0.59rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+}
+
+@media (max-width: 960px) {
+  .prism-stage-3d {
+    transform: scale(0.76);
+  }
+}

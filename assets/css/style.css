@@ -1,0 +1,99 @@
+/* ==========================================================================
+   VOID Website — Global Base, Lenis Core & GPU Performance Styles (style.css)
+   Page-specific styles are cleanly separated into:
+   - page1-hero.css     (Page 1: Hero Section & 5-CD 3D Stage)
+   - page2-cards.css    (Page 2: 7-Card 3D Perspective Carousel)
+   - page3-showcase.css (Page 3: Meadow Laptop Showcase)
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --hero-bg: #f1f1ef;
+  --text-primary: #141413;
+  --text-muted: #6e6e6a;
+  --rule-color: rgba(20, 20, 19, 0.42);
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-premium: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html {
+  background-color: var(--hero-bg);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: auto;
+  overflow-anchor: none;
+}
+
+/* Official Lenis Core Styles */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+body {
+  overflow-x: hidden;
+  overflow-anchor: none;
+  background-color: var(--hero-bg);
+}
+
+/* Three.js Ambient Optical Depth Canvas */
+.hero-three-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  display: block;
+}
+
+/* Interactive Magnetic Elements GPU Compositing */
+.brand-logo,
+.nav-link,
+.pg-select-box,
+.pg-logic-card,
+.pg-grid-tile,
+.pg-pill {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

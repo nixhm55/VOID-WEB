@@ -1,0 +1,88 @@
+/* ==========================================================================
+   PAGE 2 (NEW): 3D CURVED CYLINDRICAL RIBBON RING STYLES
+   - Normal continuous page scrolling (100vh, never sticks/locks scroll)
+   - Shape, size & motion 100% preserved
+   - 2x Supersampled 4K Retina Texture Rasterization (532px internal height scaled 0.5x in 3D)
+   ========================================================================== */
+
+.cylinder-ring-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-color: var(--hero-bg);
+  z-index: 6;
+  pointer-events: none;
+  user-select: none;
+  overflow: visible;
+}
+
+.cylinder-ring-sticky {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--hero-bg);
+}
+
+.cylinder-ring-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 3D Perspective Camera */
+.cylinder-scene-3d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1800px;
+  perspective-origin: 50% 50%;
+}
+
+/* Tilted 3D Cylinder Rig with 2x Supersampled 4K Scale (scale3d(0.5, 0.5, 0.5)) */
+.cylinder-tilt-rig {
+  position: relative;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  will-change: transform;
+  transform: translate3d(0, 0, -525px) rotateZ(-21.5deg) rotateX(-24.5deg) scale3d(0.5, 0.5, 0.5);
+}
+
+/* Rotating 3D Cylinder Drum */
+.cylinder-spin-drum {
+  position: relative;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Direct 3D Facets (2x Supersampled 4K Retina Resolution: 532px tall x 0.5 scale = 266px visual) */
+.cyl-face {
+  position: absolute;
+  top: -266px;
+  height: 532px;
+  background-repeat: no-repeat;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+@media (max-width: 900px) {
+  .cylinder-tilt-rig {
+    transform: translate3d(0, 0, -820px) rotateZ(-21.5deg) rotateX(-24.5deg) scale3d(0.5, 0.5, 0.5);
+  }
+}

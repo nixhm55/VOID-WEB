@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <defs>
+    <!-- Clean Tinted Liquid Glass Fill (Zero Rainbow/Color Blobs, No Bubble Ellipses) -->
+    <linearGradient id="macTintedGlassFill" x1="25" y1="12" x2="88" y2="112" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.72"/>
+      <stop offset="45%" stop-color="#F1F5F9" stop-opacity="0.46"/>
+      <stop offset="100%" stop-color="#CBD5E1" stop-opacity="0.30"/>
+    </linearGradient>
+
+    <!-- Crisp Specular Liquid Glass Edge Rim -->
+    <linearGradient id="macTintedGlassRim" x1="20" y1="10" x2="92" y2="112" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.78"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Official Standard Apple Leaf -->
+  <path
+    d="M72.3 27.3C76.1 22.8 78.6 16.6 77.8 10.5C72.4 10.8 65.8 14.1 61.9 18.6C58.5 22.4 55.5 28.6 56.4 34.5C62.4 34.9 68.5 31.7 72.3 27.3Z"
+    fill="url(#macTintedGlassFill)"
+    stroke="url(#macTintedGlassRim)"
+    stroke-width="1.6"
+  />
+
+  <!-- Official Standard Apple Body -->
+  <path
+    d="M84.3 63.2C84.1 49.7 95.2 43.2 95.8 42.8C89.5 33.6 79.8 32.3 76.5 31.9C68.3 31.1 60.2 36.8 56.1 36.8C51.9 36.8 45.4 32.0 38.6 32.1C29.7 32.3 21.3 37.3 16.7 45.4C7.3 61.7 14.2 85.6 23.4 98.9C27.9 105.4 33.2 112.6 40.2 112.4C47.0 112.1 49.5 108.0 57.5 108.0C65.4 108.0 67.8 112.4 74.8 112.2C82.2 112.1 86.7 105.6 91.2 99.1C96.3 91.7 98.4 84.3 98.5 84.0C98.4 83.7 84.5 78.4 84.3 63.2Z"
+    fill="url(#macTintedGlassFill)"
+    stroke="url(#macTintedGlassRim)"
+    stroke-width="1.6"
+  />
+</svg>

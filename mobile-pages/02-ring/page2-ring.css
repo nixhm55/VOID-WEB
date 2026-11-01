@@ -1,0 +1,73 @@
+/* ==========================================================================
+   VOID MOBILE — PAGE 2: 3D CYLINDRICAL RIBBON RING
+   (mobile-pages/02-ring/page2-ring.css)
+   - Zero `contain: paint` or `overflow: hidden` on `.cylinder-ring-viewport`
+     so Chrome/Safari never clips the 3D cylinder's back arc!
+   - Locks `#cylinderTiltRig` transform via `--mobile-ring-scale` so the 240-strip
+     3D rig matrix is never mutated twice per frame!
+   ========================================================================== */
+
+@media (max-width: 1024px), (max-height: 600px) {
+  .cylinder-ring-section,
+  .cylinder-ring-sticky,
+  .cylinder-ring-viewport {
+    width: 100%;
+    overflow: visible !important;
+    contain: none !important;
+  }
+
+  .cylinder-scene-3d {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1800px;
+    perspective-origin: 50% 50%;
+    overflow: visible !important;
+  }
+
+  #cylinderTiltRig {
+    transform: translate3d(0px, 0px, -525px) rotateZ(-21.5deg) rotateX(-24.5deg)
+      scale3d(
+        var(--mobile-ring-scale, 0.2),
+        var(--mobile-ring-scale, 0.2),
+        var(--mobile-ring-scale, 0.2)
+      ) !important;
+  }
+}
+
+/* 1. PORTRAIT MODE — Compact spacing so Hero -> Ring -> Cards flow closely together */
+@media (orientation: portrait) and (max-width: 1024px) {
+  .cylinder-ring-section {
+    height: 52vh;
+    margin-top: -4vh;
+    margin-bottom: -6vh;
+  }
+
+  .cylinder-ring-sticky {
+    position: relative;
+    height: 52vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* 2. LANDSCAPE MODE ON PHONES & TABLETS (Exact Laptop Proportions) */
+@media (orientation: landscape) and (max-width: 1024px),
+       (orientation: landscape) and (max-height: 600px) {
+  .cylinder-ring-section {
+    height: 80vh;
+    margin-top: -4vh;
+    margin-bottom: -4vh;
+  }
+
+  .cylinder-ring-sticky {
+    position: relative;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

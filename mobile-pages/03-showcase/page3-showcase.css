@@ -1,0 +1,126 @@
+/* ==========================================================================
+   VOID MOBILE — PAGE 4: BUTTERFLY MACINTOSH SHOWCASE + 3D TRAIN DOWNLOAD PORTAL
+   (mobile-pages/03-showcase/page3-showcase.css)
+   - Exact centered Macintosh framing (`object-position: 49.86% 46%`) so both
+     the Macintosh monitor housing and white CRT screen sit dead-center at 50%!
+   - Enables `pointer-events: auto !important; touch-action: pan-y !important;`
+     for silky-smooth touch scrolling all the way inside the screen.
+   ========================================================================== */
+
+@media (max-width: 1024px), (max-height: 600px) {
+  #page3ShowcaseMount,
+  .page3-section {
+    overflow: visible !important;
+    pointer-events: auto !important;
+    touch-action: pan-y !important;
+  }
+
+  /* Disable duplicate full-screen motion-blur image layers on mobile for 2x faster GPU scrolling */
+  #page3BlurEdge,
+  .page3-motion-blur-layer,
+  #visionBgBlur,
+  .vp-train-blur-layer {
+    display: none !important;
+  }
+
+  .page3-sticky {
+    position: sticky !important;
+    top: 0 !important;
+    width: 100%;
+    height: 100vh !important;
+    overflow: hidden !important;
+    pointer-events: auto !important;
+    touch-action: pan-y !important;
+    contain: layout paint style;
+  }
+
+  .page3-media-frame,
+  .vp-stage {
+    pointer-events: auto !important;
+    touch-action: pan-y !important;
+  }
+
+  /* Restore the exact 860px 3-column Desktop Glass Window geometry
+     so JS proportional scaling gives 100% identical Desktop typography, alignment, and card proportions! */
+  .vp-glass-window {
+    width: 860px !important;
+    max-width: none !important;
+    border-radius: 36px !important;
+    padding: 28px 30px 30px !important;
+    gap: 24px !important;
+    backdrop-filter: blur(16px) saturate(145%);
+    -webkit-backdrop-filter: blur(16px) saturate(145%);
+  }
+
+  .vp-download-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 18px !important;
+    width: 100% !important;
+  }
+
+  .vp-download-btn {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    touch-action: manipulation;
+  }
+}
+
+/* 1. PORTRAIT MODE (Small Phones -> Large Phones -> Portrait Tablets) */
+@media (orientation: portrait) and (max-width: 1024px) {
+  .page3-section {
+    height: 520vh;
+    margin-top: -18vh;
+  }
+
+  /* Exact camera zoom origin (50% X, 56.6% Y) so at 9.2x scale + 2.6vh dolly,
+     the camera zooms dead-center into the middle of the white Macintosh CRT screen! */
+  .page3-camera-rig {
+    transform-origin: 50% 56.6%;
+  }
+
+  /* Calibrated from 2624x1632 source image: 49.86% places both the Macintosh
+     monitor casing and the white CRT screen dead-center at 50.0% of the viewport */
+  .page3-photo {
+    top: -4vh;
+    left: -3vw;
+    width: 106vw;
+    height: 108vh;
+    object-fit: cover;
+    object-position: 49.86% 46%;
+  }
+
+  .page3-top-white-seam,
+  .page3-top-sunlight {
+    height: 22vh;
+  }
+
+  .vp-bg-photo {
+    top: -3vh;
+    left: -3vw;
+    width: 106vw;
+    height: 106vh;
+    object-position: 50% 50%;
+  }
+}
+
+/* 2. LANDSCAPE MODE ON PHONES & TABLETS (Exact Laptop Proportions) */
+@media (orientation: landscape) and (max-width: 1024px),
+       (orientation: landscape) and (max-height: 600px) {
+  .page3-section {
+    height: 560vh;
+    margin-top: -20vh;
+  }
+
+  .page3-camera-rig {
+    transform-origin: 50% 55.4%;
+  }
+
+  .page3-photo {
+    top: -4vh;
+    left: -3vw;
+    width: 106vw;
+    height: 108vh;
+    object-fit: cover;
+    object-position: 49.86% 46%;
+  }
+}
