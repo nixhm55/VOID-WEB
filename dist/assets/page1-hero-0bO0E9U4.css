@@ -1,0 +1,282 @@
+/* ==========================================================================
+   VOID MOBILE — PAGE 1: HERO SECTION (mobile-pages/01-hero/page1-hero.css)
+   - CRITICAL: Enables `pointer-events: auto !important; touch-action: pan-y !important;`
+     across all sections so touch-dragging works on every pixel of the mobile screen!
+   - Keeps `html` and all scroll wrappers `overflow: visible !important` so
+     `position: sticky` pins every section at `top: 0` identically to Desktop!
+   - Desktop files (`desktop-pages/*`) remain 100% UNTOUCHED.
+   ========================================================================== */
+
+@media (max-width: 1024px), (max-height: 600px) {
+  :root,
+  html,
+  body {
+    color-scheme: only light !important;
+    forced-color-adjust: none !important;
+    background-color: var(--hero-bg) !important;
+  }
+
+  html {
+    overflow: visible !important;
+  }
+
+  body {
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    touch-action: pan-y !important;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Guarantee all sections accept touch-drag scrolling on mobile/tablet */
+  #page1HeroMount,
+  .hero-scroll-wrapper,
+  .hero-sticky,
+  #page2RingMount,
+  .cylinder-ring-section,
+  .cylinder-ring-sticky,
+  .cylinder-ring-viewport,
+  #page2CardsMount,
+  .prism-scroll-wrapper,
+  .prism-sticky,
+  .prism-stage-3d,
+  .prism-unit,
+  #page3ShowcaseMount,
+  .page3-section,
+  .page3-sticky,
+  .page3-media-frame {
+    pointer-events: auto !important;
+    touch-action: pan-y !important;
+  }
+
+  /* Keep all scroll wrappers overflow:visible so position:sticky never breaks */
+  #page1HeroMount,
+  .hero-scroll-wrapper,
+  #page2RingMount,
+  .cylinder-ring-section,
+  #page2CardsMount,
+  .prism-scroll-wrapper,
+  #page3ShowcaseMount,
+  .page3-section {
+    overflow: visible !important;
+  }
+
+  /* Disable background WebGL canvas on mobile/tablet for locked 60/120fps scrolling */
+  #heroThreeOpticalCanvas,
+  .hero-three-canvas {
+    display: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   1. PORTRAIT MODE (Small Phones 320px -> Large Phones 440px -> Portrait Tablets)
+   -------------------------------------------------------------------------- */
+@media (orientation: portrait) and (max-width: 1024px) {
+  .hero-scroll-wrapper {
+    position: relative;
+    width: 100%;
+    height: 198vh;
+  }
+
+  .hero-sticky {
+    position: sticky !important;
+    top: 0 !important;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden !important;
+  }
+
+  /* Top Center Navigation */
+  .top-nav {
+    top: 2.2vh;
+    left: 50%;
+    transform: translate3d(-50%, 0, 0);
+    gap: clamp(0.8rem, 4.2vw, 1.75rem);
+    max-width: 92vw;
+    white-space: nowrap;
+  }
+
+  .brand-logo {
+    width: clamp(52px, 14.5vw, 64px);
+    height: 20px;
+    transform: translateY(-2px) scale(clamp(0.86, 0.24vw + 0.78, 1));
+    transform-origin: center center;
+  }
+
+  .nav-links {
+    gap: clamp(0.8rem, 4.2vw, 1.75rem);
+  }
+
+  .nav-link {
+    font-size: clamp(0.68rem, 3.05vw, 0.82rem);
+  }
+
+  /* Top-Left Editorial Metadata Block */
+  .editorial-info {
+    top: 7.2vh;
+    left: 5.4vw;
+    width: clamp(162px, 53vw, 285px);
+  }
+
+  .editorial-title {
+    font-size: clamp(1.04rem, 4.9vw, 1.92rem);
+    line-height: 0.94;
+    letter-spacing: -0.02em;
+    margin-bottom: clamp(0.38rem, 1.5vw, 0.62rem);
+  }
+
+  .credit-row {
+    padding: clamp(0.22rem, 0.85vw, 0.36rem) 0;
+  }
+
+  .credit-label {
+    font-size: clamp(0.38rem, 1.55vw, 0.46rem);
+    letter-spacing: 0.08em;
+  }
+
+  .credit-values {
+    font-size: clamp(0.56rem, 2.35vw, 0.78rem);
+    line-height: 1.26;
+  }
+
+  /* 5-CD 3D Diagonal Stage */
+  .cd-item {
+    width: clamp(164px, 52vw, 340px);
+    height: clamp(164px, 52vw, 340px);
+    margin-left: calc(clamp(164px, 52vw, 340px) * -0.5);
+    margin-top: calc(clamp(164px, 52vw, 340px) * -0.5);
+  }
+
+  /* Pre-baked initial portrait spline positions so CDs never flash at (0,0) on mobile reload */
+  .cd-item[data-index="0"] {
+    transform: translate3d(-3.500vw, 65.500vh, 0px) scale3d(0.7500, 0.7500, 1);
+  }
+  .cd-item[data-index="1"] {
+    transform: translate3d(23.000vw, 58.500vh, 0px) scale3d(0.8500, 0.8500, 1);
+  }
+  .cd-item[data-index="2"] {
+    transform: translate3d(50.000vw, 49.500vh, 0px) scale3d(1.0000, 1.0000, 1);
+  }
+  .cd-item[data-index="3"] {
+    transform: translate3d(83.500vw, 33.000vh, 0px) scale3d(0.9400, 0.9400, 1);
+  }
+  .cd-item[data-index="4"] {
+    transform: translate3d(118.000vw, 14.000vh, 0px) scale3d(0.8800, 0.8800, 1);
+  }
+
+  .cd-disc {
+    border-width: clamp(2.2px, 0.65vw, 3.2px);
+  }
+
+  /* Bottom Center Press Quotes */
+  .press-quotes {
+    bottom: 3.6vh;
+    left: 50% !important;
+    right: auto !important;
+    transform: translate3d(-50%, 0, 0) !important;
+    width: 90vw;
+    max-width: 500px;
+    justify-content: center;
+    align-items: flex-start;
+    gap: clamp(1.05rem, 5.5vw, 3.6rem);
+  }
+
+  .quote-block {
+    flex: 1 1 0;
+    max-width: 220px;
+  }
+
+  .stars {
+    font-size: clamp(0.48rem, 1.95vw, 0.62rem);
+    letter-spacing: 0.16em;
+    margin-bottom: clamp(0.2rem, 0.8vw, 0.36rem);
+  }
+
+  .quote-source {
+    font-size: clamp(0.37rem, 1.45vw, 0.45rem);
+    letter-spacing: 0.09em;
+    margin-bottom: clamp(0.14rem, 0.6vw, 0.24rem);
+  }
+
+  .quote-text {
+    font-size: clamp(0.7rem, 3.15vw, 1.12rem);
+    line-height: 1.04;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. LANDSCAPE MODE ON PHONES & TABLETS (Exact Laptop / Desktop Layout)
+   -------------------------------------------------------------------------- */
+@media (orientation: landscape) and (max-width: 1024px),
+       (orientation: landscape) and (max-height: 600px) {
+  .hero-scroll-wrapper {
+    position: relative;
+    width: 100%;
+    height: 198vh;
+  }
+
+  .hero-sticky {
+    position: sticky !important;
+    top: 0 !important;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden !important;
+  }
+
+  .top-nav {
+    top: 2.35vh;
+    left: 50%;
+    transform: translate3d(-50%, 0, 0);
+    gap: clamp(1.1rem, 2.2vw, 1.85rem);
+  }
+
+  .nav-links {
+    gap: clamp(1.1rem, 2.2vw, 1.85rem);
+  }
+
+  .nav-link {
+    font-size: clamp(0.68rem, 1.1vw, 0.78rem);
+  }
+
+  .editorial-info {
+    top: 2.35vh;
+    left: 2.2vw;
+    width: clamp(165px, 21vw, 310px);
+  }
+
+  .editorial-title {
+    font-size: clamp(1.05rem, 2.25vw, 2.2rem);
+    line-height: 0.95;
+    margin-bottom: 0.45rem;
+  }
+
+  .credit-row {
+    padding: 0.24rem 0 0.28rem;
+  }
+
+  .credit-label {
+    font-size: clamp(0.38rem, 0.6vw, 0.46rem);
+  }
+
+  .credit-values {
+    font-size: clamp(0.56rem, 0.85vw, 0.8rem);
+  }
+
+  .cd-item {
+    width: min(36vw, 66vh);
+    height: min(36vw, 66vh);
+    margin-left: calc(min(36vw, 66vh) * -0.5);
+    margin-top: calc(min(36vw, 66vh) * -0.5);
+  }
+
+  .press-quotes {
+    bottom: 3.5vh;
+    left: 50% !important;
+    transform: translate3d(-50%, 0, 0) !important;
+    width: auto;
+    gap: clamp(2rem, 5.5vw, 6rem);
+  }
+
+  .quote-text {
+    font-size: clamp(0.76rem, 1.38vw, 1.35rem);
+  }
+}
