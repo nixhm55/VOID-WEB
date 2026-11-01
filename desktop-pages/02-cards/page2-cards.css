@@ -54,6 +54,7 @@
   height: 100%;
   perspective: 1150px;
   transform-style: preserve-3d;
+  will-change: transform;
   pointer-events: none;
 }
 

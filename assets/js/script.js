@@ -85,9 +85,9 @@
   lenis = hasLenis
     ? new window.Lenis({
         autoRaf: false,
-        lerp: 0.105,
+        lerp: 0.1,
         smoothWheel: true,
-        wheelMultiplier: 0.96,
+        wheelMultiplier: 1.0,
         touchMultiplier: 1.0,
         syncTouch: false,
         autoResize: true,
